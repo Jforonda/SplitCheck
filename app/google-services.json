@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1004134194378",
+    "project_id": "splitcheck-175304"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004134194378:android:d7f31ee96f0621cc",
+        "android_client_info": {
+          "package_name": "com.android.splitcheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004134194378-53jph62p850pq9e02t04q4rqr4gvctud.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1004134194378-6937t6c6503750r7capkken5qbq3dg0p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android",
+            "certificate_hash": "b1e77b332fd94795b101adef7fabef059946d239"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3w29Rdb5__1FloNqhwliOEwQ1KE20VQE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
