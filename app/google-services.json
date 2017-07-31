@@ -1,28 +1,34 @@
 {
   "project_info": {
     "project_number": "1004134194378",
-    "project_id": "splitcheck-175304"
+    "firebase_url": "https://splitcheck-175304.firebaseio.com",
+    "project_id": "splitcheck-175304",
+    "storage_bucket": "splitcheck-175304.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1004134194378:android:d7f31ee96f0621cc",
+        "mobilesdk_app_id": "1:1004134194378:android:437fab47340cc7e6",
         "android_client_info": {
           "package_name": "com.android.splitcheck"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1004134194378-53jph62p850pq9e02t04q4rqr4gvctud.apps.googleusercontent.com",
+          "client_id": "1004134194378-gbeafq83ltq371k13ktgkroki9mqvq8n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.splitcheck",
+            "certificate_hash": "b1e77b332fd94795b101adef7fabef059946d239"
+          }
+        },
+        {
+          "client_id": "1004134194378-rl78f07muc067v70s2vv9dc80rgtr3bu.apps.googleusercontent.com",
           "client_type": 3
         },
         {
-          "client_id": "1004134194378-6937t6c6503750r7capkken5qbq3dg0p.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.android",
-            "certificate_hash": "b1e77b332fd94795b101adef7fabef059946d239"
-          }
+          "client_id": "1004134194378-53jph62p850pq9e02t04q4rqr4gvctud.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004134194378-rl78f07muc067v70s2vv9dc80rgtr3bu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

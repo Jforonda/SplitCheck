@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_tax_options">
+        <item>@string/pref_tax_label_percent</item>
+        <item>@string/pref_tax_label_dollars</item>
+    </string-array>
+    <string-array name="pref_tax_values">
+        <item>@string/pref_tax_percent</item>
+        <item>@string/pref_tax_dollars</item>
+    </string-array>
+</resources>

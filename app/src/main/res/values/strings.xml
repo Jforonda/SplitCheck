@@ -1,3 +1,48 @@
 <resources>
     <string name="app_name">Split Check</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!--Google Sign In strings-->
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signing_in">Signing in...</string>
+    <string name="signed_out">Signed out</string>
+    <string name="signed_in_err">"Error: please check logs."</string>
+    <string name="loading">Loading...</string>
+    <string name="auth_code_fmt">Auth Code: %s</string>
+    <string name="id_token_fmt">ID Token: %s</string>
+    <string name="sign_out">Sign out</string>
+    <string name="disconnect">Disconnect</string>
+
+    <!--Menu strings-->
+    <string name="settings">Settings</string>
+    <string name="log_in">Log In</string>
+
+    <!--Action strings-->
+    <string name="action_new_check">Add New Check</string>
+
+    <!--Settings strings-->
+    <string name="pref_tax_label">Tax</string>
+    <string name="pref_tax_label_percent">Per</string>
+    <string name="pref_tax_label_dollars">Dol</string>
+    <string name="pref_tax_percent">percent</string>
+    <string name="pref_tax_dollars">dollars</string>
+    <string name="pref_tax_key">tax</string>
+
+
+
 </resources>
