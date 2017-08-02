@@ -1,6 +1,8 @@
 package com.android.splitcheck;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.splitcheck.data.Check;
+import com.android.splitcheck.data.CheckContract;
 
 public class CheckListActivity extends AppCompatActivity {
 
@@ -28,6 +31,15 @@ public class CheckListActivity extends AppCompatActivity {
         mFragmentManager.beginTransaction()
                 .add(R.id.fragment_check_list_container, mCheckListFragment)
                 .commit();
+
+        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
+        uri = uri.buildUpon().build();
+        Cursor c = getContentResolver().query(uri, null, null, null, null);
+        if (c == null) {
+
+        } else {
+            Toast.makeText(this, "" + c.getCount(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

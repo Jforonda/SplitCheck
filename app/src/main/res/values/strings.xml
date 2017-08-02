@@ -2,7 +2,7 @@
     <string name="app_name">Split Check</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_settings">Settings</string>
-
+    <string name="title_activity_create_check">New Check</string>
 
     <!--Google Sign In strings-->
     <string name="signed_in_fmt">Signed in as: %s</string>

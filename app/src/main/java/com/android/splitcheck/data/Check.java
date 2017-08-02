@@ -7,12 +7,12 @@ import java.util.Date;
 
 public class Check {
 
-    private String title;
+    private String name;
     private ArrayList<Participant> participants;
     private ArrayList<Item> items;
     private int id;
 
-    private int total;
+    private String total;
     private long timeCreated;
     private Date dateTimeCreated;
 
@@ -24,17 +24,17 @@ public class Check {
 
 
     public Check() {
-        this.timeCreated = getTimeCreated();
-        this.dateTimeCreated = getCurrentDateTime();
+
     }
 
-    public Check(String title, ArrayList<Participant> participants, ArrayList<Item> items, int id) {
-        this.title = title;
+    public Check(String name, int id, String total, ArrayList<Participant> participants,
+                 ArrayList<Item> items, long dateTime) {
+        this.name = name;
+        this.id = id;
+        this.total = total;
         this.participants = participants;
         this.items = items;
-        this.id = id;
         this.timeCreated = getTimeCreated();
-        this.dateTimeCreated = getCurrentDateTime();
     }
 
     // Methods for Date and Time
@@ -53,28 +53,34 @@ public class Check {
     }
 
     public String getFormattedDate() {
-        return formatDate(dateTimeCreated);
+        //return formatDate(dateTimeCreated);
+        return formatDate(getCurrentDateTime());
     }
 
     // Methods for Check Total
 
-    private int getTotal() {
-        int total = 0;
-        for (int i = 0; i < items.size(); i++) {
-            total += items.get(i).getCost();
-        }
+    public String getTotal() {
+        /**if (!items.isEmpty()) {
+            int total = 0;
+            for (int i = 0; i < items.size(); i++) {
+                total += items.get(i).getCost();
+            }
 
+            return total;
+        } else {
+            return 0;
+        }**/
         return total;
     }
 
     // Getters and Setters
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ArrayList<Participant> getParticipants() {
@@ -92,4 +98,5 @@ public class Check {
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
+
 }
