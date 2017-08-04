@@ -6,11 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_check_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_check_fab"
         android:src="@drawable/ic_add_white_24dp"
@@ -24,5 +19,16 @@
         app:pressedTranslationZ="@dimen/fab_pres_translation_z"
 
         android:contentDescription="@string/action_new_check"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_check_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

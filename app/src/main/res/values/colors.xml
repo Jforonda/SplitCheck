@@ -11,4 +11,6 @@
 
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#FFF</color>
+
+    <color name="divider_color">#D5D8DC</color>
 </resources>

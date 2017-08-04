@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,11 +22,14 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class CheckListFragment extends Fragment {
+public class CheckListFragment extends Fragment implements CreateCheckFragment.CreateCheckDialogListener{
 
     private CheckListAdapter mCheckListAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList<Check> mChecks;
+
+    private final String CHECK_LIST_RECYCLER_STATE = "check_list_recycler_state";
+    private static Bundle mBundleRecyclerViewState;
 
     // Empty Constructor
     public CheckListFragment() {
@@ -40,37 +45,53 @@ public class CheckListFragment extends Fragment {
         rootView.findViewById(R.id.add_check_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start Activity for new Check
-                Intent intent = new Intent(getActivity(), CreateCheckActivity.class);
-                startActivity(intent);
+                // Start Dialog for new Check
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                CreateCheckFragment createCheckFragment = CreateCheckFragment.newInstance("Check Name");
+                createCheckFragment.setTargetFragment(CheckListFragment.this, 300);
+                createCheckFragment.show(fm, "Check Name");
             }
         });
 
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_check_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mChecks = getChecksFromDatabase();
-        mCheckListAdapter = new CheckListAdapter(getActivity(), mChecks);
-        mRecyclerView.setAdapter(mCheckListAdapter);
+        updateUI();
 
         return rootView;
     }
 
-    private ArrayList<Check> getChecksFromDatabase() {
-        Uri uri = CheckEntry.CONTENT_URI;
-        uri = uri.buildUpon().build();
-        Cursor c = getActivity().getContentResolver().query(uri, null, null, null, null);
-        ArrayList<Check> checks = new ArrayList<>();
-        c.moveToFirst();
-        while (!c.isAfterLast()) {
-            String name = c.getString(c.getColumnIndex(CheckEntry.NAME));
-            int id = c.getInt(c.getColumnIndex(CheckEntry._ID));
-            String total = c.getString(c.getColumnIndex(CheckEntry.TOTAL));
-            long dateTime = c.getLong(c.getColumnIndex(CheckEntry.TIME_CREATED));
-            Check check = new Check(name, id, total, null, null, dateTime);
-            checks.add(check);
-            c.moveToNext();
-        }
-        c.close();
-        return checks;
+    private void updateUI() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        Check check = new Check();
+        mChecks = check.getListOfChecksFromDatabase(getContext().getContentResolver());
+        mCheckListAdapter = new CheckListAdapter(getContext(), mChecks);
+        mRecyclerView.setAdapter(mCheckListAdapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+//        mBundleRecyclerViewState = new Bundle();
+//        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+//        mBundleRecyclerViewState.putParcelable(CHECK_LIST_RECYCLER_STATE, listState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        if (mBundleRecyclerViewState != null) {
+//            Parcelable listState = mBundleRecyclerViewState.getParcelable(CHECK_LIST_RECYCLER_STATE);
+//            mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+//        }
+    }
+
+    @Override
+    public void onFinishCreateDialog(String inputText, int inputInt) {
+        // Called after Dialog successfully creates check
+        Toast.makeText(getContext(), "Created " + inputText
+                + "\nID: " + inputInt, Toast.LENGTH_SHORT).show();
+        updateUI();
+
     }
 }

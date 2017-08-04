@@ -28,8 +28,13 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".CreateCheckActivity"
-            android:label="@string/title_activity_create_check" />
+            android:name=".EditCheckActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".CheckListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CheckListActivity" />
+        </activity>
 
         <provider
             android:authorities="com.android.splitcheck.data.CheckContract"

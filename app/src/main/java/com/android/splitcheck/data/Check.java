@@ -1,5 +1,11 @@
 package com.android.splitcheck.data;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -34,7 +40,22 @@ public class Check {
         this.total = total;
         this.participants = participants;
         this.items = items;
-        this.timeCreated = getTimeCreated();
+        this.timeCreated = dateTime;
+    }
+
+    public Check(ContentResolver contentResolver, int checkId) {
+        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        Cursor c = contentResolver.query(uri, null, null, null, null);
+        c.moveToFirst();
+        if (c.getCount() > 0) {
+            this.name = c.getString(c.getColumnIndex(CheckContract.CheckEntry.NAME));
+            this.id = c.getInt(c.getColumnIndex(CheckContract.CheckEntry._ID));
+            this.total = c.getString(c.getColumnIndex(CheckContract.CheckEntry.TOTAL));
+            this.items = null;
+            this.participants = null;
+            this.timeCreated = c.getLong(c.getColumnIndex(CheckContract.CheckEntry.TIME_CREATED));
+        }
     }
 
     // Methods for Date and Time
@@ -97,6 +118,102 @@ public class Check {
 
     public void setItems(ArrayList<Item> items) {
         this.items = items;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    // Database Handlers
+
+    public Uri addToDatabase(ContentResolver contentResolver, String name) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CheckContract.CheckEntry.NAME,
+                name);
+        contentValues.put(CheckContract.CheckEntry.TOTAL,
+                "10");
+        contentValues.put(CheckContract.CheckEntry.PARTICIPANTS,
+                "None");
+        contentValues.put(CheckContract.CheckEntry.ITEMS,
+                "None");
+        contentValues.put(CheckContract.CheckEntry.TIME_CREATED,
+                System.currentTimeMillis());
+        Uri uri = contentResolver.insert(CheckContract.CheckEntry.CONTENT_URI,
+                contentValues);
+        return uri;
+    }
+
+    public Uri deleteFromDatabase(ContentResolver contentResolver, int checkId) {
+        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(String.valueOf(checkId)).build();
+
+        contentResolver.delete(uri, null, null);
+        return uri;
+    }
+
+    public Uri deleteAllFromDatabase(ContentResolver contentResolver) {
+        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
+        uri = uri.buildUpon().build();
+
+        contentResolver.delete(uri, null, null);
+        return uri;
+    }
+
+    public void updateDatabase() {
+
+    }
+
+    public ArrayList<Integer> getListOfCheckIdsFromDatabase(ContentResolver contentResolver) {
+        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
+        uri = uri.buildUpon().build();
+
+        Cursor c = contentResolver.query(uri, null, null, null, null);
+        c.moveToFirst();
+        ArrayList<Integer> checkIds = new ArrayList<>();
+        while(!c.isAfterLast()) {
+            int id = c.getInt(c.getColumnIndex(CheckContract.CheckEntry._ID));
+            checkIds.add(id);
+            c.moveToNext();
+        }
+        return checkIds;
+    }
+
+    public ArrayList<Check> getListOfChecksFromDatabase(ContentResolver contentResolver) {
+        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
+        Cursor c = contentResolver.query(uri, null, null, null, null);
+        c.moveToFirst();
+        ArrayList<Check> checks = new ArrayList<>();
+        while(!c.isAfterLast()) {
+            String name = c.getString(c.getColumnIndex(CheckContract.CheckEntry.NAME));
+            int id = c.getInt(c.getColumnIndex(CheckContract.CheckEntry._ID));
+            String total = c.getString(c.getColumnIndex(CheckContract.CheckEntry.TOTAL));
+            long dateTime = c.getLong(c.getColumnIndex(CheckContract.CheckEntry.TIME_CREATED));
+            Check check = new Check(name, id, total, null, null, dateTime);
+            checks.add(check);
+            c.moveToNext();
+        }
+        return checks;
+    }
+
+    public Check getCheckFromDatabaseFromId(ContentResolver contentResolver, int checkId) {
+        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        Cursor c = contentResolver.query(uri, null, null, null, null);
+        c.moveToFirst();
+        Check check;
+        while(!c.isAfterLast()) {
+            String name = c.getString(c.getColumnIndex(CheckContract.CheckEntry.NAME));
+            int id = c.getInt(c.getColumnIndex(CheckContract.CheckEntry._ID));
+            String total = c.getString(c.getColumnIndex(CheckContract.CheckEntry.TOTAL));
+            long dateTime = c.getLong(c.getColumnIndex(CheckContract.CheckEntry.TIME_CREATED));
+            check = new Check(name, id, total, null, null, dateTime);
+            return check;
+        }
+        return null;
     }
 
 }

@@ -31,6 +31,9 @@
     <string name="pref_tax_dollars">dollars</string>
     <string name="pref_tax_key">tax</string>
 
+    <!--Strings for activity_edit_check.xml-->
+    <string name="edit_check_name_default">Check name</string>
+    <string name="total_default">Your Total: $0.00</string>
 
 
 </resources>

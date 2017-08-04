@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="4dp">
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/text_view_edit_check_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_check_name_default"/>
+
+            <!--Container for Items-->
+            <!--fragment_edit_check_items.xml-->
+            <FrameLayout
+                android:id="@+id/container_edit_check_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </FrameLayout>
+
+            <!--Add Item Here-->
+            <ImageView
+                android:id="@+id/image_view_edit_check_add_item"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_add_circle_outline_black_36dp" />/>
+
+            <!--Container for Total-->
+            <!--fragment_edit_check_total.xml-->
+            <FrameLayout
+                android:id="@+id/container_edit_check_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </FrameLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!--Add color to colors-->
+    <!--Add padding to dimens-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#2ECC71"
+        android:layout_gravity="bottom"
+        android:elevation="4dp">
+        <TextView
+            android:id="@+id/text_view_edit_check_total"
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:text="@string/total_default"
+            android:textStyle="bold"/>
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

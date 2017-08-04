@@ -1,12 +1,15 @@
 package com.android.splitcheck;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.splitcheck.data.Check;
 
@@ -16,8 +19,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.ViewHolder> {
-    ArrayList<Check> mChecks;
-    Context mContext;
+    static ArrayList<Check> mChecks;
+    static Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.card_view_check_item) CardView mCardView;
@@ -29,6 +32,27 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
             super(v);
             ButterKnife.bind(this, v);
             mLinearLayout = v;
+
+            /** Implement Delete and Confirmation Dialog
+            mCardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Check check = new Check();
+                    check.deleteFromDatabase(mContext.getContentResolver(),
+                            mChecks.get(getAdapterPosition()).getId());
+                    return false;
+                }
+            });**/
+            mCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentToStartEditCheckActivity = new Intent(mContext,
+                            EditCheckActivity.class);
+                    intentToStartEditCheckActivity.putExtra("checkId",
+                            mChecks.get(getAdapterPosition()).getId());
+                    mContext.startActivity(intentToStartEditCheckActivity);
+                }
+            });
         }
     }
 

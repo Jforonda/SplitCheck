@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.android.splitcheck.data.Check;
 import com.android.splitcheck.data.CheckContract;
 
 public class CheckListActivity extends AppCompatActivity {
@@ -26,11 +24,13 @@ public class CheckListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_list);
 
         // Set up Fragment for Check List
-        mFragmentManager = getSupportFragmentManager();
+        /**mFragmentManager = getSupportFragmentManager();
         mCheckListFragment = new CheckListFragment();
         mFragmentManager.beginTransaction()
                 .add(R.id.fragment_check_list_container, mCheckListFragment)
-                .commit();
+                .commit();**/
+
+        updateUI();
 
         Uri uri = CheckContract.CheckEntry.CONTENT_URI;
         uri = uri.buildUpon().build();
@@ -64,5 +64,19 @@ public class CheckListActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void updateUI() {
+        mFragmentManager = getSupportFragmentManager();
+        mCheckListFragment = new CheckListFragment();
+        mFragmentManager.beginTransaction()
+                .add(R.id.fragment_check_list_container, mCheckListFragment)
+                .commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUI();
     }
 }
