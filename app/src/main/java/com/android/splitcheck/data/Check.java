@@ -17,16 +17,13 @@ public class Check {
     private ArrayList<Participant> participants;
     private ArrayList<Item> items;
     private int id;
-
     private String total;
     private long timeCreated;
-    private Date dateTimeCreated;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // outputFormat: 8/11/2017 12:11 AM
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
-
 
 
     public Check() {

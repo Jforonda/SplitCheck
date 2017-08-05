@@ -2,8 +2,10 @@ package com.android.splitcheck;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +21,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.android.splitcheck.data.Item;
+
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -27,17 +31,19 @@ public class CreateItemFragment extends DialogFragment {
 
     private EditText mNameEditText;
     private EditText mCostEditText;
-
     private CreateItemDialogListener listener;
+
+    private int mCheckId;
 
     public CreateItemFragment() {
 
     }
 
-    public static CreateItemFragment newInstance(String title) {
+    public static CreateItemFragment newInstance(String title, int checkId) {
         CreateItemFragment frag = new CreateItemFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
+        args.putInt("checkId", checkId);
         frag.setArguments(args);
         return frag;
     }
@@ -63,6 +69,7 @@ public class CreateItemFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString("title");
+        mCheckId = getArguments().getInt("checkId");
         Context context = getContext();
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -97,7 +104,8 @@ public class CreateItemFragment extends DialogFragment {
                     String itemCost = mCostEditText.getText().toString();
                     String parsedCost = itemCost.replaceAll("[$,.]","");
                     int newItemCost = Integer.parseInt(parsedCost);
-                    sendBackResult(newItemName, newItemCost);
+                    int newId = createItem(newItemName, newItemCost);
+                    sendBackResult(newItemName, mCheckId);
                 }
             }
         });
@@ -142,7 +150,13 @@ public class CreateItemFragment extends DialogFragment {
 
     public void sendBackResult(String itemName, int itemCost) {
         CreateItemDialogListener listener = (CreateItemDialogListener) getTargetFragment();
-        //listener.onFinishCreateDialog(itemName, itemCost);
+        listener.onFinishCreateDialog(itemName, itemCost);
         dismiss();
+    }
+
+    public int createItem(String name, int cost) {
+        Item item = new Item();
+        Uri uri = item.addToDatabase(getContext().getContentResolver(), name, cost, mCheckId);
+        return ((int) ContentUris.parseId(uri));
     }
 }

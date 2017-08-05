@@ -9,7 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:elevation="4dp">
+        app:elevation="4dp">
 
     </android.support.design.widget.AppBarLayout>
 
@@ -34,17 +34,11 @@
             <!--fragment_edit_check_items.xml-->
             <FrameLayout
                 android:id="@+id/container_edit_check_items"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp">
 
             </FrameLayout>
-
-            <!--Add Item Here-->
-            <ImageView
-                android:id="@+id/image_view_edit_check_add_item"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_add_circle_outline_black_36dp" />/>
 
             <!--Container for Total-->
             <!--fragment_edit_check_total.xml-->

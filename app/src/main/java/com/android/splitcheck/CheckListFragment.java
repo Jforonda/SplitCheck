@@ -54,17 +54,17 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment.C
         });
 
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_check_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Check check = new Check();
+        mChecks = check.getListOfChecksFromDatabase(getContext().getContentResolver());
+        mCheckListAdapter = new CheckListAdapter(getActivity(), mChecks);
+        mRecyclerView.setAdapter(mCheckListAdapter);
         updateUI();
 
         return rootView;
     }
 
     private void updateUI() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        Check check = new Check();
-        mChecks = check.getListOfChecksFromDatabase(getContext().getContentResolver());
-        mCheckListAdapter = new CheckListAdapter(getContext(), mChecks);
-        mRecyclerView.setAdapter(mCheckListAdapter);
     }
 
     @Override

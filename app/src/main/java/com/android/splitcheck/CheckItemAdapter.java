@@ -45,7 +45,8 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mNameTextView.setText(mItems.get(position).getName());
-        holder.mCostTextView.setText(mItems.get(position).getCost());
+//        holder.mCostTextView.setText(String.valueOf(mItems.get(position).getCost()));
+        holder.mCostTextView.setText(mItems.get(position).getCostAsString());
     }
 
     @Override

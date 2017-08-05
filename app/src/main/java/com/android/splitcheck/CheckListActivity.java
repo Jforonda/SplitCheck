@@ -38,7 +38,7 @@ public class CheckListActivity extends AppCompatActivity {
         if (c == null) {
 
         } else {
-            Toast.makeText(this, "" + c.getCount(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Checks: " + c.getCount(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -77,6 +77,6 @@ public class CheckListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateUI();
+        //updateUI();
     }
 }

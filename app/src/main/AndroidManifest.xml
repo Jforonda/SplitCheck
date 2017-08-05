@@ -40,6 +40,11 @@
             android:authorities="com.android.splitcheck.data.CheckContract"
             android:name=".data.CheckContentProvider"
             android:exported="false" />
+
+        <provider
+            android:authorities="com.android.splitcheck.data.ItemContract"
+            android:name=".data.ItemContentProvider"
+            android:exported="false" />
     </application>
 
 </manifest>
