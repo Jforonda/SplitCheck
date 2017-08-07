@@ -32,8 +32,19 @@
     <string name="pref_tax_key">tax</string>
 
     <!--Strings for activity_edit_check.xml-->
-    <string name="edit_check_name_default">Check name</string>
-    <string name="total_default">Your Total: $0.00</string>
+    <string name="default_edit_check_name">Check name</string>
+    <string name="default_edit_check_total">Your Total: $0.00</string>
+
+    <!--Strings for check_item.xml-->
+    <string name="default_check_item_name">Check Name</string>
+    <string name="default_check_item_date_time">1/1/2017 12:01 AM</string>
+    <string name="default_check_item_total">$0.00</string>
+
+    <!--Strings for check_item_item.xml-->
+    <string name="default_check_item_item_name">Check Item Name</string>
+    <string name="default_check_item_item_cost">$0.00</string>
+
+    <!--String for check_total_item.xml-->
 
 
 </resources>

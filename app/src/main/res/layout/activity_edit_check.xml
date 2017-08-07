@@ -8,8 +8,8 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:elevation="4dp">
+        android:layout_height="@dimen/app_bar_layout_height"
+        app:elevation="@dimen/app_bar_layout_elevation">
 
     </android.support.design.widget.AppBarLayout>
 
@@ -22,21 +22,36 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:padding="@dimen/edit_check_padding"
+            android:layout_marginBottom="@dimen/edit_check_total_frame_height">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <android.support.v4.view.PagerTabStrip
+                    android:id="@+id/pager_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"/>
+            </android.support.v4.view.ViewPager>
 
             <TextView
                 android:id="@+id/text_view_edit_check_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_check_name_default"/>
+                android:text="@string/default_edit_check_name"
+                android:padding="@dimen/edit_check_padding" />
 
             <!--Container for Items-->
             <!--fragment_edit_check_items.xml-->
             <FrameLayout
                 android:id="@+id/container_edit_check_items"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp">
+                android:layout_height="wrap_content">
 
             </FrameLayout>
 
@@ -56,17 +71,17 @@
     <!--Add padding to dimens-->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#2ECC71"
+        android:layout_height="@dimen/edit_check_total_frame_height"
+        android:background="@color/total_frame_green"
         android:layout_gravity="bottom"
-        android:elevation="4dp">
+        app:elevation="@dimen/edit_check_total_frame_elevation">
         <TextView
             android:id="@+id/text_view_edit_check_total"
-            android:padding="8dp"
+            android:padding="@dimen/edit_check_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:text="@string/total_default"
+            android:text="@string/default_edit_check_total"
             android:textStyle="bold"/>
     </FrameLayout>
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_edit_check_participants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--Add Item Here-->
+    <ImageView
+        android:id="@+id/image_view_edit_check_add_participant"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_add_circle_outline_black_36dp" />
+
+</LinearLayout>

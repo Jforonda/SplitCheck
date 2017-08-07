@@ -55,6 +55,8 @@ public class EditCheckActivity extends AppCompatActivity {
             Toast.makeText(this, "Items: " + c.getCount(), Toast.LENGTH_SHORT).show();
         }
 
+
+        // Set up Page Adapter Here
         updateUI();
 
     }
@@ -82,6 +84,6 @@ public class EditCheckActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateUI();
+        //updateUI();
     }
 }

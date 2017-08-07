@@ -13,4 +13,6 @@
     <color name="colorWhite">#FFF</color>
 
     <color name="divider_color">#D5D8DC</color>
+
+    <color name="total_frame_green">#2ECC71</color>
 </resources>

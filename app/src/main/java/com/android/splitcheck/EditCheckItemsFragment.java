@@ -19,11 +19,11 @@ import butterknife.ButterKnife;
 
 public class EditCheckItemsFragment extends Fragment implements CreateItemFragment.CreateItemDialogListener {
 
-    private CheckItemAdapter mCheckItemAdapter;
-    private RecyclerView mRecyclerView;
-    private ImageView mAddItemImageView;
-    private ArrayList<Item> mItems;
-    private int mCheckId;
+    CheckItemAdapter mCheckItemAdapter;
+    RecyclerView mRecyclerView;
+    ImageView mAddItemImageView;
+    ArrayList<Item> mItems;
+    int mCheckId;
 
     private final String CHECK_ITEM_RECYCKER_STATE = "check_item_recycler_state";
     private static Bundle mBundleRecyclerViewState;

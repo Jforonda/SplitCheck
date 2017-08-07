@@ -3,8 +3,16 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!--Material Design Dimensions-->
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_pres_translation_z">6dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_layout_height">0dp</dimen>
+    <dimen name="app_bar_layout_elevation">4dp</dimen>
+
+    <!--Dimensions for activity_edit_check.xml-->
+    <dimen name="edit_check_total_frame_height">50dp</dimen>
+    <dimen name="edit_check_total_frame_elevation">4dp</dimen>
+    <dimen name="edit_check_padding">8dp</dimen>
 
 </resources>

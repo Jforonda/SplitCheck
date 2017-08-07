@@ -26,15 +26,18 @@
                 android:id="@+id/title_check_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/default_check_item_name"
                 android:textSize="30sp"/>
             <TextView
                 android:id="@+id/date_time_check_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/default_check_item_date_time"/>
             <TextView
                 android:id="@+id/total_check_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/default_check_item_total"/>
 
         </LinearLayout>
 

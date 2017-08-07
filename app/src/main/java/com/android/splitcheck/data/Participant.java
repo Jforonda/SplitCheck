@@ -1,5 +1,6 @@
 package com.android.splitcheck.data;
 
+import android.content.ContentResolver;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,12 +12,19 @@ public class Participant implements Parcelable {
     private String lastName;
     private String color;
     private int id;
+    private int checkId;
 
-    public Participant(String firstName, String lastName, String color, int id) {
+    public Participant() {
+
+    }
+
+    public Participant(String firstName, String lastName, String color, int id,
+                       int checkId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.color = color;
         this.id = id;
+        this.checkId = checkId;
     }
 
     // Getters and Setters
@@ -53,6 +61,14 @@ public class Participant implements Parcelable {
         this.id = id;
     }
 
+    public int getCheckId() {
+        return checkId;
+    }
+
+    public void setCheckId(int checkId) {
+        this.checkId = checkId;
+    }
+
     // Parcelable methods
 
     @Override
@@ -84,5 +100,12 @@ public class Participant implements Parcelable {
         this.lastName = in.readString();
         this.color = in.readString();
         this.id = in.readInt();
+    }
+
+    // Database Handler
+
+    public void addToDatabase(ContentResolver contentResolver, String firstName, String lastName,
+                              int checkId) {
+
     }
 }

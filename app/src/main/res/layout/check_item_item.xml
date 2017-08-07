@@ -15,14 +15,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="title"/>
+            android:text="@string/default_check_item_item_name"/>
         <TextView
             android:id="@+id/text_view_item_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
             android:gravity="end"
-            android:text="cost"/>
+            android:text="@string/default_check_item_item_cost"/>
     </FrameLayout>
 
     <View
