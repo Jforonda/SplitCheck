@@ -17,13 +17,14 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class EditCheckItemsFragment extends Fragment implements CreateItemFragment.CreateItemDialogListener {
+public class EditCheckItemsFragment extends Fragment implements CreateItemFragment.
+        CreateItemDialogListener {
 
     CheckItemAdapter mCheckItemAdapter;
     RecyclerView mRecyclerView;
     ImageView mAddItemImageView;
     ArrayList<Item> mItems;
-    int mCheckId;
+    static int mCheckId;
 
     private final String CHECK_ITEM_RECYCKER_STATE = "check_item_recycler_state";
     private static Bundle mBundleRecyclerViewState;
@@ -31,6 +32,12 @@ public class EditCheckItemsFragment extends Fragment implements CreateItemFragme
     // Empty Constructor
     public EditCheckItemsFragment() {
 
+    }
+
+    public static EditCheckItemsFragment newInstance(int checkId) {
+        EditCheckItemsFragment fragment = new EditCheckItemsFragment();
+        mCheckId = checkId;
+        return fragment;
     }
 
     @Override

@@ -8,64 +8,40 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_layout_height"
+        android:layout_height="wrap_content"
         app:elevation="@dimen/app_bar_layout_elevation">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/edit_check_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:elevation="@dimen/app_bar_layout_elevation"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/pager_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            app:elevation="@dimen/app_bar_layout_elevation"
+            android:layout_gravity="top"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"/>
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginBottom="@dimen/edit_check_total_frame_height">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/edit_check_padding"
-            android:layout_marginBottom="@dimen/edit_check_total_frame_height">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <android.support.v4.view.PagerTabStrip
-                    android:id="@+id/pager_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:paddingBottom="4dp"
-                    android:paddingTop="4dp"/>
-            </android.support.v4.view.ViewPager>
-
-            <TextView
-                android:id="@+id/text_view_edit_check_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/default_edit_check_name"
-                android:padding="@dimen/edit_check_padding" />
-
-            <!--Container for Items-->
-            <!--fragment_edit_check_items.xml-->
-            <FrameLayout
-                android:id="@+id/container_edit_check_items"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </FrameLayout>
-
-            <!--Container for Total-->
-            <!--fragment_edit_check_total.xml-->
-            <FrameLayout
-                android:id="@+id/container_edit_check_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </FrameLayout>
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.view.ViewPager>
 
     <!--Add color to colors-->
     <!--Add padding to dimens-->

@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment.C
     private CheckListAdapter mCheckListAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList<Check> mChecks;
+    private Toolbar mToolbar;
 
     private final String CHECK_LIST_RECYCLER_STATE = "check_list_recycler_state";
     private static Bundle mBundleRecyclerViewState;
@@ -52,6 +55,9 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment.C
                 createCheckFragment.show(fm, "Check Name");
             }
         });
+
+        mToolbar = ButterKnife.findById(rootView, R.id.check_list_toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_check_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

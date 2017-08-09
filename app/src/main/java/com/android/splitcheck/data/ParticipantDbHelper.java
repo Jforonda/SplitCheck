@@ -21,7 +21,7 @@ public class ParticipantDbHelper extends SQLiteOpenHelper {
                 ParticipantEntry.TABLE_NAME + " (" +
                 ParticipantEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 ParticipantEntry.FIRST_NAME + " TEXT NOT NULL," +
-                ParticipantEntry.LAST_NAME + " TEXT NOT NULL," +
+                ParticipantEntry.LAST_NAME + " TEXT," +
                 ParticipantEntry.CHECK_ID + " INTEGER NOT NULL)";
 
         db.execSQL(SQL_CREATE_PARTICIPANT_TABLE);

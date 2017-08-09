@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.splitcheck.data.Participant;
 
@@ -18,9 +19,10 @@ import butterknife.ButterKnife;
 
 public class EditCheckParticipantsFragment extends Fragment {
 
-    //CheckParticipantAdapter mCheckParticipantAdapter;
+    CheckParticipantAdapter mCheckParticipantAdapter;
     RecyclerView mRecyclerView;
     ImageView mAddParticipantImageView;
+    ArrayList<Participant> mParticipants;
     int mCheckId;
 
     public EditCheckParticipantsFragment() {
@@ -38,6 +40,12 @@ public class EditCheckParticipantsFragment extends Fragment {
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_edit_check_participants);
         mAddParticipantImageView = ButterKnife.findById(rootView,
                 R.id.image_view_edit_check_add_participant);
+        mAddParticipantImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Add Participant!", Toast.LENGTH_SHORT).show();
+            }
+        });
         updateUI();
 
         return rootView;
@@ -45,10 +53,15 @@ public class EditCheckParticipantsFragment extends Fragment {
 
     private void updateUI() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // TODO PARTICIPANT FRAGMENT
-//        Participant participant = new Participant();
-//        mParticipants = getParticipants
-//        mCheckParticipantAdapter = new CheckItemAdapter(getContext(), mParticipants);
-//        mRecyclerView.setAdapter(mCheckParticipantAdapter);
+        Participant participant = new Participant();
+        mParticipants = participant.getListOfParticipantsFromDatabaseFromCheckId(getContext().
+                        getContentResolver(), mCheckId);
+        mCheckParticipantAdapter = new CheckParticipantAdapter(getContext(), mParticipants);
+        mRecyclerView.setAdapter(mCheckParticipantAdapter);
+    }
+
+    public void onFinishCreateDialog(String inputText, int inputInt) {
+        //TODO SETUP ONFINISHCREATEDIALOG IN ADDPARTICIPANTFRAGMENT
+        updateUI();
     }
 }
