@@ -2,11 +2,16 @@ package com.android.splitcheck;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +32,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
         @BindView(R.id.title_check_item) TextView mTitleTextView;
         @BindView(R.id.total_check_item) TextView mTotalTextView;
         @BindView(R.id.date_time_check_item) TextView mDateTimeTextView;
+        @BindView(R.id.options_icon_check_item) ImageView mIconImageView;
         public LinearLayout mLinearLayout;
         public ViewHolder(LinearLayout v) {
             super(v);
@@ -43,6 +49,31 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                     return false;
                 }
             });**/
+            mIconImageView.setColorFilter(R.color.colorBlack);
+            mIconImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    PopupMenu popupMenu = new PopupMenu(mContext, v);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.check_item_edit:
+                                    Toast.makeText(mContext, "Editing", Toast.LENGTH_SHORT).show();
+                                    return true;
+                                case R.id.check_item_delete:
+                                    Toast.makeText(mContext, "Deleting", Toast.LENGTH_SHORT).show();
+                                    return true;
+                                default:
+                                    Toast.makeText(mContext, "None", Toast.LENGTH_SHORT).show();
+                                    return true;
+                            }
+                        }
+                    });
+                    popupMenu.inflate(R.menu.menu_check_item);
+                    popupMenu.show();
+                }
+            });
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

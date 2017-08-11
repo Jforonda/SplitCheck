@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/image_view_edit_check_add_participant"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_add_circle_outline_black_36dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_participant_fab"
+        android:src="@drawable/ic_person_add_white_24dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin_plus_frame_height"
+        android:layout_gravity="bottom|end"
+        app:fabSize="normal"
+        app:elevation="@dimen/fab_elevation"
+        app:pressedTranslationZ="@dimen/fab_pres_translation_z"
+
+        android:contentDescription="@string/action_add_participant"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_edit_check_participants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <!--Add Item Here-->
-    <ImageView
-        android:id="@+id/image_view_edit_check_add_participant"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:src="@drawable/ic_add_circle_outline_black_36dp" />
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

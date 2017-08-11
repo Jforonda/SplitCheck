@@ -2,7 +2,9 @@ package com.android.splitcheck;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ public class EditCheckParticipantsFragment extends Fragment {
     CheckParticipantAdapter mCheckParticipantAdapter;
     RecyclerView mRecyclerView;
     ImageView mAddParticipantImageView;
+    FloatingActionButton mFloatingActionButton;
     ArrayList<Participant> mParticipants;
     int mCheckId;
 
@@ -44,6 +47,18 @@ public class EditCheckParticipantsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Add Participant!", Toast.LENGTH_SHORT).show();
+                //TODO Participant: On Click to Dialog. Change to FAB?
+            }
+        });
+        mFloatingActionButton = ButterKnife.findById(rootView, R.id.add_participant_fab);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
+                        "Add Participant", mCheckId);
+                addParticipantFragment.setTargetFragment(EditCheckParticipantsFragment.this, 500);
+                addParticipantFragment.show(fm, "Add Participant");
             }
         });
         updateUI();
@@ -61,7 +76,7 @@ public class EditCheckParticipantsFragment extends Fragment {
     }
 
     public void onFinishCreateDialog(String inputText, int inputInt) {
-        //TODO SETUP ONFINISHCREATEDIALOG IN ADDPARTICIPANTFRAGMENT
+        //TODO Participant: Set up callback from Add Participant Dialog
         updateUI();
     }
 }

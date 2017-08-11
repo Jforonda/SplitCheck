@@ -22,6 +22,8 @@
 
     <!--Action strings-->
     <string name="action_new_check">Add New Check</string>
+    <string name="action_new_item">Add New Item</string>
+    <string name="action_add_participant">Add Participant</string>
 
     <!--Settings strings-->
     <string name="pref_tax_label">Tax</string>
@@ -39,6 +41,8 @@
     <string name="default_check_item_name">Check Name</string>
     <string name="default_check_item_date_time">1/1/2017 12:01 AM</string>
     <string name="default_check_item_total">$0.00</string>
+    <string name="delete_check_item">Delete</string>
+    <string name="edit_check_item">Edit</string>
 
     <!--Strings for check_item_item.xml-->
     <string name="default_check_item_item_name">Check Item Name</string>

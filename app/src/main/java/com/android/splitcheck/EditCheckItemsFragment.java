@@ -1,6 +1,7 @@
 package com.android.splitcheck;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ public class EditCheckItemsFragment extends Fragment implements CreateItemFragme
     CheckItemAdapter mCheckItemAdapter;
     RecyclerView mRecyclerView;
     ImageView mAddItemImageView;
+    FloatingActionButton mFloatingActionButton;
     ArrayList<Item> mItems;
     static int mCheckId;
 
@@ -54,12 +56,29 @@ public class EditCheckItemsFragment extends Fragment implements CreateItemFragme
         mAddItemImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getContext(), "Old Add Item", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mFloatingActionButton = ButterKnife.findById(rootView, R.id.add_item_fab);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 //AddItem
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                CreateItemFragment createItemFragment = CreateItemFragment.newInstance("Item Name",
+                CreateItemFragment createItemFragment = CreateItemFragment.newInstance("New Item Info",
                         mCheckId);
                 createItemFragment.setTargetFragment(EditCheckItemsFragment.this, 400);
-                createItemFragment.show(fm, "Item Name");
+                createItemFragment.show(fm, "New Item Info");
+            }
+        });
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    mFloatingActionButton.hide();
+                } else if (dy < 0){
+                    mFloatingActionButton.show();
+                }
             }
         });
         updateUI();
