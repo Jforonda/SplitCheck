@@ -2,8 +2,8 @@ package com.android.splitcheck;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.Nullable;
+import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Check;
 
@@ -26,8 +25,17 @@ import butterknife.ButterKnife;
 public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.ViewHolder> {
     static ArrayList<Check> mChecks;
     static Context mContext;
+    private OnCheckItemEditClickedListener listener;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnCheckItemEditClickedListener {
+        void onCheckItemEditClickedListener(String checkName, int checkId);
+    }
+
+    public void setOnCheckItemEditClickedListener(OnCheckItemEditClickedListener l) {
+        listener = l;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.card_view_check_item) CardView mCardView;
         @BindView(R.id.title_check_item) TextView mTitleTextView;
         @BindView(R.id.total_check_item) TextView mTotalTextView;
@@ -39,16 +47,6 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
             ButterKnife.bind(this, v);
             mLinearLayout = v;
 
-            /** Implement Delete and Confirmation Dialog
-            mCardView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Check check = new Check();
-                    check.deleteFromDatabase(mContext.getContentResolver(),
-                            mChecks.get(getAdapterPosition()).getId());
-                    return false;
-                }
-            });**/
             mIconImageView.setColorFilter(R.color.colorBlack);
             mIconImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,15 +55,23 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
+                            int currentCheckId = mChecks.get(getAdapterPosition()).getId();
+                            String currentCheckName = mChecks.get(getAdapterPosition()).getName();
                             switch (item.getItemId()) {
                                 case R.id.check_item_edit:
-                                    Toast.makeText(mContext, "Editing", Toast.LENGTH_SHORT).show();
+                                    //TODO Check: Edit check fragment? Dialog with current info filled in? Use Update instead of insert
+                                    listener.onCheckItemEditClickedListener(currentCheckName,
+                                            currentCheckId);
                                     return true;
                                 case R.id.check_item_delete:
-                                    Toast.makeText(mContext, "Deleting", Toast.LENGTH_SHORT).show();
+                                    //TODO Check: Confirm Delete Item
+                                    deleteCheckById(currentCheckId);
+                                    removeAt(getAdapterPosition());
+                                    Snackbar
+                                            .make(v, "Check Deleted", Snackbar.LENGTH_LONG)
+                                            .show();
                                     return true;
                                 default:
-                                    Toast.makeText(mContext, "None", Toast.LENGTH_SHORT).show();
                                     return true;
                             }
                         }
@@ -78,7 +84,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                 @Override
                 public void onClick(View v) {
                     Intent intentToStartEditCheckActivity = new Intent(mContext,
-                            EditCheckActivity.class);
+                            CheckDetailActivity.class);
                     intentToStartEditCheckActivity.putExtra("checkId",
                             mChecks.get(getAdapterPosition()).getId());
                     mContext.startActivity(intentToStartEditCheckActivity);
@@ -110,5 +116,22 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
     @Override
     public int getItemCount() {
         return mChecks.size();
+    }
+
+    public Uri deleteCheckById(int id) {
+        Check check = new Check();
+        return check.deleteFromDatabase(mContext.getContentResolver(), id);
+    }
+
+    public void removeAt(int position) {
+        mChecks.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mChecks.size());
+    }
+
+    public void update(ArrayList<Check> checks) {
+        mChecks.clear();
+        mChecks.addAll(checks);
+        notifyDataSetChanged();
     }
 }

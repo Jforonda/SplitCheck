@@ -115,7 +115,7 @@ public class CheckContentProvider extends ContentProvider {
         int checksDeleted;
         switch (match) {
             case CHECK:
-                checksDeleted = db.delete(CheckEntry.TABLE_NAME, null, null);
+                checksDeleted = db.delete(CheckEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case CHECK_WITH_ID:
                 String id = uri.getPathSegments().get(1);

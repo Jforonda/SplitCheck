@@ -47,7 +47,7 @@ public class AddParticipantFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_check, container);
+        return inflater.inflate(R.layout.fragment_add_participant_dialog, container);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class AddParticipantFragment extends DialogFragment {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle("Select participants:");
-        // TODO Get item list from Participant DB, List by Most Frequent?
+        // TODO Participant: Get item list from Participant DB, List by Most Frequent?
         final CharSequence[] items = {"Test1", "Test2", "Test3", "Test4",
             "Name 1", "Name 2", "Name 3", "Name 4"};
         final ArrayList<String> addedParticipants = new ArrayList<>();
@@ -82,7 +82,7 @@ public class AddParticipantFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!addedParticipants.isEmpty()) {
-                    // TODO Add Participants to CheckParticipant DB
+                    // TODO Participant: Add Participants to CheckParticipant DB
                     Toast.makeText(context, "Selected: " + addedParticipants.size(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "None Selected.", Toast.LENGTH_SHORT).show();

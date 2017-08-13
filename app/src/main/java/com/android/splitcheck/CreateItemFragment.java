@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,10 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Item;
 
@@ -34,6 +32,10 @@ public class CreateItemFragment extends DialogFragment {
     private EditText mNameEditText;
     private EditText mCostEditText;
     private CreateItemDialogListener listener;
+
+    private TextInputLayout textInputLayoutName;
+    private TextInputLayout textInputLayoutCost;
+    //EditText editTextName;
 
     private int mCheckId;
     private Context mContext;
@@ -57,13 +59,16 @@ public class CreateItemFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_check, container);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_create_item_dialog, container);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        textInputLayoutName = (TextInputLayout) view.findViewById(R.id.text_input_layout_item_name);
+        textInputLayoutCost = (TextInputLayout) view.findViewById(R.id.text_input_layout_item_cost);
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
@@ -75,6 +80,13 @@ public class CreateItemFragment extends DialogFragment {
         mCheckId = getArguments().getInt("checkId");
         mContext = getContext();
 
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        final View promptView = layoutInflater.inflate(R.layout.fragment_create_item_dialog, null);
+        final EditText editTextName = (EditText) promptView.findViewById(R.id.edit_text_item_cost);
+        editTextName.setKeyListener(DigitsKeyListener.getInstance());
+        editTextName.addTextChangedListener(new MoneyTextWatcher(editTextName));
+
+        // Custom Dialog, Remove if needed
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -92,10 +104,13 @@ public class CreateItemFragment extends DialogFragment {
         mCostEditText.setKeyListener(DigitsKeyListener.getInstance());
         mCostEditText.addTextChangedListener(new MoneyTextWatcher(mCostEditText));
         layout.addView(mCostEditText);
+        // Custom Dialog, Remove if needed
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
-        alertDialogBuilder.setView(layout);/**
+//        alertDialogBuilder.setView(layout);
+        alertDialogBuilder.setView(promptView);
+        /**
         alertDialogBuilder.setPositiveButton("Create", null);
         final AlertDialog mAlertDialog = alertDialogBuilder.create();
         mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -107,7 +122,7 @@ public class CreateItemFragment extends DialogFragment {
                     public void onClick(View v) {
                         if (!mNameEditText.getText().toString().isEmpty()
                                 && !mCostEditText.getText().toString().isEmpty()) {
-                            //TODO ITEM: Handle Empty EditText. Snackbar warning?
+                            //TODO Item: Handle Empty EditText. Snackbar warning?
                             String newItemName = mNameEditText.getText().toString();
                             String itemCost = mCostEditText.getText().toString();
                             String parsedCost = itemCost.replaceAll("[$,.]","");
@@ -130,14 +145,17 @@ public class CreateItemFragment extends DialogFragment {
                 });
             }
         });/**/
+
+
         // TODO Item: If possible, gray out Positive Button when fields are empty
         alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                /**
                 // Create Check and add to database if EditText is not empty
                 if (!mNameEditText.getText().toString().isEmpty()
                         && !mCostEditText.getText().toString().isEmpty()) {
-                    //TODO ITEM: Handle Empty EditText. Snackbar warning?
+                    //TODO Item: Handle Empty EditText. Snackbar warning?
                     String newItemName = mNameEditText.getText().toString();
                     String itemCost = mCostEditText.getText().toString();
                     String parsedCost = itemCost.replaceAll("[$,.]","");
@@ -155,7 +173,7 @@ public class CreateItemFragment extends DialogFragment {
                 } else if (!mNameEditText.getText().toString().isEmpty()
                         && mCostEditText.getText().toString().isEmpty()){
                     Toast.makeText(mContext, "Error with input. No item added.", Toast.LENGTH_SHORT).show();
-                }
+                }**/
             }
         });
         return alertDialogBuilder.create();

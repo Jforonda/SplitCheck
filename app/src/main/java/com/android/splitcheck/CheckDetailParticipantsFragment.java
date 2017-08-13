@@ -1,7 +1,6 @@
 package com.android.splitcheck;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class EditCheckParticipantsFragment extends Fragment {
+public class CheckDetailParticipantsFragment extends Fragment {
 
     CheckParticipantAdapter mCheckParticipantAdapter;
     RecyclerView mRecyclerView;
@@ -28,14 +27,14 @@ public class EditCheckParticipantsFragment extends Fragment {
     ArrayList<Participant> mParticipants;
     int mCheckId;
 
-    public EditCheckParticipantsFragment() {
+    public CheckDetailParticipantsFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_edit_check_participants, container,
+        View rootView = inflater.inflate(R.layout.fragment_check_detail_participants, container,
                 false);
 
         mCheckId = getArguments().getInt("checkId");
@@ -57,7 +56,7 @@ public class EditCheckParticipantsFragment extends Fragment {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
                         "Add Participant", mCheckId);
-                addParticipantFragment.setTargetFragment(EditCheckParticipantsFragment.this, 500);
+                addParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
                 addParticipantFragment.show(fm, "Add Participant");
             }
         });

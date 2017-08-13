@@ -116,11 +116,11 @@ public class ItemContentProvider extends ContentProvider {
 
         switch (match) {
             case ITEM:
-                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, null, null);
+                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case ITEM_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, "_id=?", new String[]{id});
+                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, "check_id=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

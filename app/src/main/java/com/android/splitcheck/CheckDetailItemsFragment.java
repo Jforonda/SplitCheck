@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class EditCheckItemsFragment extends Fragment implements CreateItemFragment.
+public class CheckDetailItemsFragment extends Fragment implements CreateItemFragment.
         CreateItemDialogListener {
 
     CheckItemAdapter mCheckItemAdapter;
@@ -32,12 +32,12 @@ public class EditCheckItemsFragment extends Fragment implements CreateItemFragme
     private static Bundle mBundleRecyclerViewState;
 
     // Empty Constructor
-    public EditCheckItemsFragment() {
+    public CheckDetailItemsFragment() {
 
     }
 
-    public static EditCheckItemsFragment newInstance(int checkId) {
-        EditCheckItemsFragment fragment = new EditCheckItemsFragment();
+    public static CheckDetailItemsFragment newInstance(int checkId) {
+        CheckDetailItemsFragment fragment = new CheckDetailItemsFragment();
         mCheckId = checkId;
         return fragment;
     }
@@ -45,7 +45,7 @@ public class EditCheckItemsFragment extends Fragment implements CreateItemFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_edit_check_items, container,
+        View rootView = inflater.inflate(R.layout.fragment_check_detail_items, container,
                 false);
 
         mCheckId = getArguments().getInt("checkId");
@@ -67,7 +67,7 @@ public class EditCheckItemsFragment extends Fragment implements CreateItemFragme
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 CreateItemFragment createItemFragment = CreateItemFragment.newInstance("New Item Info",
                         mCheckId);
-                createItemFragment.setTargetFragment(EditCheckItemsFragment.this, 400);
+                createItemFragment.setTargetFragment(CheckDetailItemsFragment.this, 400);
                 createItemFragment.show(fm, "New Item Info");
             }
         });

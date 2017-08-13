@@ -145,23 +145,32 @@ public class Check {
     }
 
     public Uri deleteFromDatabase(ContentResolver contentResolver, int checkId) {
-        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
-        uri = uri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        Uri checkUri = CheckContract.CheckEntry.CONTENT_URI;
+        checkUri = checkUri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        contentResolver.delete(checkUri, null, null);
 
-        contentResolver.delete(uri, null, null);
-        return uri;
+        Uri itemUri = ItemContract.ItemEntry.CONTENT_URI;
+        itemUri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        contentResolver.delete(itemUri, null, null);
+
+        Uri checkParticipantUri = CheckParticipantContract.CheckParticipantEntry.CONTENT_URI;
+        checkParticipantUri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        contentResolver.delete(checkParticipantUri, null, null);
+
+        return checkUri;
     }
 
     public Uri deleteAllFromDatabase(ContentResolver contentResolver) {
-        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
-        uri = uri.buildUpon().build();
+        Uri checkUri = CheckContract.CheckEntry.CONTENT_URI;
+        contentResolver.delete(checkUri, null, null);
 
-        contentResolver.delete(uri, null, null);
-        return uri;
-    }
+        Uri itemUri = ItemContract.ItemEntry.CONTENT_URI;
+        contentResolver.delete(itemUri, null, null);
 
-    public void updateDatabase() {
+        Uri checkParticipantUri = CheckParticipantContract.CheckParticipantEntry.CONTENT_URI;
+        contentResolver.delete(checkParticipantUri, null, null);
 
+        return checkUri;
     }
 
     public ArrayList<Integer> getListOfCheckIdsFromDatabase(ContentResolver contentResolver) {
@@ -180,8 +189,11 @@ public class Check {
     }
 
     public ArrayList<Check> getListOfChecksFromDatabase(ContentResolver contentResolver) {
+        // Query Database for all checks
+        //TODO Check: Set limit on time frame for checks?
         Uri uri = CheckContract.CheckEntry.CONTENT_URI;
-        Cursor c = contentResolver.query(uri, null, null, null, null);
+        Cursor c = contentResolver.query(uri, null, null, null,
+                CheckContract.CheckEntry.TIME_CREATED + " DESC");
         c.moveToFirst();
         ArrayList<Check> checks = new ArrayList<>();
         while(!c.isAfterLast()) {
@@ -211,6 +223,14 @@ public class Check {
             return check;
         }
         return null;
+    }
+
+    public int updateCheckInDatabaseWithId(ContentResolver contentResolver, String checkName,
+                                             int checkId) {
+        ContentValues cv = new ContentValues();
+        cv.put(CheckContract.CheckEntry.NAME, checkName);
+        return contentResolver.update(CheckContract.CheckEntry.CONTENT_URI, cv, "_id=" + checkId,
+                null);
     }
 
 }

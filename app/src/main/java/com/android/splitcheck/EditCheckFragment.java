@@ -2,12 +2,9 @@ package com.android.splitcheck;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
@@ -16,36 +13,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.android.splitcheck.data.Check;
 
-public class CreateCheckFragment extends DialogFragment {
+public class EditCheckFragment extends DialogFragment {
 
     private TextInputLayout mTextInputLayoutName;
+
+    private String mCheckName;
+    private int mCheckId;
     private Context mContext;
 
-    // Empty Constructor
-    public CreateCheckFragment() {
+    public EditCheckFragment() {
 
     }
 
-    public static CreateCheckFragment newInstance(String title) {
-        CreateCheckFragment frag = new CreateCheckFragment();
+    public static EditCheckFragment newInstance(String title, String checkName, int checkId) {
+        EditCheckFragment frag = new EditCheckFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
+        args.putString("checkName", checkName);
+        args.putInt("checkId", checkId);
         frag.setArguments(args);
         return frag;
     }
 
-    public interface CreateCheckDialogListener {
-        void onFinishCreateDialog(String checkName, int checkId);
+    public interface EditCheckDialogListener {
+        void onFinishEditDialog(String checkName, int checkId);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_create_check_dialog, container);
     }
 
@@ -58,26 +57,29 @@ public class CreateCheckFragment extends DialogFragment {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
-    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString("title");
+        mCheckName = getArguments().getString("checkName");
+        mCheckId = getArguments().getInt("checkId");
         mContext = getContext();
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         final View promptView = layoutInflater.inflate(R.layout.fragment_create_check_dialog, null);
         final EditText editTextName = (EditText) promptView.findViewById(R.id.edit_text_check_name);
+        editTextName.setText(mCheckName);
+        editTextName.selectAll();
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Create Check and add to database if EditText is not empty
                 if (!editTextName.getText().toString().isEmpty()) {
                     String newCheckName = editTextName.getText().toString();
-                    int newCheckId = createCheck(newCheckName);
+                    int newCheckId = updateCheck(newCheckName, mCheckId);
                     sendBackResult(newCheckName, newCheckId);
                     // Open edit check Activity
                     // Use last created Check
@@ -88,16 +90,16 @@ public class CreateCheckFragment extends DialogFragment {
         return alertDialogBuilder.create();
     }
 
-    public int createCheck(String checkName) {
+    public int updateCheck(String checkName, int checkId) {
         Check check = new Check();
-        Uri uri = check.addToDatabase(getActivity().getContentResolver(),checkName);
-        return ((int)ContentUris.parseId(uri));
+        int updatedCheck = check.updateCheckInDatabaseWithId(getActivity().getContentResolver(),
+                checkName, checkId);
+        return updatedCheck;
     }
 
     public void sendBackResult(String checkName, int checkId) {
-        CreateCheckDialogListener listener = (CreateCheckDialogListener) getTargetFragment();
-        listener.onFinishCreateDialog(checkName, checkId);
+        EditCheckDialogListener listener = (EditCheckDialogListener) getTargetFragment();
+        listener.onFinishEditDialog(checkName, checkId);
         dismiss();
-
     }
 }

@@ -30,7 +30,10 @@ public class CheckListActivity extends AppCompatActivity {
                 .add(R.id.fragment_check_list_container, mCheckListFragment)
                 .commit();**/
 
-        updateUI();
+        if (savedInstanceState == null) {
+            updateUI();
+        }
+
 
         Uri uri = CheckContract.CheckEntry.CONTENT_URI;
         uri = uri.buildUpon().build();

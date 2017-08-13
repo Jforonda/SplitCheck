@@ -33,7 +33,10 @@
     <string name="pref_tax_dollars">dollars</string>
     <string name="pref_tax_key">tax</string>
 
-    <!--Strings for activity_edit_check.xml-->
+
+
+    <!--Strings For XML Below-->
+    <!--Strings for activity_check_detail.xmlml-->
     <string name="default_edit_check_name">Check name</string>
     <string name="default_edit_check_total">Your Total: $0.00</string>
 
@@ -50,5 +53,15 @@
 
     <!--String for check_total_item.xml-->
 
+
+    <!--Strings for Dialog XML Below-->
+    <!--Strings for fragment_create_item_dialog.xml-->
+    <string name="dialog_item_name">Name</string>
+    <string name="dialog_item_cost">Cost</string>
+    <!--Strings for fragment_create_check_dialog.xml-->
+    <string name="dialog_check_name">Name</string>
+    <!--Strings for fragment_create_participant_dialog.xml-->
+    <string name="dialog_participant_first_name">First Name</string>
+    <string name="dialog_participant_last_name">Last Name(Optional)</string>
 
 </resources>
