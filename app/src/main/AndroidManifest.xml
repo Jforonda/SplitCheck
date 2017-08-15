@@ -28,7 +28,7 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".EditCheckActivity"
+            android:name=".CheckDetailActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".CheckListActivity">
             <meta-data
@@ -44,6 +44,16 @@
         <provider
             android:authorities="com.android.splitcheck.data.ItemContract"
             android:name=".data.ItemContentProvider"
+            android:exported="false" />
+
+        <provider
+            android:authorities="com.android.splitcheck.data.ParticipantContract"
+            android:name=".data.ParticipantContentProvider"
+            android:exported="false" />
+
+        <provider
+            android:authorities="com.android.splitcheck.data.CheckParticipantContract"
+            android:name=".data.CheckParticipantContentProvider"
             android:exported="false" />
     </application>
 

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.android.splitcheck.data.Item;
 
@@ -82,9 +83,10 @@ public class CreateItemFragment extends DialogFragment {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         final View promptView = layoutInflater.inflate(R.layout.fragment_create_item_dialog, null);
-        final EditText editTextName = (EditText) promptView.findViewById(R.id.edit_text_item_cost);
-        editTextName.setKeyListener(DigitsKeyListener.getInstance());
-        editTextName.addTextChangedListener(new MoneyTextWatcher(editTextName));
+        final EditText editTextName = (EditText) promptView.findViewById(R.id.edit_text_item_name);
+        final EditText editTextCost = (EditText) promptView.findViewById(R.id.edit_text_item_cost);
+        editTextCost.setKeyListener(DigitsKeyListener.getInstance());
+        editTextCost.addTextChangedListener(new MoneyTextWatcher(editTextCost));
 
         // Custom Dialog, Remove if needed
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -110,70 +112,34 @@ public class CreateItemFragment extends DialogFragment {
         alertDialogBuilder.setTitle(title);
 //        alertDialogBuilder.setView(layout);
         alertDialogBuilder.setView(promptView);
-        /**
-        alertDialogBuilder.setPositiveButton("Create", null);
-        final AlertDialog mAlertDialog = alertDialogBuilder.create();
-        mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button b = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!mNameEditText.getText().toString().isEmpty()
-                                && !mCostEditText.getText().toString().isEmpty()) {
-                            //TODO Item: Handle Empty EditText. Snackbar warning?
-                            String newItemName = mNameEditText.getText().toString();
-                            String itemCost = mCostEditText.getText().toString();
-                            String parsedCost = itemCost.replaceAll("[$,.]","");
-                            int newItemCost = Integer.parseInt(parsedCost);
-                            int newId = createItem(newItemName, newItemCost);
-                            sendBackResult(newItemName, mCheckId);
-                        } else if (mNameEditText.getText().toString().isEmpty()
-                                && mCostEditText.getText().toString().isEmpty()){
-                            Toast.makeText(mContext, "Error: Please Enter Name and Cost.", Toast.LENGTH_SHORT).show();
-
-                        } else if (mNameEditText.getText().toString().isEmpty()
-                                && !mCostEditText.getText().toString().isEmpty()){
-                            Toast.makeText(mContext, "Error: Please Enter Name.", Toast.LENGTH_SHORT).show();
-
-                        } else if (!mNameEditText.getText().toString().isEmpty()
-                                && mCostEditText.getText().toString().isEmpty()){
-                            Toast.makeText(mContext, "Error: Please Enter Cost.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });/**/
 
 
         // TODO Item: If possible, gray out Positive Button when fields are empty
         alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                /**
                 // Create Check and add to database if EditText is not empty
-                if (!mNameEditText.getText().toString().isEmpty()
-                        && !mCostEditText.getText().toString().isEmpty()) {
+                if (!editTextName.getText().toString().isEmpty()
+                        && !editTextCost.getText().toString().isEmpty()) {
                     //TODO Item: Handle Empty EditText. Snackbar warning?
-                    String newItemName = mNameEditText.getText().toString();
-                    String itemCost = mCostEditText.getText().toString();
+                    String newItemName = editTextName.getText().toString();
+                    String itemCost = editTextCost.getText().toString();
                     String parsedCost = itemCost.replaceAll("[$,.]","");
                     int newItemCost = Integer.parseInt(parsedCost);
                     int newId = createItem(newItemName, newItemCost);
                     sendBackResult(newItemName, mCheckId);
-                } else if (mNameEditText.getText().toString().isEmpty()
-                        && mCostEditText.getText().toString().isEmpty()){
+                } else if (editTextName.getText().toString().isEmpty()
+                        && editTextCost.getText().toString().isEmpty()){
                     Toast.makeText(mContext, "Error with input. No item added.", Toast.LENGTH_SHORT).show();
 
-                } else if (mNameEditText.getText().toString().isEmpty()
-                        && !mCostEditText.getText().toString().isEmpty()){
+                } else if (editTextName.getText().toString().isEmpty()
+                        && !editTextCost.getText().toString().isEmpty()){
                     Toast.makeText(mContext, "Error with input. No item added", Toast.LENGTH_SHORT).show();
 
-                } else if (!mNameEditText.getText().toString().isEmpty()
-                        && mCostEditText.getText().toString().isEmpty()){
+                } else if (!editTextName.getText().toString().isEmpty()
+                        && editTextCost.getText().toString().isEmpty()){
                     Toast.makeText(mContext, "Error with input. No item added.", Toast.LENGTH_SHORT).show();
-                }**/
+                }
             }
         });
         return alertDialogBuilder.create();
@@ -216,12 +182,14 @@ public class CreateItemFragment extends DialogFragment {
     }
 
     public void sendBackResult(String itemName, int itemCost) {
+        // Send new item name and cost back to calling fragment (CheckDetailFragment)
         CreateItemDialogListener listener = (CreateItemDialogListener) getTargetFragment();
         listener.onFinishCreateDialog(itemName, itemCost);
         dismiss();
     }
 
     private int createItem(String name, int cost) {
+        // Create Item from user input, add into Database
         Item item = new Item();
         Uri uri = item.addToDatabase(getContext().getContentResolver(), name, cost, mCheckId);
         return ((int) ContentUris.parseId(uri));

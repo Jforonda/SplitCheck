@@ -19,5 +19,7 @@
     <!--Dimensions for Dialogs-->
     <dimen name="dialog_padding">10dp</dimen>
 
+    <!--Dimension for TextViews-->
+    <dimen name="text_padding">8dp</dimen>
 
 </resources>

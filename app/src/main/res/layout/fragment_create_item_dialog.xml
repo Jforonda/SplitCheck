@@ -7,15 +7,15 @@
     android:padding="@dimen/dialog_padding">
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_layout_participant_first_name"
+        android:id="@+id/text_input_layout_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/edit_text_participant_first_name"
+            android:id="@+id/edit_text_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/dialog_participant_first_name"
+            android:hint="@string/dialog_item_name"
             android:text=""
             android:maxLines="1"
             android:inputType="text"
@@ -24,19 +24,18 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/text_input_layout_participant_last_name"
+        android:id="@+id/text_input_layout_item_cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/edit_text_participant_last_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/dialog_participant_last_name"
-            android:text=""
-            android:maxLines="1"
-            android:inputType="text"
-            android:padding="@dimen/dialog_padding"/>
+    <EditText
+        android:id="@+id/edit_text_item_cost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/dialog_item_cost"
+        android:text=""
+        android:maxLines="1"
+        android:padding="@dimen/dialog_padding"/>
 
     </android.support.design.widget.TextInputLayout>
 

@@ -19,6 +19,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/dialog_check_name"
             android:text=""
+            android:maxLines="1"
+            android:inputType="text"
             android:padding="@dimen/dialog_padding"/>
 
     </android.support.design.widget.TextInputLayout>

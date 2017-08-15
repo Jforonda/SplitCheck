@@ -4,6 +4,7 @@ package com.android.splitcheck;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
     private RecyclerView mRecyclerView;
     private ArrayList<Check> mChecks;
     private Toolbar mToolbar;
+    private FloatingActionButton mFloatingActionButton;
 
     private final String CHECK_LIST_RECYCLER_STATE = "check_list_recycler_state";
     private static Bundle mBundleRecyclerViewState;
@@ -43,7 +45,8 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
         View rootView = inflater.inflate(R.layout.fragment_check_list, container, false);
 
         // Handle Add Check Fab
-        rootView.findViewById(R.id.add_check_fab).setOnClickListener(new View.OnClickListener() {
+        mFloatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_check_fab);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start Dialog for new Check
@@ -72,6 +75,16 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
                         .newInstance("Update Check Information", checkName, checkId);
                 editCheckFragment.setTargetFragment(CheckListFragment.this, 300);
                 editCheckFragment.show(fm, "Update Check Information");
+            }
+        });
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    mFloatingActionButton.hide();
+                } else if (dy < 0) {
+                    mFloatingActionButton.show();
+                }
             }
         });
         mRecyclerView.setAdapter(mCheckListAdapter);

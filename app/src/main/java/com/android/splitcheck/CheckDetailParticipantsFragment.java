@@ -10,19 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.splitcheck.data.CheckParticipant;
 import com.android.splitcheck.data.Participant;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class CheckDetailParticipantsFragment extends Fragment {
+public class CheckDetailParticipantsFragment extends Fragment implements
+        AddParticipantFragment.AddParticipantDialogListener, CreateParticipantFragment.CreateParticipantDialogListener{
 
     CheckParticipantAdapter mCheckParticipantAdapter;
     RecyclerView mRecyclerView;
-    ImageView mAddParticipantImageView;
+    TextView mTextViewEmptyParticipants;
     FloatingActionButton mFloatingActionButton;
     ArrayList<Participant> mParticipants;
     int mCheckId;
@@ -38,26 +41,22 @@ public class CheckDetailParticipantsFragment extends Fragment {
                 false);
 
         mCheckId = getArguments().getInt("checkId");
-
+        CheckParticipant checkParticipant = new CheckParticipant();
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_edit_check_participants);
-        mAddParticipantImageView = ButterKnife.findById(rootView,
-                R.id.image_view_edit_check_add_participant);
-        mAddParticipantImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Add Participant!", Toast.LENGTH_SHORT).show();
-                //TODO Participant: On Click to Dialog. Change to FAB?
-            }
-        });
+        mTextViewEmptyParticipants = ButterKnife.findById(rootView,
+                R.id.text_view_empty_participants);
+        if (checkParticipant.checkParticipantIsEmpty(getActivity().getContentResolver(), mCheckId)) {
+            mTextViewEmptyParticipants.setVisibility(View.VISIBLE);
+        }
         mFloatingActionButton = ButterKnife.findById(rootView, R.id.add_participant_fab);
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
-                        "Add Participant", mCheckId);
+                        "Add To Group", mCheckId);
                 addParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
-                addParticipantFragment.show(fm, "Add Participant");
+                addParticipantFragment.show(fm, "Add To Group");
             }
         });
         updateUI();
@@ -67,15 +66,37 @@ public class CheckDetailParticipantsFragment extends Fragment {
 
     private void updateUI() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        Participant participant = new Participant();
-        mParticipants = participant.getListOfParticipantsFromDatabaseFromCheckId(getContext().
-                        getContentResolver(), mCheckId);
+//        Participant participant = new Participant();
+//        mParticipants = participant.getListOfParticipantsFromDatabase(getContext()
+//                .getContentResolver());
+        CheckParticipant checkParticipant = new CheckParticipant();
+        mParticipants = checkParticipant.getListOfParticipantsFromDatabaseFromCheckId(getContext()
+                .getContentResolver(), mCheckId);
+        Toast.makeText(getActivity(), "Participants: " + mParticipants.size(), Toast.LENGTH_SHORT).show();
         mCheckParticipantAdapter = new CheckParticipantAdapter(getContext(), mParticipants);
         mRecyclerView.setAdapter(mCheckParticipantAdapter);
     }
 
-    public void onFinishCreateDialog(String inputText, int inputInt) {
-        //TODO Participant: Set up callback from Add Participant Dialog
+    @Override
+    public void onFinishAddParticipantDialog() {
+        // update UI
         updateUI();
+        // should show updated list of participants which were checked
+    }
+
+    @Override
+    public void startCreateParticipant() {
+        // fragment to start CreateParticipantFragment (Dialog)
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        CreateParticipantFragment createParticipantFragment = CreateParticipantFragment.newInstance(
+                "Create New Participant");
+        createParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
+        createParticipantFragment.show(fm, "Create New Participant");
+
+    }
+
+    @Override
+    public void onFinishCreateParticipantDialog(String firstName, String lastName) {
+        // start create dialog again?
     }
 }

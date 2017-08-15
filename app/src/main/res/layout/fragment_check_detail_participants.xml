@@ -6,12 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <TextView
         android:visibility="gone"
-        android:id="@+id/image_view_edit_check_add_participant"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:src="@drawable/ic_add_circle_outline_black_36dp" />
+        android:id="@+id/text_view_empty_participants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_participants"
+        android:padding="@dimen/text_padding"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_participant_fab"
