@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.android.splitcheck.data.Participant;
 
+import butterknife.ButterKnife;
+
 public class CreateParticipantFragment extends DialogFragment {
 
     private TextInputLayout mTextInputLayoutFirstName;
@@ -52,10 +54,6 @@ public class CreateParticipantFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTextInputLayoutFirstName = (TextInputLayout) view
-                .findViewById(R.id.text_input_layout_participant_first_name);
-        mTextInputLayoutLastName = (TextInputLayout) view
-                .findViewById(R.id.text_input_layout_participant_last_name);
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
@@ -69,10 +67,14 @@ public class CreateParticipantFragment extends DialogFragment {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         final View promptView = layoutInflater.inflate(R.layout.fragment_create_participant_dialog,
                 null);
-        final EditText editTextFirstName = (EditText) promptView
-                .findViewById(R.id.edit_text_participant_first_name);
-        final EditText editTextLastName = (EditText) promptView
-                .findViewById(R.id.edit_text_participant_last_name);
+        mTextInputLayoutFirstName = ButterKnife.findById(promptView,
+                R.id.text_input_layout_participant_first_name);
+        mTextInputLayoutLastName = ButterKnife.findById(promptView,
+                R.id.text_input_layout_participant_last_name);
+        final EditText editTextFirstName = ButterKnife.findById(promptView,
+                R.id.edit_text_participant_first_name);
+        final EditText editTextLastName = ButterKnife.findById(promptView,
+                R.id.edit_text_participant_last_name);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
@@ -97,6 +99,8 @@ public class CreateParticipantFragment extends DialogFragment {
 
     public void sendBackResultParticipantCreated(String firstName, String lastName, int participantId) {
         // Add another?
+        CreateParticipantDialogListener listener = (CreateParticipantDialogListener) getTargetFragment();
+        listener.onFinishCreateParticipantDialog(firstName, lastName);
         dismiss();
     }
 

@@ -54,9 +54,9 @@ public class CheckDetailParticipantsFragment extends Fragment implements
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
-                        "Add To Group", mCheckId);
+                        "Add To Group:", mCheckId);
                 addParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
-                addParticipantFragment.show(fm, "Add To Group");
+                addParticipantFragment.show(fm, "Add To Group:");
             }
         });
         updateUI();
@@ -98,5 +98,10 @@ public class CheckDetailParticipantsFragment extends Fragment implements
     @Override
     public void onFinishCreateParticipantDialog(String firstName, String lastName) {
         // start create dialog again?
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
+                "Add To Group:", mCheckId);
+        addParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
+        addParticipantFragment.show(fm, "Add To Group:");
     }
 }

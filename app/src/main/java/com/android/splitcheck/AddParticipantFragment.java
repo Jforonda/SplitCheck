@@ -1,6 +1,7 @@
 package com.android.splitcheck;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.splitcheck.data.CheckParticipant;
+import com.android.splitcheck.data.Item;
+import com.android.splitcheck.data.ItemParticipant;
 import com.android.splitcheck.data.Participant;
 
 import java.util.ArrayList;
@@ -66,17 +69,17 @@ public class AddParticipantFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString("title");
         mCheckId = getArguments().getInt("checkId");
-        final Context context = getContext();
+        mContext = getContext();
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle("Select participants:");
+        alertDialogBuilder.setTitle(title);
         // TODO Participant: List by Most Frequent?
         CheckParticipant checkParticipant = new CheckParticipant();
         final ArrayList<Participant> participants;
         ArrayList<Integer> participantIds = new ArrayList<>();
         participants = checkParticipant.getParticipantsNotAdded(getActivity().getContentResolver(),
                 mCheckId);
-        CharSequence[] charSequenceParticipants = new CharSequence[participants.size()];
+        final CharSequence[] charSequenceParticipants = new CharSequence[participants.size()];
         for (int i = 0; i < participants.size(); i++) {
             String firstName = participants.get(i).getFirstName();
             String lastName = participants.get(i).getLastName();
@@ -112,11 +115,12 @@ public class AddParticipantFragment extends DialogFragment {
                     // TODO Participant: Add Participants to CheckParticipant DB
                     for (int i = 0; i < addedParticipants.size(); i++) {
                         createCheckParticipant(mCheckId, addedParticipants.get(i));
+                        createItemParticipant(mCheckId, addedParticipants.get(i), charSequenceParticipants[i].toString());
                     }
                     sendBackResultParticipantAdded();
-                    Toast.makeText(context, "Selected: " + addedParticipants.size(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Selected: " + addedParticipants.size(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, "None Selected.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "None Selected.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -147,5 +151,22 @@ public class AddParticipantFragment extends DialogFragment {
         Uri uri = checkParticipant.addToDatabase(getContext().getContentResolver(), checkId,
                 participantId);
         return ((int) ContentUris.parseId(uri));
+    }
+
+    private void createItemParticipant(int checkId, int participantId,
+                                      String participantName) {
+        ItemParticipant itemParticipant = new ItemParticipant();
+        Item item = new Item();
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        ArrayList<Item> items = item.getListOfItemsFromDatabaseFromCheckId(contentResolver, mCheckId);
+        if (items.size() == 0) {
+            Toast.makeText(mContext, "No Items", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mContext, "Adding Ips", Toast.LENGTH_SHORT).show();
+        }
+        for (int i = 0; i < items.size(); i++) {
+            Item currentItem = items.get(i);
+            Uri uri = itemParticipant.addToDb(getActivity().getContentResolver(), checkId, currentItem.getId(), participantId, participantName);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.android.splitcheck;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.android.splitcheck.data.Check;
+import com.android.splitcheck.data.Modifier;
 
 public class CreateCheckFragment extends DialogFragment {
 
@@ -89,8 +91,11 @@ public class CreateCheckFragment extends DialogFragment {
     }
 
     public int createCheck(String checkName) {
+        ContentResolver contentResolver = getActivity().getContentResolver();
         Check check = new Check();
-        Uri uri = check.addToDatabase(getActivity().getContentResolver(),checkName);
+        Uri uri = check.addToDatabase(contentResolver,checkName);
+        Modifier modifier = new Modifier();
+        Uri modifierUri = modifier.addDefaultToDatabase(contentResolver, (int)ContentUris.parseId(uri));
         return ((int)ContentUris.parseId(uri));
     }
 

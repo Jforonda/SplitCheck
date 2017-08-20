@@ -11,30 +11,30 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.android.splitcheck.data.ItemContract.ItemEntry;
+import com.android.splitcheck.data.ModifierContract.ModifierEntry;
 
-public class ItemContentProvider extends ContentProvider {
+public class ModifierContentProvider extends ContentProvider{
 
-    public static final int ITEM = 100;
-    public static final int ITEM_WITH_ID = 101;
+    public static final int MODIFIER = 100;
+    public static final int MODIFIER_WITH_ID = 101;
 
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        String authority = ItemContract.AUTHORITY;
-        String pathItems = ItemContract.PATH_ITEMS;
-        uriMatcher.addURI(authority, pathItems, ITEM);
-        uriMatcher.addURI(authority, pathItems + "/#", ITEM_WITH_ID);
+        String authority = ModifierContract.AUTHORITY;
+        String pathModifiers = ModifierContract.PATH_MODIFIERS;
+        uriMatcher.addURI(authority, pathModifiers, MODIFIER);
+        uriMatcher.addURI(authority, pathModifiers + "/#", MODIFIER_WITH_ID);
         return uriMatcher;
     }
 
-    private ItemDbHelper mItemDbHelper;
+    private ModifierDbHelper mModifierDbHelper;
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        mItemDbHelper = new ItemDbHelper(context);
+        mModifierDbHelper = new ModifierDbHelper(context);
         return true;
     }
 
@@ -42,15 +42,15 @@ public class ItemContentProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
-        final SQLiteDatabase db = mItemDbHelper.getWritableDatabase();
+        final SQLiteDatabase db = mModifierDbHelper.getWritableDatabase();
 
         int match = sUriMatcher.match(uri);
         Uri returnUri;
         switch (match) {
-            case ITEM:
-                long id = db.insert(ItemEntry.TABLE_NAME, null, values);
+            case MODIFIER:
+                long id = db.insert(ModifierEntry.TABLE_NAME, null, values);
                 if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(ItemEntry.CONTENT_URI, id);
+                    returnUri = ContentUris.withAppendedId(ModifierEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -69,14 +69,13 @@ public class ItemContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
                         @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
-        final SQLiteDatabase db = mItemDbHelper.getReadableDatabase();
+        final SQLiteDatabase db = mModifierDbHelper.getReadableDatabase();
 
         int match = sUriMatcher.match(uri);
         Cursor retCursor;
-
         switch (match) {
-            case ITEM:
-                retCursor = db.query(ItemEntry.TABLE_NAME,
+            case MODIFIER:
+                retCursor = db.query(ModifierEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -84,11 +83,11 @@ public class ItemContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
-            case ITEM_WITH_ID:
+            case MODIFIER_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                selection = ItemEntry.TABLE_NAME + "." + ItemEntry.CHECK_ID
+                selection = ModifierEntry.TABLE_NAME + "." + ModifierEntry.CHECK_ID
                         + " = " + id;
-                retCursor = db.query(ItemEntry.TABLE_NAME,
+                retCursor = db.query(ModifierEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -109,57 +108,59 @@ public class ItemContentProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, @Nullable String selection,
                       @Nullable String[] selectionArgs) {
 
-        final SQLiteDatabase db = mItemDbHelper.getWritableDatabase();
+        final SQLiteDatabase db = mModifierDbHelper.getWritableDatabase();
 
         int match = sUriMatcher.match(uri);
-        int itemsDeleted;
+        int modifiersDeleted;
         switch (match) {
-            case ITEM:
-                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
+            case MODIFIER:
+                modifiersDeleted = db.delete(ModifierEntry.TABLE_NAME, selection, selectionArgs);
                 break;
-            case ITEM_WITH_ID:
+            case MODIFIER_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, "check_id=?", new String[]{id});
+                modifiersDeleted = db.delete(ModifierEntry.TABLE_NAME, "check_id=?",
+                        new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if (itemsDeleted != 0) {
+        if (modifiersDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        return itemsDeleted;
+        return modifiersDeleted;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
                       @Nullable String[] selectionArgs) {
 
-        final SQLiteDatabase db = mItemDbHelper.getWritableDatabase();
+        final SQLiteDatabase db = mModifierDbHelper.getWritableDatabase();
 
         int match = sUriMatcher.match(uri);
-        int itemsUpdated;
+        int modifiersUpdated;
         switch (match) {
-            case ITEM:
-                itemsUpdated = db.update(ItemEntry.TABLE_NAME, values, selection, selectionArgs);
+            case MODIFIER:
+                modifiersUpdated = db.update(ModifierEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        return itemsUpdated;
+        return modifiersUpdated;
     }
 
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
-        switch(match) {
-            case ITEM:
-                return "Item";
-            case ITEM_WITH_ID:
-                return "Item with info";
+        switch (match) {
+            case MODIFIER:
+                return "Modifier";
+            case MODIFIER_WITH_ID:
+                return "Modifier with info";
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

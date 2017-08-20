@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.splitcheck.data.Item;
+import com.android.splitcheck.data.ItemParticipant;
 
 import java.util.ArrayList;
 
@@ -23,9 +24,9 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
 
     CheckItemAdapter mCheckItemAdapter;
     RecyclerView mRecyclerView;
-    ImageView mAddItemImageView;
     FloatingActionButton mFloatingActionButton;
     ArrayList<Item> mItems;
+    ArrayList<ItemParticipant> mItemParticipants;
     static int mCheckId;
 
     private final String CHECK_ITEM_RECYCKER_STATE = "check_item_recycler_state";
@@ -51,14 +52,6 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
         mCheckId = getArguments().getInt("checkId");
 
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_edit_check_items);
-        mAddItemImageView = ButterKnife.findById(rootView, R.id.image_view_edit_check_add_item);
-
-        mAddItemImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Old Add Item", Toast.LENGTH_SHORT).show();
-            }
-        });
         mFloatingActionButton = ButterKnife.findById(rootView, R.id.add_item_fab);
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +84,19 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
         Item item = new Item();
         mItems = item.getListOfItemsFromDatabaseFromCheckId(getContext().getContentResolver(),
                 mCheckId);
-        mCheckItemAdapter = new CheckItemAdapter(getContext(), mItems);
+        ItemParticipant itemParticipant = new ItemParticipant();
+        mItemParticipants = itemParticipant.getItemListFromDbFromCheckId(getContext().getContentResolver(),
+                mCheckId);
+        mCheckItemAdapter = new CheckItemAdapter(getContext(), mItems, mItemParticipants);
+        mCheckItemAdapter.setOnCheckItemClickedListener(new CheckItemAdapter.OnCheckItemClickedListener() {
+            @Override
+            public void onCheckItemClickedListener(int itemId, String itemName) {
+                String title = "Who had " + itemName + "?";
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                AssignParticipantFragment assignParticipantFragment = AssignParticipantFragment.newInstance(title, mCheckId, itemId);
+                assignParticipantFragment.show(fm, title);
+            }
+        });
         mRecyclerView.setAdapter(mCheckItemAdapter);
     }
 

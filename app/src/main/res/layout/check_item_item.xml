@@ -7,6 +7,7 @@
     android:padding="8dp">
 
     <FrameLayout
+        android:id="@+id/frame_layout_item_item"
         android:layout_width="match_parent"
         android:layout_height="80dp">
 
@@ -16,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/default_check_item_item_name"/>
+
         <TextView
             android:id="@+id/text_view_item_cost"
             android:layout_width="wrap_content"
@@ -25,8 +27,13 @@
             android:text="@string/default_check_item_item_cost"/>
     </FrameLayout>
 
+    <ListView
+        android:id="@+id/list_view_item_participants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <View
-        android:id="@+id/separator"
+        android:id="@+id/separator_check_item_item"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider_color"/>

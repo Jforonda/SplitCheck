@@ -55,6 +55,17 @@
             android:authorities="com.android.splitcheck.data.CheckParticipantContract"
             android:name=".data.CheckParticipantContentProvider"
             android:exported="false" />
+
+        <provider
+            android:authorities="com.android.splitcheck.data.ModifierContract"
+            android:name=".data.ModifierContentProvider"
+            android:exported="false"/>
+
+        <provider
+            android:authorities="com.android.splitcheck.data.ItemParticipantContract"
+            android:name=".data.ItemParticipantContentProvider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

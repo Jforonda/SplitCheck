@@ -3,19 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="100dp"
     android:padding="8dp">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp">
 
         <TextView
             android:id="@+id/text_view_participant_name"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
-            android:text="-Name"/>
+            android:text="@string/default_check_participant_item_name"/>
+
     </FrameLayout>
+
+    <View
+        android:id="@+id/separator_check_participant_item"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_color"/>
+
 </LinearLayout>

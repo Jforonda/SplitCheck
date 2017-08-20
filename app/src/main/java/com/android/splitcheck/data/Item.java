@@ -149,8 +149,7 @@ public class Item implements Parcelable {
         String stringCost;
         stringCost = String.valueOf(cost);
         BigDecimal parsed = new BigDecimal(stringCost).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
-        String formatted = NumberFormat.getCurrencyInstance().format(parsed);
-        return formatted;
+        return NumberFormat.getCurrencyInstance().format(parsed);
     }
 
     public String getTotalAsStringFromCheckId(ContentResolver contentResolver, int checkId) {
@@ -163,8 +162,7 @@ public class Item implements Parcelable {
         }
         stringTotal = String.valueOf(total);
         BigDecimal parsed = new BigDecimal(stringTotal).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
-        String formatted = "Total: " + NumberFormat.getCurrencyInstance().format(parsed);
-        return formatted;
+        return "Total: " + NumberFormat.getCurrencyInstance().format(parsed);
     }
 
 }

@@ -133,6 +133,7 @@ public class Check {
                 name);
         contentValues.put(CheckContract.CheckEntry.TOTAL,
                 "10");
+        // TODO: Check Remove Participants and Items
         contentValues.put(CheckContract.CheckEntry.PARTICIPANTS,
                 "None");
         contentValues.put(CheckContract.CheckEntry.ITEMS,
@@ -145,17 +146,26 @@ public class Check {
     }
 
     public Uri deleteFromDatabase(ContentResolver contentResolver, int checkId) {
+        // Deletes all related Items, CheckParticipants, Modifiers, and ItemParticipants
         Uri checkUri = CheckContract.CheckEntry.CONTENT_URI;
         checkUri = checkUri.buildUpon().appendPath(String.valueOf(checkId)).build();
         contentResolver.delete(checkUri, null, null);
 
         Uri itemUri = ItemContract.ItemEntry.CONTENT_URI;
-        itemUri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        itemUri = itemUri.buildUpon().appendPath(String.valueOf(checkId)).build();
         contentResolver.delete(itemUri, null, null);
 
         Uri checkParticipantUri = CheckParticipantContract.CheckParticipantEntry.CONTENT_URI;
-        checkParticipantUri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        checkParticipantUri = checkParticipantUri.buildUpon().appendPath(String.valueOf(checkId)).build();
         contentResolver.delete(checkParticipantUri, null, null);
+
+        Uri modifierUri = ModifierContract.ModifierEntry.CONTENT_URI;
+        modifierUri = modifierUri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        contentResolver.delete(modifierUri, null, null);
+
+        Uri itemParticipantUri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
+        itemParticipantUri = itemParticipantUri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        contentResolver.delete(itemParticipantUri, null, null);
 
         return checkUri;
     }
@@ -232,5 +242,7 @@ public class Check {
         return contentResolver.update(CheckContract.CheckEntry.CONTENT_URI, cv, "_id=" + checkId,
                 null);
     }
+
+    // public int updateTotal
 
 }

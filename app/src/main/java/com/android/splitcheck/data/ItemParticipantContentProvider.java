@@ -11,30 +11,30 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.android.splitcheck.data.ItemContract.ItemEntry;
+import com.android.splitcheck.data.ItemParticipantContract.ItemParticipantEntry;
 
-public class ItemContentProvider extends ContentProvider {
+public class ItemParticipantContentProvider extends ContentProvider {
 
-    public static final int ITEM = 100;
-    public static final int ITEM_WITH_ID = 101;
+    public static final int ITEM_PARTICIPANT = 100;
+    public static final int ITEM_PARTICIPANT_WITH_ID = 101;
 
     public static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        String authority = ItemContract.AUTHORITY;
-        String pathItems = ItemContract.PATH_ITEMS;
-        uriMatcher.addURI(authority, pathItems, ITEM);
-        uriMatcher.addURI(authority, pathItems + "/#", ITEM_WITH_ID);
+        String authority = ItemParticipantContract.AUTHORITY;
+        String pathItemParticipants = ItemParticipantContract.PATH_ITEM_PARTICIPANTS;
+        uriMatcher.addURI(authority, pathItemParticipants, ITEM_PARTICIPANT);
+        uriMatcher.addURI(authority, pathItemParticipants + "/#", ITEM_PARTICIPANT_WITH_ID);
         return uriMatcher;
     }
 
-    private ItemDbHelper mItemDbHelper;
+    private ItemParticipantDbHelper mItemParticipantDbHelper;
 
     @Override
     public boolean onCreate() {
         Context context = getContext();
-        mItemDbHelper = new ItemDbHelper(context);
+        mItemParticipantDbHelper = new ItemParticipantDbHelper(context);
         return true;
     }
 
@@ -42,17 +42,17 @@ public class ItemContentProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
 
-        final SQLiteDatabase db = mItemDbHelper.getWritableDatabase();
-
+        final SQLiteDatabase db = mItemParticipantDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
+
         Uri returnUri;
         switch (match) {
-            case ITEM:
-                long id = db.insert(ItemEntry.TABLE_NAME, null, values);
+            case ITEM_PARTICIPANT:
+                long id = db.insert(ItemParticipantEntry.TABLE_NAME, null, values);
                 if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(ItemEntry.CONTENT_URI, id);
+                    returnUri = ContentUris.withAppendedId(ItemParticipantEntry.CONTENT_URI, id);
                 } else {
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                    throw new android.database.SQLException("Unknown uri: " + uri);
                 }
                 break;
             default:
@@ -69,14 +69,13 @@ public class ItemContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
                         @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
-        final SQLiteDatabase db = mItemDbHelper.getReadableDatabase();
-
+        final SQLiteDatabase db = mItemParticipantDbHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
-        Cursor retCursor;
 
+        Cursor retCursor;
         switch (match) {
-            case ITEM:
-                retCursor = db.query(ItemEntry.TABLE_NAME,
+            case ITEM_PARTICIPANT:
+                retCursor = db.query(ItemParticipantEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -84,11 +83,11 @@ public class ItemContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
-            case ITEM_WITH_ID:
+            case ITEM_PARTICIPANT_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                selection = ItemEntry.TABLE_NAME + "." + ItemEntry.CHECK_ID
+                selection = ItemParticipantEntry.TABLE_NAME + "." + ItemParticipantEntry.ITEM_ID
                         + " = " + id;
-                retCursor = db.query(ItemEntry.TABLE_NAME,
+                retCursor = db.query(ItemParticipantEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -109,57 +108,60 @@ public class ItemContentProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, @Nullable String selection,
                       @Nullable String[] selectionArgs) {
 
-        final SQLiteDatabase db = mItemDbHelper.getWritableDatabase();
-
+        final SQLiteDatabase db = mItemParticipantDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
-        int itemsDeleted;
+
+        int itemParticipantsDeleted;
         switch (match) {
-            case ITEM:
-                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, selection, selectionArgs);
+            case ITEM_PARTICIPANT:
+                itemParticipantsDeleted = db.delete(ItemParticipantEntry.TABLE_NAME, selection,
+                        selectionArgs);
                 break;
-            case ITEM_WITH_ID:
+            case ITEM_PARTICIPANT_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                itemsDeleted = db.delete(ItemEntry.TABLE_NAME, "check_id=?", new String[]{id});
+                itemParticipantsDeleted = db.delete(ItemParticipantEntry.TABLE_NAME, "check_id=?",
+                        new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if (itemsDeleted != 0) {
+        if (itemParticipantsDeleted != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        return itemsDeleted;
+        return itemParticipantsDeleted;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
                       @Nullable String[] selectionArgs) {
 
-        final SQLiteDatabase db = mItemDbHelper.getWritableDatabase();
-
+        final SQLiteDatabase db = mItemParticipantDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
-        int itemsUpdated;
+
+        int itemParticipantsUpdated;
         switch (match) {
-            case ITEM:
-                itemsUpdated = db.update(ItemEntry.TABLE_NAME, values, selection, selectionArgs);
+            case ITEM_PARTICIPANT:
+                itemParticipantsUpdated = db.update(ItemParticipantEntry.TABLE_NAME, values,
+                        selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        return itemsUpdated;
+        return itemParticipantsUpdated;
     }
 
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
-        switch(match) {
-            case ITEM:
-                return "Item";
-            case ITEM_WITH_ID:
-                return "Item with info";
+        switch (match) {
+            case ITEM_PARTICIPANT:
+                return "Item Participant";
+            case ITEM_PARTICIPANT_WITH_ID:
+                return "Item Participant with info";
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

@@ -20,11 +20,10 @@ import com.android.splitcheck.data.ItemContract;
 
 import butterknife.ButterKnife;
 
-public class CheckDetailActivity extends AppCompatActivity {
-    //TODO Check: Clean up and change name to CheckDetailActivity
+public class CheckDetailActivity extends AppCompatActivity implements 
+        CheckDetailModifiersFragment.ModifierChangeListener {
     static final int NUM_ITEMS = 3;
 
-    CheckDetailItemsFragment mCheckDetailItemsFragment;
     FragmentManager mFragmentManager;
     TextView mCheckNameTextView;
     TextView mCheckTotalTextView;
@@ -77,16 +76,6 @@ public class CheckDetailActivity extends AppCompatActivity {
         // Check Total IMPLEMENT YOUR TOTAL, LEFT SIDE?
         String total = item.getTotalAsStringFromCheckId(getContentResolver(), checkId);
         mCheckTotalTextView.setText(total);
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("checkId", checkId);
-//        mFragmentManager = getSupportFragmentManager();
-//        mCheckDetailItemsFragment = new CheckDetailItemsFragment();
-//        mCheckDetailItemsFragment.setArguments(bundle);
-//        mFragmentManager.beginTransaction()
-//                .add(R.id.container_edit_check_items, mCheckDetailItemsFragment)
-//                .commit();
-
-        // INSTEAD OF FRAGMENT FOR ITEMS, CHANGE TO ADAPTER FOR PAGEVIEWER
     }
 
     @Override
@@ -119,18 +108,20 @@ public class CheckDetailActivity extends AppCompatActivity {
             bundle.putInt("checkId", checkId);
             switch (position) {
                 case 0:
+                    // Items
                     CheckDetailItemsFragment checkDetailItemsFragment = new CheckDetailItemsFragment();
                     checkDetailItemsFragment.setArguments(bundle);
                     return checkDetailItemsFragment;
-//                    return CheckDetailItemsFragment.newInstance(checkId);
                 case 1:
+                    // Participants
                     CheckDetailParticipantsFragment checkDetailParticipantsFragment = new CheckDetailParticipantsFragment();
                     checkDetailParticipantsFragment.setArguments(bundle);
                     return checkDetailParticipantsFragment;
                 case 2:
-                    CheckDetailItemsFragment fragment = new CheckDetailItemsFragment();
-                    fragment.setArguments(bundle);
-                    return fragment;
+                    // Modifiers
+                    CheckDetailModifiersFragment checkDetailModifiersFragment = new CheckDetailModifiersFragment();
+                    checkDetailModifiersFragment.setArguments(bundle);
+                    return checkDetailModifiersFragment;
                 default:
                     return null;
             }
@@ -149,5 +140,11 @@ public class CheckDetailActivity extends AppCompatActivity {
                     return null;
             }
         }
+    }
+
+    @Override
+    public void onChangeModifier() {
+        Toast.makeText(this, "Modifier changed", Toast.LENGTH_SHORT).show();
+        updateUI();
     }
 }

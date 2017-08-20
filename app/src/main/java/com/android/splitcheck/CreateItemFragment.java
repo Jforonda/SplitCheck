@@ -2,6 +2,7 @@ package com.android.splitcheck;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,11 +23,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.splitcheck.data.CheckParticipant;
 import com.android.splitcheck.data.Item;
+import com.android.splitcheck.data.ItemParticipant;
+import com.android.splitcheck.data.Participant;
 
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+
+import butterknife.ButterKnife;
 
 public class CreateItemFragment extends DialogFragment {
 
@@ -68,8 +75,6 @@ public class CreateItemFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        textInputLayoutName = (TextInputLayout) view.findViewById(R.id.text_input_layout_item_name);
-        textInputLayoutCost = (TextInputLayout) view.findViewById(R.id.text_input_layout_item_cost);
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
@@ -83,8 +88,10 @@ public class CreateItemFragment extends DialogFragment {
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         final View promptView = layoutInflater.inflate(R.layout.fragment_create_item_dialog, null);
-        final EditText editTextName = (EditText) promptView.findViewById(R.id.edit_text_item_name);
-        final EditText editTextCost = (EditText) promptView.findViewById(R.id.edit_text_item_cost);
+        textInputLayoutName = ButterKnife.findById(promptView, R.id.text_input_layout_item_name);
+        textInputLayoutCost = ButterKnife.findById(promptView, R.id.text_input_layout_item_cost);
+        final EditText editTextName = ButterKnife.findById(promptView, R.id.edit_text_item_name);
+        final EditText editTextCost = ButterKnife.findById(promptView, R.id.edit_text_item_cost);
         editTextCost.setKeyListener(DigitsKeyListener.getInstance());
         editTextCost.addTextChangedListener(new MoneyTextWatcher(editTextCost));
 
@@ -127,6 +134,7 @@ public class CreateItemFragment extends DialogFragment {
                     String parsedCost = itemCost.replaceAll("[$,.]","");
                     int newItemCost = Integer.parseInt(parsedCost);
                     int newId = createItem(newItemName, newItemCost);
+                    createItemParticipants(newId);
                     sendBackResult(newItemName, mCheckId);
                 } else if (editTextName.getText().toString().isEmpty()
                         && editTextCost.getText().toString().isEmpty()){
@@ -194,4 +202,22 @@ public class CreateItemFragment extends DialogFragment {
         Uri uri = item.addToDatabase(getContext().getContentResolver(), name, cost, mCheckId);
         return ((int) ContentUris.parseId(uri));
     }
+
+    private void createItemParticipants(int itemId) {
+        CheckParticipant checkParticipant = new CheckParticipant();
+        ItemParticipant itemParticipant = new ItemParticipant();
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        ArrayList<Participant> checkParticipants = checkParticipant.getListOfParticipantsFromDatabaseFromCheckId(contentResolver, mCheckId);
+        if (checkParticipants.size() == 0) {
+            Toast.makeText(mContext, "No CPs", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mContext, "Adding IPs", Toast.LENGTH_SHORT).show();
+        }
+        for (int i = 0; i < checkParticipants.size(); i++ ) {
+            Participant participant = checkParticipants.get(i);
+            itemParticipant.addToDb(contentResolver, mCheckId, itemId, participant.getId(),
+                    participant.getFirstName() + " " + participant.getLastName());
+        }
+    }
+
 }

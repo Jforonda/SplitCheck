@@ -59,9 +59,20 @@
 
     <!--String for check_total_item.xml-->
 
+    <!--String for check_participant_item.xml-->
+    <string name="default_check_participant_item_name">-First Last</string>
+
+    <!--String for item_participant_item.xml-->
+    <string name="default_item_participant_name">-First Last</string>
+
     <!--Strings for fragment_check_detail_participants.xml-->
     <string name="empty_participants">There is currently no one in your group.
         Use the button below to add people to your group!</string>
+
+    <string-array name="modifierPercent">
+        <item>$</item>
+        <item>&#37;</item>
+    </string-array>
 
 
     <!--Strings for Dialog XML Below-->
@@ -73,5 +84,7 @@
     <!--Strings for fragment_create_participant_dialog.xml-->
     <string name="dialog_participant_first_name">First Name</string>
     <string name="dialog_participant_last_name">Last Name(Optional)</string>
+    <!--Strings for fragment_change_modifier_dialog.xml-->
+    <string name="dialog_modifier_amount">Amount</string>
 
 </resources>

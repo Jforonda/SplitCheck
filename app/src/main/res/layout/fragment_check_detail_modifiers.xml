@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/edit_check_total_frame_height"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.v4.widget.NestedScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <!--Tax-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:layout_centerVertical="true"
+
+                    android:text="Tax"/>
+
+                <TextView
+                    android:id="@+id/text_view_tax"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:layout_toStartOf="@+id/image_view_tax"
+                    android:layout_toLeftOf="@+id/image_view_tax"
+
+                    android:text="100"/>
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_below="@+id/text_view_tax"
+                    android:layout_toStartOf="@+id/image_view_tax"
+                    android:layout_toLeftOf="@+id/image_view_tax"
+                    android:background="@color/divider_color"/>
+
+                <ImageView
+                    android:id="@+id/image_view_tax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/spinner_tax"
+                    android:layout_toLeftOf="@+id/spinner_tax"
+                    android:src="@drawable/ic_more_vert_white_24dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_tax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/separator_one"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <!--Tip-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:layout_centerVertical="true"
+                    android:text="Tip"/>
+
+                <TextView
+                    android:id="@+id/text_view_tip"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:layout_toStartOf="@+id/image_view_tip"
+                    android:layout_toLeftOf="@+id/image_view_tip"
+
+                    android:text="100"/>
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_below="@+id/text_view_tip"
+                    android:layout_toStartOf="@+id/image_view_tip"
+                    android:layout_toLeftOf="@+id/image_view_tip"
+                    android:background="@color/divider_color"/>
+
+                <ImageView
+                    android:id="@+id/image_view_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/spinner_tip"
+                    android:layout_toLeftOf="@+id/spinner_tip"
+                    android:src="@drawable/ic_more_vert_white_24dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/separator_two"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <!--Gratuity-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:layout_centerVertical="true"
+                    android:text="Gratuity"/>
+
+                <TextView
+                    android:id="@+id/text_view_gratuity"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:layout_toStartOf="@+id/image_view_gratuity"
+                    android:layout_toLeftOf="@+id/image_view_gratuity"
+
+                    android:text="100"/>
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_below="@+id/text_view_gratuity"
+                    android:layout_toStartOf="@+id/image_view_gratuity"
+                    android:layout_toLeftOf="@+id/image_view_gratuity"
+                    android:background="@color/divider_color"/>
+
+                <ImageView
+                    android:id="@+id/image_view_gratuity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/spinner_gratuity"
+                    android:layout_toLeftOf="@+id/spinner_gratuity"
+                    android:src="@drawable/ic_more_vert_white_24dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_gratuity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/separator_three"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <!--Fees-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:layout_centerVertical="true"
+                    android:text="Fees"/>
+
+                <TextView
+                    android:id="@+id/text_view_fees"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:layout_toStartOf="@+id/image_view_fees"
+                    android:layout_toLeftOf="@+id/image_view_fees"
+
+                    android:text="100"/>
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_below="@+id/text_view_fees"
+                    android:layout_toStartOf="@+id/image_view_fees"
+                    android:layout_toLeftOf="@+id/image_view_fees"
+                    android:background="@color/divider_color"/>
+
+                <ImageView
+                    android:id="@+id/image_view_fees"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/spinner_fees"
+                    android:layout_toLeftOf="@+id/spinner_fees"
+                    android:src="@drawable/ic_more_vert_white_24dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_fees"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/separator_four"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <!--Discount-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_padding"
+                    android:layout_centerVertical="true"
+                    android:text="Discount"/>
+
+                <TextView
+                    android:id="@+id/text_view_discount"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:layout_toStartOf="@+id/image_view_discount"
+                    android:layout_toLeftOf="@+id/image_view_discount"
+
+                    android:text="100"/>
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_below="@+id/text_view_discount"
+                    android:layout_toStartOf="@+id/image_view_discount"
+                    android:layout_toLeftOf="@+id/image_view_discount"
+                    android:background="@color/divider_color"/>
+
+                <ImageView
+                    android:id="@+id/image_view_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/spinner_discount"
+                    android:layout_toLeftOf="@+id/spinner_discount"
+                    android:src="@drawable/ic_more_vert_white_24dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/separator_five"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_color"/>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
