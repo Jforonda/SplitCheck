@@ -47,7 +47,6 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
             ButterKnife.bind(this, v);
             mLinearLayout = v;
 
-            mIconImageView.setColorFilter(R.color.colorBlack);
             mIconImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
@@ -59,7 +58,6 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                             String currentCheckName = mChecks.get(getAdapterPosition()).getName();
                             switch (item.getItemId()) {
                                 case R.id.check_item_edit:
-                                    //TODO Check: Edit check fragment? Dialog with current info filled in? Use Update instead of insert
                                     listener.onCheckItemEditClickedListener(currentCheckName,
                                             currentCheckId);
                                     return true;
@@ -68,11 +66,11 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                                     deleteCheckById(currentCheckId);
                                     removeAt(getAdapterPosition());
                                     Snackbar
-                                            .make(v, "Check Deleted", Snackbar.LENGTH_LONG)
+                                            .make(v, currentCheckName + " Deleted", Snackbar.LENGTH_LONG)
                                             .show();
                                     return true;
                                 default:
-                                    return true;
+                                    return false;
                             }
                         }
                     });

@@ -22,8 +22,6 @@ public class CheckContract {
         public static final String _ID = "_id";
         public static final String NAME = "name";
         public static final String TOTAL = "total";
-        public static final String PARTICIPANTS = "participants";
-        public static final String ITEMS = "items";
         public static final String TIME_CREATED = "time_created";
     }
 }

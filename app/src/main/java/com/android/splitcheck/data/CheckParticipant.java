@@ -166,4 +166,19 @@ public class CheckParticipant {
         return participantIds;
     }
 
+    public Uri deleteFromDb(ContentResolver contentResolver, int checkId, int participantId) {
+        Uri checkParticipantUri = CheckParticipantContract.CheckParticipantEntry.CONTENT_URI;
+        contentResolver.delete(checkParticipantUri, CheckParticipantContract.CheckParticipantEntry
+                .CHECK_ID + " = " + String.valueOf(checkId) + " AND " +
+                CheckParticipantContract.CheckParticipantEntry
+                .PARTICIPANT_ID + " = " + String.valueOf(participantId), null);
+
+        Uri itemParticipantUri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
+        contentResolver.delete(itemParticipantUri, CheckParticipantContract.CheckParticipantEntry
+                .CHECK_ID + " = " + String.valueOf(checkId) + " AND " +
+                ItemParticipantContract.ItemParticipantEntry
+                .PARTICIPANT_ID + " = " + String.valueOf(participantId), null);
+        return checkParticipantUri;
+    }
+
 }

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class AssignParticipantFragment extends DialogFragment {
 
+    private AssignParticipantDialogListener listener;
     private int mCheckId;
     private int mItemId;
     private Context mContext;
@@ -41,7 +42,7 @@ public class AssignParticipantFragment extends DialogFragment {
         return frag;
     }
 
-    public interface AssignParticipantDialogLIistener {
+    public interface AssignParticipantDialogListener {
         void onFinishAssignParticipantDialog();
     }
 
@@ -95,11 +96,17 @@ public class AssignParticipantFragment extends DialogFragment {
                     itemParticipant.updateIsChecked(getActivity().getContentResolver(), itemId, participantId, mSelectedArray[i]);
                 }
                 mCursor.close();
+                sendBackResult();
             }
         });
 
         return alertDialogBuilder.create();
     }
 
+    public void sendBackResult() {
+        AssignParticipantDialogListener listener = (AssignParticipantDialogListener) getTargetFragment();
+        listener.onFinishAssignParticipantDialog();
+        dismiss();
+    }
 
 }

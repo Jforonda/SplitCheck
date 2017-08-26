@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,14 +15,17 @@ import java.util.Date;
 public class Check {
 
     private String name;
-    private ArrayList<Participant> participants;
-    private ArrayList<Item> items;
     private int id;
     private String total;
     private long timeCreated;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
-    // outputFormat: 8/11/2017 12:11 AM
+//    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
+// outputFormat: 8/11/2017 12:11 AM
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d");
+    private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+    private SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+    private SimpleDateFormat dateYearFormat = new SimpleDateFormat("MMM d, yyyy");
+    private SimpleDateFormat dateFormatNoDay = new SimpleDateFormat("MMM d");
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
 
@@ -30,13 +34,10 @@ public class Check {
 
     }
 
-    public Check(String name, int id, String total, ArrayList<Participant> participants,
-                 ArrayList<Item> items, long dateTime) {
+    public Check(String name, int id, String total, long dateTime) {
         this.name = name;
         this.id = id;
         this.total = total;
-        this.participants = participants;
-        this.items = items;
         this.timeCreated = dateTime;
     }
 
@@ -49,8 +50,6 @@ public class Check {
             this.name = c.getString(c.getColumnIndex(CheckContract.CheckEntry.NAME));
             this.id = c.getInt(c.getColumnIndex(CheckContract.CheckEntry._ID));
             this.total = c.getString(c.getColumnIndex(CheckContract.CheckEntry.TOTAL));
-            this.items = null;
-            this.participants = null;
             this.timeCreated = c.getLong(c.getColumnIndex(CheckContract.CheckEntry.TIME_CREATED));
         }
     }
@@ -66,32 +65,32 @@ public class Check {
         return currentDateTime;
     }
 
-    private String formatDate(Date date) {
-        return outputFormat.format(date);
-    }
-
     public String getFormattedDate() {
-        //return formatDate(dateTimeCreated);
-        return formatDate(getCurrentDateTime());
-    }
-
-    // Methods for Check Total
-
-    public String getTotal() {
-        /**if (!items.isEmpty()) {
-            int total = 0;
-            for (int i = 0; i < items.size(); i++) {
-                total += items.get(i).getCost();
-            }
-
-            return total;
+        long currentDate = System.currentTimeMillis();
+        String currentYear = yearFormat.format(currentDate);
+        String checkYear = yearFormat.format(timeCreated);
+        String currentMonth = monthFormat.format(currentDate);
+        String checkMonth = monthFormat.format(timeCreated);
+        if (Integer.valueOf(currentYear) > Integer.valueOf(checkYear)) {
+            return dateYearFormat.format(timeCreated);
         } else {
-            return 0;
-        }**/
-        return total;
+            if (Integer.valueOf(currentMonth) > Integer.valueOf(checkMonth)) {
+                return dateFormatNoDay.format(timeCreated);
+            } else {
+                return dateFormat.format(timeCreated);
+            }
+        }
     }
 
     // Getters and Setters
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
 
     public String getName() {
         return name;
@@ -99,22 +98,6 @@ public class Check {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ArrayList<Participant> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(ArrayList<Participant> participants) {
-        this.participants = participants;
-    }
-
-    public ArrayList<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<Item> items) {
-        this.items = items;
     }
 
     public void setId(int id) {
@@ -132,12 +115,7 @@ public class Check {
         contentValues.put(CheckContract.CheckEntry.NAME,
                 name);
         contentValues.put(CheckContract.CheckEntry.TOTAL,
-                "10");
-        // TODO: Check Remove Participants and Items
-        contentValues.put(CheckContract.CheckEntry.PARTICIPANTS,
-                "None");
-        contentValues.put(CheckContract.CheckEntry.ITEMS,
-                "None");
+                "0");
         contentValues.put(CheckContract.CheckEntry.TIME_CREATED,
                 System.currentTimeMillis());
         Uri uri = contentResolver.insert(CheckContract.CheckEntry.CONTENT_URI,
@@ -198,9 +176,8 @@ public class Check {
         return checkIds;
     }
 
-    public ArrayList<Check> getListOfChecksFromDatabase(ContentResolver contentResolver) {
+    public ArrayList<Check> getListOfChecks(ContentResolver contentResolver) {
         // Query Database for all checks
-        //TODO Check: Set limit on time frame for checks?
         Uri uri = CheckContract.CheckEntry.CONTENT_URI;
         Cursor c = contentResolver.query(uri, null, null, null,
                 CheckContract.CheckEntry.TIME_CREATED + " DESC");
@@ -211,7 +188,7 @@ public class Check {
             int id = c.getInt(c.getColumnIndex(CheckContract.CheckEntry._ID));
             String total = c.getString(c.getColumnIndex(CheckContract.CheckEntry.TOTAL));
             long dateTime = c.getLong(c.getColumnIndex(CheckContract.CheckEntry.TIME_CREATED));
-            Check check = new Check(name, id, total, null, null, dateTime);
+            Check check = new Check(name, id, total, dateTime);
             checks.add(check);
             c.moveToNext();
         }
@@ -229,20 +206,24 @@ public class Check {
             int id = c.getInt(c.getColumnIndex(CheckContract.CheckEntry._ID));
             String total = c.getString(c.getColumnIndex(CheckContract.CheckEntry.TOTAL));
             long dateTime = c.getLong(c.getColumnIndex(CheckContract.CheckEntry.TIME_CREATED));
-            check = new Check(name, id, total, null, null, dateTime);
+            check = new Check(name, id, total, dateTime);
             return check;
         }
         return null;
     }
 
-    public int updateCheckInDatabaseWithId(ContentResolver contentResolver, String checkName,
-                                             int checkId) {
+    public int updateName(ContentResolver contentResolver, String checkName, int checkId) {
         ContentValues cv = new ContentValues();
         cv.put(CheckContract.CheckEntry.NAME, checkName);
         return contentResolver.update(CheckContract.CheckEntry.CONTENT_URI, cv, "_id=" + checkId,
                 null);
     }
 
-    // public int updateTotal
+    public int updateTotal(ContentResolver contentResolver, int checkId, String total) {
+        ContentValues cv = new ContentValues();
+        cv.put(CheckContract.CheckEntry.TOTAL, total);
+        return contentResolver.update(CheckContract.CheckEntry.CONTENT_URI, cv, "_id=" + checkId,
+                null);
+    }
 
 }

@@ -5,6 +5,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+
 public class Modifier {
 
     private int tax;
@@ -48,6 +51,27 @@ public class Modifier {
         this.discount = discount;
         this.discountPercent = discountPercent;
         this.checkId = checkId;
+    }
+
+    public Modifier(ContentResolver contentResolver, int checkId) {
+        Uri uri = ModifierContract.ModifierEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(String.valueOf(checkId)).build();
+        Cursor c = contentResolver.query(uri, null, null, null, null);
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            this.tax = c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.TAX));
+            this.taxPercent = (c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.TAX_PERCENT)) == 1);
+            this.tip = c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.TIP));
+            this.tipPercent = (c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.TIP_PERCENT)) == 1);
+            this.gratuity = c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.GRATUITY));
+            this.gratuityPercent = (c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.GRATUITY_PERCENT)) == 1);
+            this.fees = c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.FEES));
+            this.feesPercent = (c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.FEES_PERCENT)) == 1);
+            this.discount = c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.DISCOUNT));
+            this.discountPercent = (c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.DISCOUNT_PERCENT)) == 1);
+            this.checkId = c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.CHECK_ID));
+            c.close();
+        }
     }
 
     // Getters and Setters
@@ -259,7 +283,19 @@ public class Modifier {
         boolean sDiscountPercent = (c.getInt(c.getColumnIndex(ModifierContract.ModifierEntry.DISCOUNT_PERCENT)) == 1);
         Modifier modifier = new Modifier(sTax, sTaxPercent, sTip, sTipPercent, sGratuity,
                 sGratuityPercent, sFees, sFeesPercent, sDiscount, sDiscountPercent, checkId);
+        c.close();
         return modifier;
+    }
+
+    public String getTaxString() {
+        BigDecimal parsed = new BigDecimal(String.valueOf(tax)).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        return NumberFormat.getCurrencyInstance().format(parsed);
+    }
+
+    public String getFeesString() {
+
+        BigDecimal parsed = new BigDecimal(String.valueOf(fees)).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        return NumberFormat.getCurrencyInstance().format(parsed);
     }
 
 }

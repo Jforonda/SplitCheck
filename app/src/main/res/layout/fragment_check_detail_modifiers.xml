@@ -29,19 +29,22 @@
                     android:padding="@dimen/text_padding"
                     android:layout_centerVertical="true"
 
-                    android:text="Tax"/>
+                    android:text="@string/modifier_tax"/>
 
                 <TextView
                     android:id="@+id/text_view_tax"
-                    android:layout_width="50dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_tax"
                     android:layout_toLeftOf="@+id/image_view_tax"
 
-                    android:text="100"/>
+                    android:text="@string/default_modifier_amount"/>
 
                 <View
                     android:layout_width="50dp"
@@ -57,10 +60,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_tax"
                     android:layout_toLeftOf="@+id/spinner_tax"
-                    android:src="@drawable/ic_more_vert_white_24dp"/>
+                    android:src="@drawable/ic_more_vert_black_24dp"
+
+                    android:contentDescription="@string/modifier_tax"/>
 
                 <Spinner
                     android:id="@+id/spinner_tax"
@@ -88,19 +96,22 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
                     android:layout_centerVertical="true"
-                    android:text="Tip"/>
+                    android:text="@string/modifier_tip"/>
 
                 <TextView
                     android:id="@+id/text_view_tip"
-                    android:layout_width="50dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_tip"
                     android:layout_toLeftOf="@+id/image_view_tip"
 
-                    android:text="100"/>
+                    android:text="@string/default_modifier_amount"/>
 
                 <View
                     android:layout_width="50dp"
@@ -116,10 +127,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_tip"
                     android:layout_toLeftOf="@+id/spinner_tip"
-                    android:src="@drawable/ic_more_vert_white_24dp"/>
+                    android:src="@drawable/ic_more_vert_black_24dp"
+
+                    android:contentDescription="@string/modifier_tip"/>
 
                 <Spinner
                     android:id="@+id/spinner_tip"
@@ -147,19 +163,22 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
                     android:layout_centerVertical="true"
-                    android:text="Gratuity"/>
+                    android:text="@string/modifier_gratuity"/>
 
                 <TextView
                     android:id="@+id/text_view_gratuity"
-                    android:layout_width="50dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_gratuity"
                     android:layout_toLeftOf="@+id/image_view_gratuity"
 
-                    android:text="100"/>
+                    android:text="@string/default_modifier_amount"/>
 
                 <View
                     android:layout_width="50dp"
@@ -175,10 +194,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_gratuity"
                     android:layout_toLeftOf="@+id/spinner_gratuity"
-                    android:src="@drawable/ic_more_vert_white_24dp"/>
+                    android:src="@drawable/ic_more_vert_black_24dp"
+
+                    android:contentDescription="@string/modifier_gratuity"/>
 
                 <Spinner
                     android:id="@+id/spinner_gratuity"
@@ -206,19 +230,22 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
                     android:layout_centerVertical="true"
-                    android:text="Fees"/>
+                    android:text="@string/modifier_fees"/>
 
                 <TextView
                     android:id="@+id/text_view_fees"
-                    android:layout_width="50dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_fees"
                     android:layout_toLeftOf="@+id/image_view_fees"
 
-                    android:text="100"/>
+                    android:text="@string/default_modifier_amount"/>
 
                 <View
                     android:layout_width="50dp"
@@ -234,10 +261,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_fees"
                     android:layout_toLeftOf="@+id/spinner_fees"
-                    android:src="@drawable/ic_more_vert_white_24dp"/>
+                    android:src="@drawable/ic_more_vert_black_24dp"
+
+                    android:contentDescription="@string/modifier_fees"/>
 
                 <Spinner
                     android:id="@+id/spinner_fees"
@@ -265,19 +297,22 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/text_padding"
                     android:layout_centerVertical="true"
-                    android:text="Discount"/>
+                    android:text="@string/modifier_discount"/>
 
                 <TextView
                     android:id="@+id/text_view_discount"
-                    android:layout_width="50dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_discount"
                     android:layout_toLeftOf="@+id/image_view_discount"
 
-                    android:text="100"/>
+                    android:text="@string/default_modifier_amount"/>
 
                 <View
                     android:layout_width="50dp"
@@ -293,10 +328,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="0dp"
+                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_discount"
                     android:layout_toLeftOf="@+id/spinner_discount"
-                    android:src="@drawable/ic_more_vert_white_24dp"/>
+                    android:src="@drawable/ic_more_vert_black_24dp"
+
+                    android:contentDescription="@string/modifier_discount"/>
 
                 <Spinner
                     android:id="@+id/spinner_discount"

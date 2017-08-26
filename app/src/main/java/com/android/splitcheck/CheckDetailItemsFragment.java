@@ -1,5 +1,6 @@
 package com.android.splitcheck;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -19,8 +20,12 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class CheckDetailItemsFragment extends Fragment implements CreateItemFragment.
-        CreateItemDialogListener {
+public class CheckDetailItemsFragment extends Fragment implements
+        CreateItemFragment.CreateItemDialogListener,
+        EditItemFragment.EditItemDialogListener,
+        AssignParticipantFragment.AssignParticipantDialogListener {
+
+    ItemChangeListener listener;
 
     CheckItemAdapter mCheckItemAdapter;
     RecyclerView mRecyclerView;
@@ -29,7 +34,7 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
     ArrayList<ItemParticipant> mItemParticipants;
     static int mCheckId;
 
-    private final String CHECK_ITEM_RECYCKER_STATE = "check_item_recycler_state";
+    private final String CHECK_ITEM_RECYCLER_STATE = "check_item_recycler_state";
     private static Bundle mBundleRecyclerViewState;
 
     // Empty Constructor
@@ -41,6 +46,16 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
         CheckDetailItemsFragment fragment = new CheckDetailItemsFragment();
         mCheckId = checkId;
         return fragment;
+    }
+
+    public interface ItemChangeListener {
+        void onChangeItem();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (ItemChangeListener) context;
     }
 
     @Override
@@ -67,6 +82,7 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // Hide and unhide FAB on scroll
                 if (dy > 0) {
                     mFloatingActionButton.hide();
                 } else if (dy < 0){
@@ -94,7 +110,17 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
                 String title = "Who had " + itemName + "?";
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 AssignParticipantFragment assignParticipantFragment = AssignParticipantFragment.newInstance(title, mCheckId, itemId);
+                assignParticipantFragment.setTargetFragment(CheckDetailItemsFragment.this, 400);
                 assignParticipantFragment.show(fm, title);
+            }
+
+            @Override
+            public void onCheckItemEditListener(int itemId, String itemName, int itemCost) {
+                String title = "Edit Item Info";
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                EditItemFragment editItemFragment = EditItemFragment.newInstance(title, mCheckId, itemId, itemName, itemCost);
+                editItemFragment.setTargetFragment(CheckDetailItemsFragment.this, 400);
+                editItemFragment.show(fm, title);
             }
         });
         mRecyclerView.setAdapter(mCheckItemAdapter);
@@ -102,9 +128,19 @@ public class CheckDetailItemsFragment extends Fragment implements CreateItemFrag
 
     @Override
     public void onFinishCreateDialog(String inputText, int inputInt) {
-        Toast.makeText(getContext(), "Created " + inputText
-                + "\nID: " + inputInt, Toast.LENGTH_SHORT).show();
         updateUI();
+        listener.onChangeItem();
     }
 
+    @Override
+    public void onFinishEditDialog(String itemName, int itemCost) {
+        updateUI();
+        listener.onChangeItem();
+    }
+
+    @Override
+    public void onFinishAssignParticipantDialog() {
+        updateUI();
+        listener.onChangeItem();
+    }
 }

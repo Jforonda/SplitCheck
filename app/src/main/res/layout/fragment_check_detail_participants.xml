@@ -22,13 +22,14 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/fab_margin"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="@dimen/fab_margin_plus_frame_height"
+        android:layout_marginBottom="@dimen/fab_margin"
         android:layout_gravity="bottom|end"
         app:fabSize="normal"
         app:elevation="@dimen/fab_elevation"
         app:pressedTranslationZ="@dimen/fab_pres_translation_z"
 
         android:contentDescription="@string/action_add_participant"/>
+    <!--android:layout_marginBottom="@dimen/fab_margin_plus_frame_height"-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_edit_check_participants"

@@ -44,23 +44,28 @@
     <!--Strings For XML Below-->
     <!--Strings for activity_check_detail.xmlml-->
     <string name="default_edit_check_name">Check name</string>
-    <string name="default_edit_check_total">Your Total: $0.00</string>
+    <string name="default_edit_check_your_total">Your Total: $0.00</string>
+    <string name="default_edit_check_subtotal">Subtotal: $0.00</string>
+    <string name="default_edit_check_total">Total: $0.00</string>
 
     <!--Strings for check_item.xml-->
     <string name="default_check_item_name">Check Name</string>
     <string name="default_check_item_date_time">1/1/2017 12:01 AM</string>
     <string name="default_check_item_total">$0.00</string>
-    <string name="delete_check_item">Delete</string>
     <string name="edit_check_item">Edit</string>
+    <string name="delete_check_item">Delete</string>
 
     <!--Strings for check_item_item.xml-->
     <string name="default_check_item_item_name">Check Item Name</string>
     <string name="default_check_item_item_cost">$0.00</string>
+    <string name="edit_item_item">Edit</string>
+    <string name="delete_item_item">Delete</string>
 
     <!--String for check_total_item.xml-->
 
     <!--String for check_participant_item.xml-->
     <string name="default_check_participant_item_name">-First Last</string>
+    <string name="remove_participant_item">Remove</string>
 
     <!--String for item_participant_item.xml-->
     <string name="default_item_participant_name">-First Last</string>
@@ -68,6 +73,14 @@
     <!--Strings for fragment_check_detail_participants.xml-->
     <string name="empty_participants">There is currently no one in your group.
         Use the button below to add people to your group!</string>
+
+    <!--Strings for fragment_check_detail_modifiers.xml-->
+    <string name="modifier_tax">Tax</string>
+    <string name="modifier_tip">Tip</string>
+    <string name="modifier_gratuity">Gratuity</string>
+    <string name="modifier_fees">Fees</string>
+    <string name="modifier_discount">Discount</string>
+    <string name="default_modifier_amount">100</string>
 
     <string-array name="modifierPercent">
         <item>$</item>

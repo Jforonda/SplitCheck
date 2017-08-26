@@ -15,10 +15,10 @@
             android:id="@+id/edit_check_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:elevation="@dimen/app_bar_layout_elevation"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:elevation="@dimen/app_bar_layout_elevation">
 
         </android.support.v7.widget.Toolbar>
+        <!--app:layout_scrollFlags="scroll|enterAlways"-->
 
         <android.support.design.widget.TabLayout
             android:id="@+id/pager_tabs"
@@ -51,14 +51,45 @@
         android:background="@color/total_frame_green"
         android:layout_gravity="bottom"
         app:elevation="@dimen/edit_check_total_frame_elevation">
-        <TextView
-            android:id="@+id/text_view_edit_check_total"
-            android:padding="@dimen/edit_check_padding"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:text="@string/default_edit_check_total"
-            android:textStyle="bold"/>
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical|end">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_edit_check_your_total"
+                    android:padding="@dimen/text_padding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_edit_check_your_total"/>
+
+                <TextView
+                    android:id="@+id/text_view_edit_check_subtotal"
+                    android:padding="@dimen/text_padding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="@string/default_edit_check_subtotal"/>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/text_view_edit_check_total"
+                android:padding="@dimen/text_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/default_edit_check_total"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

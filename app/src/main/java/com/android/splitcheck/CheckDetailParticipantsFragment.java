@@ -1,5 +1,6 @@
 package com.android.splitcheck;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,8 @@ import butterknife.ButterKnife;
 public class CheckDetailParticipantsFragment extends Fragment implements
         AddParticipantFragment.AddParticipantDialogListener, CreateParticipantFragment.CreateParticipantDialogListener{
 
+    ParticipantChangeListener listener;
+
     CheckParticipantAdapter mCheckParticipantAdapter;
     RecyclerView mRecyclerView;
     TextView mTextViewEmptyParticipants;
@@ -32,6 +35,16 @@ public class CheckDetailParticipantsFragment extends Fragment implements
 
     public CheckDetailParticipantsFragment() {
 
+    }
+
+    public interface ParticipantChangeListener {
+        void onChangeParticipant();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (ParticipantChangeListener) context;
     }
 
     @Override
@@ -73,8 +86,20 @@ public class CheckDetailParticipantsFragment extends Fragment implements
         mParticipants = checkParticipant.getListOfParticipantsFromDatabaseFromCheckId(getContext()
                 .getContentResolver(), mCheckId);
         Toast.makeText(getActivity(), "Participants: " + mParticipants.size(), Toast.LENGTH_SHORT).show();
-        mCheckParticipantAdapter = new CheckParticipantAdapter(getContext(), mParticipants);
+        mCheckParticipantAdapter = new CheckParticipantAdapter(getContext(), mParticipants, mCheckId);
+        mCheckParticipantAdapter.setOnParticipantRemovedListener(new CheckParticipantAdapter.OnCheckParticipantRemovedListener() {
+            @Override
+            public void onCheckParticipantRemoved() {
+                listener.onChangeParticipant();
+            }
+        });
         mRecyclerView.setAdapter(mCheckParticipantAdapter);
+
+        if (checkParticipant.checkParticipantIsEmpty(getActivity().getContentResolver(), mCheckId)) {
+            mTextViewEmptyParticipants.setVisibility(View.VISIBLE);
+        } else {
+            mTextViewEmptyParticipants.setVisibility(View.GONE);
+        }
     }
 
     @Override

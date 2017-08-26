@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -112,16 +114,30 @@ public class Item implements Parcelable {
 
     }
 
-    public void deleteFromDatabase(ContentResolver contentResolver, int checkId) {
+    public Uri deleteFromDb(ContentResolver contentResolver, int itemId) {
+        Uri itemUri = ItemContract.ItemEntry.CONTENT_URI;
+        contentResolver.delete(itemUri, ItemContract.ItemEntry._ID + " = " + String.valueOf(itemId),
+                null);
+
+        Uri itemParticipantUri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
+        contentResolver.delete(itemParticipantUri, ItemParticipantContract.ItemParticipantEntry
+                .ITEM_ID + " = " + String.valueOf(itemId), null);
+
+        return itemUri;
+    }
+
+    public void deleteAllFromDb(ContentResolver contentResolver) {
 
     }
 
-    public void deleteAllFromDatabase(ContentResolver contentResolver) {
-
-    }
-
-    public void updateDatabase() {
-
+    public int updateItem(ContentResolver contentResolver, int id, String name, int cost) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ItemContract.ItemEntry.NAME,
+                name);
+        contentValues.put(ItemContract.ItemEntry.COST,
+                cost);
+        return contentResolver.update(ItemContract.ItemEntry.CONTENT_URI, contentValues,
+                ItemContract.ItemEntry._ID + " = " + id, null);
     }
 
     public ArrayList<Item> getListOfItemsFromDatabaseFromCheckId(ContentResolver contentResolver,
@@ -148,7 +164,7 @@ public class Item implements Parcelable {
     public String getCostAsString() {
         String stringCost;
         stringCost = String.valueOf(cost);
-        BigDecimal parsed = new BigDecimal(stringCost).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        BigDecimal parsed = new BigDecimal(stringCost).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
         return NumberFormat.getCurrencyInstance().format(parsed);
     }
 
@@ -163,6 +179,93 @@ public class Item implements Parcelable {
         stringTotal = String.valueOf(total);
         BigDecimal parsed = new BigDecimal(stringTotal).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
         return "Total: " + NumberFormat.getCurrencyInstance().format(parsed);
+    }
+
+    public String getSubtotal(ContentResolver contentResolver, int checkId) {
+        String stringSubtotal = String.valueOf(getSubtotalAmount(contentResolver, checkId));
+        BigDecimal parsed = new BigDecimal(stringSubtotal).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
+        return "Subtotal: " + NumberFormat.getCurrencyInstance().format(parsed);
+    }
+
+    public String getTotal(ContentResolver contentResolver, int checkId) {
+        Modifier modifier = new Modifier(contentResolver, checkId);
+        int subTotalAmount = getSubtotalAmount(contentResolver, checkId);
+        int totalAmount = 0, totalPercentage = 0;
+
+        if (modifier.getTaxPercent()) {
+            totalPercentage += modifier.getTax();
+        } else {
+            totalAmount += modifier.getTax();
+        }
+        if (modifier.getTipPercent()) {
+            totalPercentage += modifier.getTip();
+        } else {
+            totalAmount += modifier.getTip();
+        }
+        if (modifier.getGratuityPercent()) {
+            totalPercentage += modifier.getGratuity();
+        } else {
+            totalAmount += modifier.getGratuity();
+        }
+        if (modifier.getFeesPercent()) {
+            totalPercentage += modifier.getFees();
+        } else {
+            totalAmount += modifier.getFees();
+        }
+        if (modifier.getDiscountPercent()) {
+            if (modifier.getDiscount() <= 100) {
+                totalPercentage -= modifier.getDiscount();
+            }
+        } else {
+            totalAmount +=  modifier.getDiscount();
+        }
+
+        BigDecimal bigDecimalPercentage = new BigDecimal(subTotalAmount * totalPercentage).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
+        BigDecimal bigDecimalAmount = new BigDecimal(totalAmount).add(bigDecimalPercentage);
+        BigDecimal bigDecimalTotal = new BigDecimal(subTotalAmount).add(bigDecimalAmount).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
+        return "Total: " + NumberFormat.getCurrencyInstance().format(bigDecimalTotal);
+    }
+
+    public int getSubtotalAmount(ContentResolver contentResolver, int checkId) {
+        ArrayList<Item> items = getListOfItemsFromDatabaseFromCheckId(contentResolver, checkId);
+        int total = 0;
+
+        for (int i = 0; i < items.size(); i++) {
+            total += items.get(i).getCost();
+        }
+        return total;
+    }
+
+    public int getSplitAmountPerItem(ContentResolver contentResolver, int itemId) {
+        Uri itemUri = ItemContract.ItemEntry.CONTENT_URI;
+        Cursor itemCursor = contentResolver.query(itemUri, null, "_id=" + String.valueOf(itemId), null, null);
+        itemCursor.moveToFirst();
+        String currentName = itemCursor.getString(itemCursor.getColumnIndex(ItemContract.ItemEntry.NAME));
+        int currentId = itemCursor.getInt(itemCursor.getColumnIndex(ItemContract.ItemEntry._ID));
+        int currentCost = itemCursor.getInt(itemCursor.getColumnIndex(ItemContract.ItemEntry.COST));
+        int currentCheckId = itemCursor.getInt(itemCursor.getColumnIndex(ItemContract.ItemEntry.CHECK_ID));
+        Item item = new Item(currentName, currentCost, currentId, currentCheckId);
+
+        Uri itemParticipantUri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
+        Cursor itemParticipantCursor = contentResolver.query(itemParticipantUri, null, "item_id=" + String.valueOf(itemId), null, null);
+        ArrayList<ItemParticipant> itemParticipants = new ArrayList<>();
+        itemParticipantCursor.moveToFirst();
+        while (!itemParticipantCursor.isAfterLast()) {
+            int id = itemParticipantCursor.getInt(itemParticipantCursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry._ID));
+            int participantId = itemParticipantCursor.getInt(itemParticipantCursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_ID));
+            String participantName = itemParticipantCursor.getString(itemParticipantCursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_NAME));
+            int isChecked = itemParticipantCursor.getInt(itemParticipantCursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.IS_CHECKED));
+            if (isChecked == 1) {
+                ItemParticipant itemParticipant = new ItemParticipant(id, currentCheckId, itemId, participantId, participantName, isChecked);
+                itemParticipants.add(itemParticipant);
+            }
+            itemParticipantCursor.moveToNext();
+        }
+        if (itemParticipants.size() > 0) {
+            return item.getCost() / itemParticipants.size();
+        } else {
+            return 0;
+        }
     }
 
 }

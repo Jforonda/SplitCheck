@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class ItemParticipant {
@@ -103,8 +105,8 @@ public class ItemParticipant {
     // Query
     public Cursor getItemCursorFromDb(ContentResolver contentResolver, int itemId) {
         Uri uri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
-        uri = uri.buildUpon().appendPath(String.valueOf(itemId)).build();
-        return contentResolver.query(uri, null, null, null, null);
+        //uri = uri.buildUpon().appendPath(String.valueOf(itemId)).build();
+        return contentResolver.query(uri, null, "item_id=" + itemId, null, null);
     }
 
     public ArrayList<ItemParticipant> getItemListFromDbFromCheckId(ContentResolver contentResolver, int checkId) {
@@ -155,6 +157,33 @@ public class ItemParticipant {
         contentValues.put(ItemParticipantContract.ItemParticipantEntry.IS_CHECKED, isChecked);
         return contentResolver.update(ItemParticipantContract.ItemParticipantEntry.CONTENT_URI,
                 contentValues, "item_id=" + itemId + " AND participant_id=" + participantId, null);
+    }
+
+
+    public String getParticipantTotal(ContentResolver contentResolver, int checkId, int participantId) {
+        ArrayList<ItemParticipant> itemParticipants = new ArrayList<>();
+        Item item = new Item();
+        Uri uri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
+        Cursor cursor = contentResolver.query(uri, null, "check_id=" + String.valueOf(checkId) + " AND participant_id=" + String.valueOf(participantId), null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int id = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry._ID));
+            int itemId = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.ITEM_ID));
+            int tempParticipantId = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_ID));
+            String participantName = cursor.getString(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_NAME));
+            int isChecked = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.IS_CHECKED));
+            ItemParticipant itemParticipant = new ItemParticipant(id, checkId, itemId, tempParticipantId, participantName, isChecked);
+            itemParticipants.add(itemParticipant);
+            cursor.moveToNext();
+        }
+        int participantTotal = 0;
+        for (int i = 0; i < itemParticipants.size(); i++) {
+            if (itemParticipants.get(i).getIsChecked() == 1) {
+                participantTotal += item.getSplitAmountPerItem(contentResolver, itemParticipants.get(i).getItemId());
+            }
+        }
+        BigDecimal parsed = new BigDecimal(String.valueOf(participantTotal)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
+        return NumberFormat.getCurrencyInstance().format(parsed);
     }
 
 }

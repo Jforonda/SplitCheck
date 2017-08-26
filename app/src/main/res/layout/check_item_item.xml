@@ -3,36 +3,55 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:padding="8dp">
+    android:layout_height="80dp"
+    android:background="@drawable/shape_border"
+    android:padding="@dimen/linear_layout_padding">
 
     <FrameLayout
         android:id="@+id/frame_layout_item_item"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/text_view_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/text_padding"
             android:layout_gravity="center_vertical"
             android:text="@string/default_check_item_item_name"/>
 
-        <TextView
-            android:id="@+id/text_view_item_cost"
+        <ListView
+            android:id="@+id/list_view_item_participants"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:gravity="end"
-            android:text="@string/default_check_item_item_cost"/>
+            android:layout_gravity="center_vertical|end">
+
+            <TextView
+                android:id="@+id/text_view_item_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/text_padding"
+                android:text="@string/default_check_item_item_cost"/>
+
+            <ImageView
+                android:id="@+id/options_icon_check_item_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/text_padding"
+                android:src="@drawable/ic_more_vert_black_24dp"/>
+
+        </LinearLayout>
+
     </FrameLayout>
 
-    <ListView
-        android:id="@+id/list_view_item_participants"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <View
+        android:visibility="gone"
         android:id="@+id/separator_check_item_item"
         android:layout_width="match_parent"
         android:layout_height="1dp"

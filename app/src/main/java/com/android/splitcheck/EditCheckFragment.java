@@ -92,9 +92,8 @@ public class EditCheckFragment extends DialogFragment {
 
     public int updateCheck(String checkName, int checkId) {
         Check check = new Check();
-        int updatedCheck = check.updateCheckInDatabaseWithId(getActivity().getContentResolver(),
+        return check.updateName(mContext.getContentResolver(),
                 checkName, checkId);
-        return updatedCheck;
     }
 
     public void sendBackResult(String checkName, int checkId) {

@@ -70,11 +70,11 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
 
         initializeViewItems(rootView);
 
-        setUpTaxView(rootView, modifier, contentResolver, adapter);
-        setUpTipView(rootView, modifier, contentResolver, adapter);
-        setUpGratuityView(rootView, modifier, contentResolver, adapter);
-        setUpFeesView(rootView, modifier, contentResolver, adapter);
-        setUpDiscountView(rootView, modifier, contentResolver, adapter);
+        setUpTaxView(modifier, contentResolver, adapter);
+        setUpTipView(modifier, contentResolver, adapter);
+        setUpGratuityView(modifier, contentResolver, adapter);
+        setUpFeesView(modifier, contentResolver, adapter);
+        setUpDiscountView(modifier, contentResolver, adapter);
 
         return rootView;
     }
@@ -102,7 +102,7 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
         mSpinnerDiscountPercent = ButterKnife.findById(rootView, R.id.spinner_discount);
     }
 
-    private void setUpTaxView(View rootView, final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
+    private void setUpTaxView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getTaxPercent();
         mTextViewTax.setText(String.valueOf(mModifier.getTax()));
         mImageViewTax.setColorFilter(R.color.colorBlack);
@@ -148,7 +148,7 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
         });
     }
 
-    private void setUpTipView(View rootView, final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
+    private void setUpTipView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getTipPercent();
         mTextViewTip.setText(String.valueOf(mModifier.getTip()));
         mImageViewTip.setColorFilter(R.color.colorBlack);
@@ -194,7 +194,7 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
         });
     }
 
-    private void setUpGratuityView(View rootView, final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
+    private void setUpGratuityView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getGratuityPercent();
         mTextViewGratuity.setText(String.valueOf(mModifier.getGratuity()));
         mImageViewGratuity.setColorFilter(R.color.colorBlack);
@@ -240,9 +240,13 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
         });
     }
 
-    private void setUpFeesView(View rootView, final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
+    private void setUpFeesView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getFeesPercent();
-        mTextViewFees.setText(String.valueOf(mModifier.getFees()));
+        if (isPercent) {
+            mTextViewFees.setText(String.valueOf(mModifier.getFees()));
+        } else {
+            mTextViewFees.setText(mModifier.getFeesString());
+        }
         mImageViewFees.setColorFilter(R.color.colorBlack);
         mImageViewFees.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,7 +290,7 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
         });
     }
 
-    private void setUpDiscountView(View rootView, final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
+    private void setUpDiscountView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getDiscountPercent();
         mTextViewDiscount.setText(String.valueOf(mModifier.getDiscount()));
         mImageViewDiscount.setColorFilter(R.color.colorBlack);
@@ -354,6 +358,8 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
             default:
                 break;
         }
+        listener.onChangeModifier();
+        // TODO Modifier: Fix dialog, showing old data
     }
 
 }

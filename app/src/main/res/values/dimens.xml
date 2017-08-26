@@ -3,6 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!--Default app dimens-->
+    <dimen name="linear_layout_padding">8dp</dimen>
+    <dimen name="text_padding">8dp</dimen>
+
+
     <!--Material Design Dimensions-->
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_pres_translation_z">6dp</dimen>
@@ -12,14 +17,11 @@
     <dimen name="app_bar_layout_elevation">4dp</dimen>
 
     <!--Dimensions for activity_check_detailil.xml-->
-    <dimen name="edit_check_total_frame_height">50dp</dimen>
+    <dimen name="edit_check_total_frame_height">80dp</dimen>
     <dimen name="edit_check_total_frame_elevation">4dp</dimen>
     <dimen name="edit_check_padding">8dp</dimen>
 
     <!--Dimensions for Dialogs-->
     <dimen name="dialog_padding">10dp</dimen>
-
-    <!--Dimension for TextViews-->
-    <dimen name="text_padding">8dp</dimen>
 
 </resources>

@@ -11,6 +11,9 @@
 
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
 </resources>

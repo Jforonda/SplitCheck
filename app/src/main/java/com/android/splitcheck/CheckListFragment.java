@@ -64,7 +64,7 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_check_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         Check check = new Check();
-        mChecks = check.getListOfChecksFromDatabase(getContext().getContentResolver());
+        mChecks = check.getListOfChecks(getContext().getContentResolver());
         mCheckListAdapter = new CheckListAdapter(getActivity(), mChecks);
         mCheckListAdapter.setOnCheckItemEditClickedListener(new CheckListAdapter.OnCheckItemEditClickedListener() {
             @Override
@@ -94,7 +94,7 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
 
     private void updateUI() {
         Check check = new Check();
-        mChecks = check.getListOfChecksFromDatabase(getContext().getContentResolver());
+        mChecks = check.getListOfChecks(getContext().getContentResolver());
         mCheckListAdapter.update(mChecks);
     }
 

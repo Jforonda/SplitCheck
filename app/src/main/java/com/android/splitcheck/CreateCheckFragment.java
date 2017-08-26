@@ -27,7 +27,6 @@ public class CreateCheckFragment extends DialogFragment {
     private TextInputLayout mTextInputLayoutName;
     private Context mContext;
 
-    // Empty Constructor
     public CreateCheckFragment() {
 
     }
@@ -81,9 +80,6 @@ public class CreateCheckFragment extends DialogFragment {
                     String newCheckName = editTextName.getText().toString();
                     int newCheckId = createCheck(newCheckName);
                     sendBackResult(newCheckName, newCheckId);
-                    // Open edit check Activity
-                    // Use last created Check
-
                 }
             }
         });

@@ -21,12 +21,13 @@ import com.android.splitcheck.data.ItemContract;
 import butterknife.ButterKnife;
 
 public class CheckDetailActivity extends AppCompatActivity implements 
-        CheckDetailModifiersFragment.ModifierChangeListener {
+        CheckDetailModifiersFragment.ModifierChangeListener,
+        CheckDetailItemsFragment.ItemChangeListener,
+        CheckDetailParticipantsFragment.ParticipantChangeListener {
     static final int NUM_ITEMS = 3;
 
     FragmentManager mFragmentManager;
-    TextView mCheckNameTextView;
-    TextView mCheckTotalTextView;
+    TextView mCheckYourTotalTextView, mCheckSubtotalTextView, mCheckTotalTextView;
     FragmentPagerAdapter mFragmentPagerAdapter;
 
     static int checkId;
@@ -43,6 +44,8 @@ public class CheckDetailActivity extends AppCompatActivity implements
         } else {
             checkId = savedInstanceState.getInt("checkId");
         }
+        mCheckYourTotalTextView = ButterKnife.findById(this, R.id.text_view_edit_check_your_total);
+        mCheckSubtotalTextView = ButterKnife.findById(this, R.id.text_view_edit_check_subtotal);
         mCheckTotalTextView = ButterKnife.findById(this, R.id.text_view_edit_check_total);
 
         Check check = new Check(getContentResolver(), checkId);
@@ -73,9 +76,14 @@ public class CheckDetailActivity extends AppCompatActivity implements
 
     public void updateUI() {
         Item item = new Item();
-        // Check Total IMPLEMENT YOUR TOTAL, LEFT SIDE?
-        String total = item.getTotalAsStringFromCheckId(getContentResolver(), checkId);
+        Check check = new Check();
+        String yourTotal;
+        String subtotal = item.getSubtotal(getContentResolver(), checkId);
+        String total = item.getTotal(getContentResolver(), checkId);
+        mCheckYourTotalTextView.setText(total);
+        mCheckSubtotalTextView.setText(subtotal);
         mCheckTotalTextView.setText(total);
+        check.updateTotal(getContentResolver(), checkId, total);
     }
 
     @Override
@@ -140,11 +148,29 @@ public class CheckDetailActivity extends AppCompatActivity implements
                     return null;
             }
         }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+    }
+
+    // Callback Methods on Database Change
+
+    @Override
+    public void onChangeItem() {
+        updateUI();
+        mFragmentPagerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChangeParticipant() {
+        updateUI();
+        mFragmentPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onChangeModifier() {
-        Toast.makeText(this, "Modifier changed", Toast.LENGTH_SHORT).show();
         updateUI();
     }
 }

@@ -85,7 +85,7 @@ public class ItemParticipantContentProvider extends ContentProvider {
                 break;
             case ITEM_PARTICIPANT_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                selection = ItemParticipantEntry.TABLE_NAME + "." + ItemParticipantEntry.ITEM_ID
+                selection = ItemParticipantEntry.TABLE_NAME + "." + ItemParticipantEntry.CHECK_ID
                         + " = " + id;
                 retCursor = db.query(ItemParticipantEntry.TABLE_NAME,
                         projection,

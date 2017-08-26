@@ -3,24 +3,49 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:padding="8dp">
+    android:layout_height="50dp"
+    android:background="@drawable/shape_border"
+    android:padding="@dimen/linear_layout_padding">
 
     <FrameLayout
+        android:id="@+id/frame_layout_participant_item"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/text_view_participant_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/text_padding"
             android:layout_gravity="center_vertical"
-            android:padding="8dp"
             android:text="@string/default_check_participant_item_name"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end">
+
+            <TextView
+                android:id="@+id/text_view_participant_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/text_padding"
+                android:text="Check Total"/>
+
+            <ImageView
+                android:id="@+id/options_icon_check_participant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/text_padding"
+                android:src="@drawable/ic_more_vert_black_24dp"/>
+
+        </LinearLayout>
 
     </FrameLayout>
 
     <View
+        android:visibility="gone"
         android:id="@+id/separator_check_participant_item"
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -22,8 +22,6 @@ public class CheckDbHelper extends SQLiteOpenHelper {
                 CheckEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 CheckEntry.NAME + " TEXT NOT NULL," +
                 CheckEntry.TOTAL + " TEXT NOT NULL," +
-                CheckEntry.PARTICIPANTS + " TEXT NOT NULL," +
-                CheckEntry.ITEMS + " TEXT NOT NULL," +
                 CheckEntry.TIME_CREATED + " INTEGER NOT NULL)";
 
         db.execSQL(SQL_CREATE_CHECK_TABLE);
