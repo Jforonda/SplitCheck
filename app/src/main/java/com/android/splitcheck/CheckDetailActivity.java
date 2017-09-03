@@ -1,5 +1,6 @@
 package com.android.splitcheck;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,12 +12,20 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.splitcheck.data.Check;
+import com.android.splitcheck.data.CheckParticipant;
 import com.android.splitcheck.data.Item;
 import com.android.splitcheck.data.ItemContract;
+import com.android.splitcheck.data.ItemParticipant;
 
 import butterknife.ButterKnife;
 
@@ -35,6 +44,7 @@ public class CheckDetailActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_check_detail);
 
         // Save instance to keep checkId
@@ -50,16 +60,6 @@ public class CheckDetailActivity extends AppCompatActivity implements
 
         Check check = new Check(getContentResolver(), checkId);
 
-        // REMOVE ONCE DONE, USED FOR TOAST MESSAGES FOR NOW
-        Uri uri = ItemContract.ItemEntry.CONTENT_URI;
-        uri = uri.buildUpon().appendPath(String.valueOf(checkId)).build();
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
-        if (c == null) {
-            Toast.makeText(this, "Check ID: " + checkId, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Items: " + c.getCount(), Toast.LENGTH_SHORT).show();
-        }
-
         ViewPager vp = ButterKnife.findById(this, R.id.pager);
         TabLayout tabLayout = ButterKnife.findById(this, R.id.pager_tabs);
         Toolbar toolbar = ButterKnife.findById(this, R.id.edit_check_toolbar);
@@ -74,13 +74,43 @@ public class CheckDetailActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_check_detail, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search:
+                Intent intent = new Intent(this, ParticipantsActivity.class);
+                ActivityOptions options = ActivityOptions.makeCustomAnimation(getBaseContext(), R.animator.anim_enter_left, R.animator.anim_exit_right);
+                startActivity(intent, options.toBundle());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void updateUI() {
         Item item = new Item();
+        ItemParticipant itemParticipant = new ItemParticipant();
         Check check = new Check();
-        String yourTotal;
+        CheckParticipant checkParticipant = new CheckParticipant();
+        checkParticipant.updateCheckParticipantTotals(getContentResolver(), checkId);
+        String yourTotal = checkParticipant.getParticipantTotalWithModifier(getContentResolver(), checkId, 1);
+        if (yourTotal == null) {
+            yourTotal = "Your Total: $0.00";
+        } else {
+            yourTotal = "Your Total: " + yourTotal;
+        }
+        // Update CheckParticipant Totals
         String subtotal = item.getSubtotal(getContentResolver(), checkId);
         String total = item.getTotal(getContentResolver(), checkId);
-        mCheckYourTotalTextView.setText(total);
+        mCheckYourTotalTextView.setText(yourTotal);
         mCheckSubtotalTextView.setText(subtotal);
         mCheckTotalTextView.setText(total);
         check.updateTotal(getContentResolver(), checkId, total);
@@ -172,5 +202,21 @@ public class CheckDetailActivity extends AppCompatActivity implements
     @Override
     public void onChangeModifier() {
         updateUI();
+        mFragmentPagerAdapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        overridePendingTransition(R.animator.anim_enter_right, R.animator.anim_exit_left);
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.animator.anim_enter_right, R.animator.anim_exit_left);
     }
 }

@@ -4,12 +4,14 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class ItemParticipant {
+public class ItemParticipant implements Parcelable {
 
     private int id;
     private int checkId;
@@ -82,7 +84,41 @@ public class ItemParticipant {
         this.isChecked = isChecked;
     }
 
+    // Parcelable methods
 
+    @Override
+    public int describeContents() {
+        return this.hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(id);
+        out.writeInt(checkId);
+        out.writeInt(itemId);
+        out.writeInt(participantId);
+        out.writeString(participantName);
+        out.writeInt(isChecked);
+    }
+
+    public static final Parcelable.Creator CREATOR
+            = new Parcelable.Creator() {
+        public ItemParticipant createFromParcel(Parcel in) {
+            return new ItemParticipant(in);
+        }
+        public ItemParticipant[] newArray(int size) {
+            return new ItemParticipant[size];
+        }
+    };
+
+    private ItemParticipant(Parcel in) {
+        this.id = in.readInt();
+        this.checkId = in.readInt();
+        this.itemId = in.readInt();
+        this.participantId = in.readInt();
+        this.participantName = in.readString();
+        this.isChecked = in.readInt();
+    }
 
     // Database Handlers
     // Insert
@@ -158,32 +194,4 @@ public class ItemParticipant {
         return contentResolver.update(ItemParticipantContract.ItemParticipantEntry.CONTENT_URI,
                 contentValues, "item_id=" + itemId + " AND participant_id=" + participantId, null);
     }
-
-
-    public String getParticipantTotal(ContentResolver contentResolver, int checkId, int participantId) {
-        ArrayList<ItemParticipant> itemParticipants = new ArrayList<>();
-        Item item = new Item();
-        Uri uri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
-        Cursor cursor = contentResolver.query(uri, null, "check_id=" + String.valueOf(checkId) + " AND participant_id=" + String.valueOf(participantId), null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            int id = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry._ID));
-            int itemId = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.ITEM_ID));
-            int tempParticipantId = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_ID));
-            String participantName = cursor.getString(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_NAME));
-            int isChecked = cursor.getInt(cursor.getColumnIndex(ItemParticipantContract.ItemParticipantEntry.IS_CHECKED));
-            ItemParticipant itemParticipant = new ItemParticipant(id, checkId, itemId, tempParticipantId, participantName, isChecked);
-            itemParticipants.add(itemParticipant);
-            cursor.moveToNext();
-        }
-        int participantTotal = 0;
-        for (int i = 0; i < itemParticipants.size(); i++) {
-            if (itemParticipants.get(i).getIsChecked() == 1) {
-                participantTotal += item.getSplitAmountPerItem(contentResolver, itemParticipants.get(i).getItemId());
-            }
-        }
-        BigDecimal parsed = new BigDecimal(String.valueOf(participantTotal)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
-        return NumberFormat.getCurrencyInstance().format(parsed);
-    }
-
 }

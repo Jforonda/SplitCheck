@@ -11,8 +11,10 @@
 
     <color name="colorBlack">#000</color>
     <color name="colorWhite">#FFF</color>
+    <color name="colorGray">#7B7D7D</color>
 
     <color name="divider_color">#D5D8DC</color>
 
+    <color name="check_list_background">#EAECEE</color>
     <color name="total_frame_green">#2ECC71</color>
 </resources>

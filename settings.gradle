@@ -1,1 +1,1 @@
-include ':app', ':splitcheckmathlibrary'
+include ':app'

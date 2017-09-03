@@ -10,7 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.android.splitcheck.data.Modifier;
+
+import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 import butterknife.ButterKnife;
 
@@ -27,6 +36,9 @@ public class ChangeModifierFragment extends DialogFragment {
 
     private Context mContext;
     private int mCheckId;
+    private boolean mIsPercent;
+    private int mCurrentAmount;
+    private int count = 0;
 
     public ChangeModifierFragment() {
 
@@ -46,7 +58,7 @@ public class ChangeModifierFragment extends DialogFragment {
     }
 
     public interface CreateModifierDialogListener {
-        void onFinishChangeModifierDialog(int amount, int modifierType);
+        void onFinishChangeModifierDialog(int amount, int modifierType, boolean isPercent);
     }
 
     @Nullable
@@ -69,8 +81,8 @@ public class ChangeModifierFragment extends DialogFragment {
         String title = getArguments().getString("title");
         mContext = getContext();
         mCheckId = getArguments().getInt("checkId");
-        int currentAmount = getArguments().getInt("currentAmount");
-        final boolean isPercent = getArguments().getBoolean("isPercent");
+        mCurrentAmount = getArguments().getInt("currentAmount");
+        mIsPercent = getArguments().getBoolean("isPercent");
         final int modifierType = getArguments().getInt("modifierType");
 
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -79,28 +91,45 @@ public class ChangeModifierFragment extends DialogFragment {
         mTextInputLayoutAmount = ButterKnife.findById(promptView, R.id.text_input_layout_modifier);
         final EditText editTextAmount = ButterKnife.findById(promptView, R.id.edit_text_modifier);
 
-        if (isPercent) mTextInputLayoutAmount.setHint("Percent");
-        // If 0, leave amount blank.
-        // If amount is > 0, set text as amount, highlighted
-        if (currentAmount != 0) {
-            editTextAmount.setText(String.valueOf(currentAmount));
-            editTextAmount.selectAll();
-        }
-        editTextAmount.setKeyListener(DigitsKeyListener.getInstance());
-        // TODO Modifier: Add a Text Input Listener for money input, or percentage
-        // If percentage, allow decimals
+        if (mIsPercent) mTextInputLayoutAmount.setHint("Percent");
 
         // If amount, allow up to two decimal points, show dollar sign
+        if (mIsPercent) {
+            editTextAmount.addTextChangedListener(new PercentTextWatcher(editTextAmount));
+            if (mCurrentAmount != 0) {
+                editTextAmount.setText(String.valueOf(mCurrentAmount));
+                editTextAmount.selectAll();
+            }
+        } else {
+            editTextAmount.addTextChangedListener(new MoneyTextWatcher(editTextAmount));
+            if (mCurrentAmount != 0) {
+                editTextAmount.setText(String.valueOf(mCurrentAmount));
+                editTextAmount.selectAll();
+            }
+            editTextAmount.setKeyListener(DigitsKeyListener.getInstance());
+        }
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
 
-        String positiveButtonText = isPercent ? "Set Percent" : "Set Amount";
+        String positiveButtonText = mIsPercent ? "Set Percent" : "Set Amount";
         alertDialogBuilder.setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int userInput = Integer.parseInt(editTextAmount.getText().toString());
+                int userInput;
+                if (mIsPercent) {
+                    String input = editTextAmount.getText().toString();
+                    if (input.contains(".")) {
+                        input = input.replaceAll("[.]","");
+                        userInput = Integer.parseInt(input);
+                    } else {
+                        userInput = Integer.parseInt(editTextAmount.getText().toString());
+                    }
+
+                } else {
+                    userInput =  Integer.parseInt(editTextAmount.getText().toString().replaceAll("[$,.]",""));
+                }
                 Modifier modifier = new Modifier();
                 ContentResolver contentResolver = getActivity().getContentResolver();
                 switch (modifierType) {
@@ -128,9 +157,111 @@ public class ChangeModifierFragment extends DialogFragment {
         return alertDialogBuilder.create();
     }
 
+    /**
+     * This method is credit to ToddH on stackoverflow
+     * https://stackoverflow.com/questions/5107901/better-way-to-format-currency-input-edittext
+     */
+    public class MoneyTextWatcher implements TextWatcher {
+        private final WeakReference<EditText> editTextWeakReference;
+
+        public MoneyTextWatcher(EditText editText) {
+            editTextWeakReference = new WeakReference<EditText>(editText);
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            EditText editText = editTextWeakReference.get();
+            if (editText == null) return;
+            String s = editable.toString();
+            editText.removeTextChangedListener(this);
+            String cleanString = s.toString().replaceAll("[$,.]","");
+            BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+            String formatted = NumberFormat.getCurrencyInstance().format(parsed);
+            editText.setText(formatted);
+            editText.setSelection(formatted.length());
+            editText.addTextChangedListener(this);
+        }
+    }
+
+    public class PercentTextWatcher implements TextWatcher {
+        private final WeakReference<EditText> editTextWeakReference;
+
+        public PercentTextWatcher(EditText editText) {
+            editTextWeakReference = new WeakReference<EditText>(editText);
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            final EditText editText = editTextWeakReference.get();
+            if (editText == null) return;
+            String formatted = "";
+            if (editable.toString().startsWith("0")) {
+                editable = editable.delete(0,0);
+            }
+            if (editable.length() != 0) {
+                String s = editable.toString();
+                editText.removeTextChangedListener(this);
+                String cleanString = s.replaceAll("[,.]", "");
+                int parsed;
+                if (cleanString.isEmpty()) {
+                    formatted = "";
+                } else {
+                    parsed = Integer.valueOf(cleanString);
+                    NumberFormat nf = NumberFormat.getInstance();
+                    nf.setGroupingUsed(false);
+                    nf.setMaximumFractionDigits(2);
+                    formatted = nf.format(parsed);
+                }
+            }
+            if (editable.length() == 0) {
+                formatted = "";
+            }
+            if (editable.length() == 1) {
+                if (editable.toString().equals(".")) {
+                    formatted = "";
+                } else if (editable.toString().equals("0")) {
+                    formatted = "";
+                } else {
+                    formatted = "." + formatted;
+                }
+            }
+            if (editable.length() == 2) {
+                formatted = "." + formatted;
+            }
+            if (editable.length() > 2) {
+                String beforeDecimal = formatted.substring(0, formatted.length()-2);
+                String afterDecimal = formatted.substring(formatted.length()-2, formatted.length());
+                formatted = beforeDecimal + "." + afterDecimal;
+            }
+            editText.setText(formatted);
+            editText.setSelection(formatted.length());
+            editText.addTextChangedListener(this);
+        }
+    }
+
     public void sendBackResultChangeModifier(int amount, int modifierType) {
         CreateModifierDialogListener listener = (CreateModifierDialogListener) getTargetFragment();
-        listener.onFinishChangeModifierDialog(amount, modifierType);
+        listener.onFinishChangeModifierDialog(amount, modifierType, mIsPercent);
         dismiss();
     }
 

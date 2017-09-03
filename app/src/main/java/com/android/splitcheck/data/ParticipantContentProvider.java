@@ -116,7 +116,7 @@ public class ParticipantContentProvider extends ContentProvider {
 
         switch (match) {
             case PARTICIPANT:
-                participantsDeleted = db.delete(ParticipantEntry.TABLE_NAME, null, null);
+                participantsDeleted = db.delete(ParticipantEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case PARTICIPANT_WITH_ID:
                 String id = uri.getPathSegments().get(1);

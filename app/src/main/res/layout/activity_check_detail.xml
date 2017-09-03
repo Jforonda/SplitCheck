@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,10 +14,9 @@
             android:id="@+id/edit_check_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:elevation="@dimen/app_bar_layout_elevation">
-
-        </android.support.v7.widget.Toolbar>
-        <!--app:layout_scrollFlags="scroll|enterAlways"-->
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:elevation="@dimen/app_bar_layout_elevation"/>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/pager_tabs"
@@ -30,7 +28,9 @@
             app:tabMode="fixed"
             app:tabGravity="fill"
             android:paddingBottom="4dp"
-            android:paddingTop="4dp"/>
+            android:paddingTop="4dp"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -43,8 +43,6 @@
 
     </android.support.v4.view.ViewPager>
 
-    <!--Add color to colors-->
-    <!--Add padding to dimens-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/edit_check_total_frame_height"

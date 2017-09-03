@@ -14,6 +14,28 @@
 
         <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textColor">@color/colorBlack</item>
+
+    </style>
+
+    <style name="CheckItemItem">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+    </style>
+
+    <style name="ModifierItem">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="ModifierOptionsItem">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
     </style>
 
 </resources>

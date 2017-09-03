@@ -292,9 +292,23 @@ public class Modifier {
         return NumberFormat.getCurrencyInstance().format(parsed);
     }
 
-    public String getFeesString() {
+    public String getTipString() {
+        BigDecimal parsed = new BigDecimal(String.valueOf(tip)).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        return NumberFormat.getCurrencyInstance().format(parsed);
+    }
 
+    public String getGratuityString(){
+        BigDecimal parsed = new BigDecimal(String.valueOf(gratuity)).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        return NumberFormat.getCurrencyInstance().format(parsed);
+    }
+
+    public String getFeesString() {
         BigDecimal parsed = new BigDecimal(String.valueOf(fees)).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
+        return NumberFormat.getCurrencyInstance().format(parsed);
+    }
+
+    public String getDiscountString() {
+        BigDecimal parsed = new BigDecimal(String.valueOf(discount)).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
         return NumberFormat.getCurrencyInstance().format(parsed);
     }
 

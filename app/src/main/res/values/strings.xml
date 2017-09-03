@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Split Check</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Account</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_create_check">New Check</string>
+    <string name="title_activity_participants">Search</string>
 
     <!--Google Sign In strings-->
     <string name="signed_in_fmt">Signed in as: %s</string>
@@ -15,15 +16,19 @@
     <string name="id_token_fmt">ID Token: %s</string>
     <string name="sign_out">Sign out</string>
     <string name="disconnect">Disconnect</string>
+    <string name="please_sign_in">Please sign in to start splitting checks!</string>
+    <string name="bypass_google_sign_in">Continue without Google login</string>
 
     <!--Menu strings-->
+    <string name="search">Search</string>
     <string name="settings">Settings</string>
-    <string name="log_in">Log In</string>
+    <string name="account">Account</string>
 
     <!--Action strings-->
     <string name="action_new_check">Add New Check</string>
     <string name="action_new_item">Add New Item</string>
     <string name="action_add_participant">Add Participant</string>
+    <string name="action_options">Options</string>
 
     <!--Settings strings-->
     <string name="pref_tax_label">Tax</string>
@@ -42,7 +47,7 @@
 
 
     <!--Strings For XML Below-->
-    <!--Strings for activity_check_detail.xmlml-->
+    <!--Strings for activity_check_detail.xml-->
     <string name="default_edit_check_name">Check name</string>
     <string name="default_edit_check_your_total">Your Total: $0.00</string>
     <string name="default_edit_check_subtotal">Subtotal: $0.00</string>
@@ -56,19 +61,19 @@
     <string name="delete_check_item">Delete</string>
 
     <!--Strings for check_item_item.xml-->
-    <string name="default_check_item_item_name">Check Item Name</string>
+    <string name="default_check_item_item_name">Item Name</string>
     <string name="default_check_item_item_cost">$0.00</string>
+    <string name="default_check_item_item_split">Name</string>
     <string name="edit_item_item">Edit</string>
     <string name="delete_item_item">Delete</string>
 
-    <!--String for check_total_item.xml-->
+    <!--String for participant_item.xml-->
+    <string name="delete_participant_item">Delete</string>
 
     <!--String for check_participant_item.xml-->
     <string name="default_check_participant_item_name">-First Last</string>
+    <string name="default_check_participant_item_total">Total</string>
     <string name="remove_participant_item">Remove</string>
-
-    <!--String for item_participant_item.xml-->
-    <string name="default_item_participant_name">-First Last</string>
 
     <!--Strings for fragment_check_detail_participants.xml-->
     <string name="empty_participants">There is currently no one in your group.
@@ -96,7 +101,7 @@
     <string name="dialog_check_name">Name</string>
     <!--Strings for fragment_create_participant_dialog.xml-->
     <string name="dialog_participant_first_name">First Name</string>
-    <string name="dialog_participant_last_name">Last Name(Optional)</string>
+    <string name="dialog_participant_last_name">Last Name</string>
     <!--Strings for fragment_change_modifier_dialog.xml-->
     <string name="dialog_modifier_amount">Amount</string>
 

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,7 @@ public class CheckDetailParticipantsFragment extends Fragment implements
         CheckParticipant checkParticipant = new CheckParticipant();
         mParticipants = checkParticipant.getListOfParticipantsFromDatabaseFromCheckId(getContext()
                 .getContentResolver(), mCheckId);
-        Toast.makeText(getActivity(), "Participants: " + mParticipants.size(), Toast.LENGTH_SHORT).show();
+        Log.v("CP",""+mParticipants.size());
         mCheckParticipantAdapter = new CheckParticipantAdapter(getContext(), mParticipants, mCheckId);
         mCheckParticipantAdapter.setOnParticipantRemovedListener(new CheckParticipantAdapter.OnCheckParticipantRemovedListener() {
             @Override
@@ -104,9 +105,7 @@ public class CheckDetailParticipantsFragment extends Fragment implements
 
     @Override
     public void onFinishAddParticipantDialog() {
-        // update UI
         updateUI();
-        // should show updated list of participants which were checked
     }
 
     @Override
@@ -122,7 +121,6 @@ public class CheckDetailParticipantsFragment extends Fragment implements
 
     @Override
     public void onFinishCreateParticipantDialog(String firstName, String lastName) {
-        // start create dialog again?
         FragmentManager fm = getActivity().getSupportFragmentManager();
         AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
                 "Add To Group:", mCheckId);

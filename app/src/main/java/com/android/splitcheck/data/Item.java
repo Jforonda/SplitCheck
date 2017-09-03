@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -20,6 +18,7 @@ public class Item implements Parcelable {
     private int id;
     private int checkId;
     private ArrayList<Integer> participantIds;
+
 
     public Item() {
 
@@ -190,7 +189,7 @@ public class Item implements Parcelable {
     public String getTotal(ContentResolver contentResolver, int checkId) {
         Modifier modifier = new Modifier(contentResolver, checkId);
         int subTotalAmount = getSubtotalAmount(contentResolver, checkId);
-        int totalAmount = 0, totalPercentage = 0;
+        /**int totalAmount = 0, totalPercentage = 0;
 
         if (modifier.getTaxPercent()) {
             totalPercentage += modifier.getTax();
@@ -213,17 +212,68 @@ public class Item implements Parcelable {
             totalAmount += modifier.getFees();
         }
         if (modifier.getDiscountPercent()) {
-            if (modifier.getDiscount() <= 100) {
+            if (modifier.getDiscount() >= 100) {
+                totalPercentage -= subTotalAmount;
+            } else {
                 totalPercentage -= modifier.getDiscount();
             }
         } else {
-            totalAmount +=  modifier.getDiscount();
+            if (modifier.getDiscount() >= subTotalAmount) {
+                totalAmount -= subTotalAmount;
+            } else {
+                totalAmount -= modifier.getDiscount();
+            }
         }
 
-        BigDecimal bigDecimalPercentage = new BigDecimal(subTotalAmount * totalPercentage).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
+        BigDecimal bigDecimalPercentage = new BigDecimal(subTotalAmount * totalPercentage).divide(new BigDecimal(10000), BigDecimal.ROUND_HALF_UP);
         BigDecimal bigDecimalAmount = new BigDecimal(totalAmount).add(bigDecimalPercentage);
         BigDecimal bigDecimalTotal = new BigDecimal(subTotalAmount).add(bigDecimalAmount).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
-        return "Total: " + NumberFormat.getCurrencyInstance().format(bigDecimalTotal);
+        return "Total: " + NumberFormat.getCurrencyInstance().format(bigDecimalTotal);**/
+        BigDecimal total = applyModifiers(contentResolver, checkId, subTotalAmount);
+        return "Total: " + NumberFormat.getCurrencyInstance().format(total);
+    }
+
+    public BigDecimal applyModifiers(ContentResolver contentResolver, int checkId, int subTotal) {
+        Modifier modifier = new Modifier(contentResolver, checkId);
+        int totalAmount = 0, totalPercentage = 0;
+        if (modifier.getTaxPercent()) {
+            totalPercentage += modifier.getTax();
+        } else {
+            totalAmount += modifier.getTax();
+        }
+        if (modifier.getTipPercent()) {
+            totalPercentage += modifier.getTip();
+        } else {
+            totalAmount += modifier.getTip();
+        }
+        if (modifier.getGratuityPercent()) {
+            totalPercentage += modifier.getGratuity();
+        } else {
+            totalAmount += modifier.getGratuity();
+        }
+        if (modifier.getFeesPercent()) {
+            totalPercentage += modifier.getFees();
+        } else {
+            totalAmount += modifier.getFees();
+        }
+        if (modifier.getDiscountPercent()) {
+            if (modifier.getDiscount() >= 100) {
+                totalPercentage -= subTotal;
+            } else {
+                totalPercentage -= modifier.getDiscount();
+            }
+        } else {
+            if (modifier.getDiscount() >= subTotal) {
+                totalAmount -= subTotal;
+            } else {
+                totalAmount -= modifier.getDiscount();
+            }
+        }
+        BigDecimal bigDecimalPercentage = new BigDecimal(subTotal * totalPercentage).divide(new BigDecimal(10000), BigDecimal.ROUND_HALF_UP);
+        BigDecimal bigDecimalAmount = new BigDecimal(totalAmount).add(bigDecimalPercentage);
+        BigDecimal bigDecimalTotal = new BigDecimal(subTotal).add(bigDecimalAmount).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
+
+        return bigDecimalTotal;
     }
 
     public int getSubtotalAmount(ContentResolver contentResolver, int checkId) {

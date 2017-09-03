@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_layout_item_item"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:background="@drawable/shape_border"
-    android:padding="@dimen/linear_layout_padding">
+    android:layout_height="@dimen/check_item_item_height"
+    android:background="@drawable/shape_border">
 
     <FrameLayout
         android:id="@+id/frame_layout_item_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/text_view_item_name"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/text_padding"
-            android:layout_gravity="center_vertical"
-            android:text="@string/default_check_item_item_name"/>
+            android:layout_gravity="center_vertical">
 
-        <ListView
-            android:id="@+id/list_view_item_participants"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:id="@+id/text_view_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/check_item_item_text_name"
+                android:textStyle="bold"
+                android:text="@string/default_check_item_item_name"
+
+                style="@style/CheckItemItem"/>
+
+            <TextView
+                android:id="@+id/text_view_item_split"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/check_item_item_text_sub"
+                android:textColor="@color/colorGray"
+                android:text="@string/default_check_item_item_split"
+
+                style="@style/CheckItemItem"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -36,6 +50,7 @@
                 android:id="@+id/text_view_item_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:padding="@dimen/text_padding"
                 android:text="@string/default_check_item_item_cost"/>
 
@@ -44,17 +59,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/text_padding"
-                android:src="@drawable/ic_more_vert_black_24dp"/>
+                android:src="@drawable/ic_more_vert_black_24dp"
+
+                android:contentDescription="@string/action_options"/>
 
         </LinearLayout>
 
     </FrameLayout>
-
-    <View
-        android:visibility="gone"
-        android:id="@+id/separator_check_item_item"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider_color"/>
 
 </LinearLayout>

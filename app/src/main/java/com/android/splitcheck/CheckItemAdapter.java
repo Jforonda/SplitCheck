@@ -1,11 +1,17 @@
 package com.android.splitcheck;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,12 +31,13 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+
 public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.ViewHolder> {
     static ArrayList<Item> mItems;
     static ArrayList<ItemParticipant> mItemParticipants;
     static Context mContext;
     private OnCheckItemClickedListener listener;
-    private CheckItemParticipantAdapter mCheckItemParticipantAdapter;
 
     public interface OnCheckItemClickedListener {
         void onCheckItemClickedListener(int itemId, String itemName);
@@ -45,9 +52,9 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
         @BindView(R.id.text_view_item_name) TextView mNameTextView;
         @BindView(R.id.text_view_item_cost) TextView mCostTextView;
         @BindView(R.id.options_icon_check_item_item) ImageView mOptionsImageView;
+        @BindView(R.id.linear_layout_item_item) LinearLayout mLinearLayout;
         @BindView(R.id.frame_layout_item_item) FrameLayout mFrameLayout;
-        @BindView(R.id.list_view_item_participants) ListView mListView;
-        public LinearLayout mLinearLayout;
+        @BindView(R.id.text_view_item_split) TextView mSplitTextView;
         public ViewHolder(LinearLayout v) {
             super(v);
             ButterKnife.bind(this, v);
@@ -60,19 +67,39 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            int currentItemId = mItems.get(getAdapterPosition()).getId();
-                            String currentItemName = mItems.get(getAdapterPosition()).getName();
+                            final int currentItemId = mItems.get(getAdapterPosition()).getId();
+                            final String currentItemName = mItems.get(getAdapterPosition()).getName();
                             int currentItemCost = mItems.get(getAdapterPosition()).getCost();
                             switch (item.getItemId()) {
                                 case R.id.item_item_edit:
                                     listener.onCheckItemEditListener(currentItemId, currentItemName, currentItemCost);
                                     return true;
                                 case R.id.item_item_delete:
-                                    removeItemById(currentItemId);
-                                    removeAt(getAdapterPosition());
-                                    Snackbar
-                                            .make(v, currentItemName + " Deleted", Snackbar.LENGTH_LONG)
-                                            .show();
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                                    alertDialogBuilder.setTitle("Are you sure?");
+                                    alertDialogBuilder.setMessage("Delete " + currentItemName);
+                                    alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            removeItemById(currentItemId);
+                                            removeAt(getAdapterPosition());
+
+                                            Snackbar snackbar = Snackbar.make(v, currentItemName + " Deleted", Snackbar.LENGTH_LONG);
+                                            View sbView = snackbar.getView();
+                                            sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                                            TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                                            tv.setTextColor(Color.WHITE);
+                                            snackbar.show();
+                                        }
+                                    });
+                                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    alertDialogBuilder.create();
+                                    alertDialogBuilder.show();
                                     return true;
                                 default:
                                     return false;
@@ -109,7 +136,7 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Item currentItem = mItems.get(position);
         holder.mNameTextView.setText(currentItem.getName());
         holder.mCostTextView.setText(currentItem.getCostAsString());
@@ -125,8 +152,14 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
                 }
             }
         }
-        mCheckItemParticipantAdapter = new CheckItemParticipantAdapter(mContext, checkedParticipants);
-        holder.mListView.setAdapter(mCheckItemParticipantAdapter);
+        if (checkedParticipants.size() == 1) {
+            holder.mSplitTextView.setText(checkedParticipants.get(0).getParticipantName());
+        } else if (checkedParticipants.size() > 1) {
+            String split = "Split X " +  String.valueOf(checkedParticipants.size());
+            holder.mSplitTextView.setText(split);
+        } else {
+            holder.mSplitTextView.setVisibility(GONE);
+        }
     }
 
     @Override

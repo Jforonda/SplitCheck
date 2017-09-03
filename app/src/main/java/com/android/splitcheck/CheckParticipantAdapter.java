@@ -1,8 +1,12 @@
 package com.android.splitcheck;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,18 +59,42 @@ public class CheckParticipantAdapter extends
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            int currentParticipantId = mParticipants.get(getAdapterPosition()).getId();
-                            String currentParticipantName = mParticipants
+                            final int currentParticipantId = mParticipants.get(getAdapterPosition()).getId();
+                            final String currentParticipantName = mParticipants
                                     .get(getAdapterPosition()).getFirstName() + " " +
                                     mParticipants.get(getAdapterPosition()).getLastName();
                             switch (item.getItemId()) {
                                 case R.id.participant_item_delete:
-                                    removeParticipantById(currentParticipantId);
-                                    removeAt(getAdapterPosition());
-                                    Snackbar
-                                            .make(v, currentParticipantName + " Removed", Snackbar.LENGTH_LONG)
-                                            .show();
-                                    listener.onCheckParticipantRemoved();
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                                    alertDialogBuilder.setTitle("Are you sure?");
+                                    alertDialogBuilder.setMessage("Remove " + currentParticipantName);
+                                    alertDialogBuilder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            removeParticipantById(currentParticipantId);
+                                            removeAt(getAdapterPosition());
+
+                                            Snackbar snackbar = Snackbar.make(v, currentParticipantName + " Removed", Snackbar.LENGTH_LONG);
+                                            View sbView = snackbar.getView();
+                                            sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                                            TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                                            tv.setTextColor(Color.WHITE);
+                                            snackbar.show();
+
+                                            listener.onCheckParticipantRemoved();
+                                        }
+                                    });
+                                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    alertDialogBuilder.create();
+                                    alertDialogBuilder.show();
+
+
+
                                     return true;
                                 default:
                                     return false;
@@ -100,9 +128,9 @@ public class CheckParticipantAdapter extends
         String participantName = currentParticipant.getFirstName() + " " + currentParticipant.getLastName();
         holder.mNameTextView.setText(participantName);
         ItemParticipant itemParticipant = new ItemParticipant();
-        String participantTotal = itemParticipant.getParticipantTotal(mContext.getContentResolver(), mCheckId, currentParticipant.getId());
+        CheckParticipant checkParticipant = new CheckParticipant();
+        String participantTotal = checkParticipant.getParticipantTotalWithModifier(mContext.getContentResolver(), mCheckId, currentParticipant.getId());
         holder.mTotalTextView.setText(participantTotal);
-        holder.mOptionsImageView.setColorFilter(R.color.colorBlack);
     }
 
     @Override

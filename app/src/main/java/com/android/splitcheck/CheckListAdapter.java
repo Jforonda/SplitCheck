@@ -1,9 +1,14 @@
 package com.android.splitcheck;
 
+import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -54,20 +59,39 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            int currentCheckId = mChecks.get(getAdapterPosition()).getId();
-                            String currentCheckName = mChecks.get(getAdapterPosition()).getName();
+                            final int currentCheckId = mChecks.get(getAdapterPosition()).getId();
+                            final String currentCheckName = mChecks.get(getAdapterPosition()).getName();
                             switch (item.getItemId()) {
                                 case R.id.check_item_edit:
                                     listener.onCheckItemEditClickedListener(currentCheckName,
                                             currentCheckId);
                                     return true;
                                 case R.id.check_item_delete:
-                                    //TODO Check: Confirm Delete Item
-                                    deleteCheckById(currentCheckId);
-                                    removeAt(getAdapterPosition());
-                                    Snackbar
-                                            .make(v, currentCheckName + " Deleted", Snackbar.LENGTH_LONG)
-                                            .show();
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                                    alertDialogBuilder.setTitle("Are you sure?");
+                                    alertDialogBuilder.setMessage("Delete " + currentCheckName + " ?");
+                                    alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            deleteCheckById(currentCheckId);
+                                            removeAt(getAdapterPosition());
+                                            Snackbar snackbar = Snackbar.make(v, currentCheckName + " Deleted", Snackbar.LENGTH_LONG);
+                                            View sbView = snackbar.getView();
+                                            sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                                            TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                                            tv.setTextColor(Color.WHITE);
+                                            snackbar.show();
+                                        }
+                                    });
+                                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    alertDialogBuilder.create();
+                                    alertDialogBuilder.show();
+
                                     return true;
                                 default:
                                     return false;
@@ -85,7 +109,8 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                             CheckDetailActivity.class);
                     intentToStartEditCheckActivity.putExtra("checkId",
                             mChecks.get(getAdapterPosition()).getId());
-                    mContext.startActivity(intentToStartEditCheckActivity);
+                    ActivityOptions options = ActivityOptions.makeCustomAnimation(mContext, R.animator.anim_enter_left, R.animator.anim_exit_right);
+                    mContext.startActivity(intentToStartEditCheckActivity, options.toBundle());
                 }
             });
         }

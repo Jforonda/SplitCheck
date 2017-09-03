@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.android.splitcheck.data.Modifier;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,18 +106,22 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
 
     private void setUpTaxView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getTaxPercent();
-        mTextViewTax.setText(String.valueOf(mModifier.getTax()));
-        mImageViewTax.setColorFilter(R.color.colorBlack);
+        if (isPercent) {
+            String tax = String.valueOf(mModifier.getTax());
+            mTextViewTax.setText(percentAsString(tax));
+        } else {
+            mTextViewTax.setText(mModifier.getTaxString());
+        }
         mImageViewTax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Change the amount, open dialog?
-                Toast.makeText(getContext(), "Changing tax: " + String.valueOf(mModifier.getTipPercent()), Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                        "Tax", mCheckId, 0, mModifier.getTax(), mModifier.getTaxPercent());
-                changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-                changeModifierFragment.show(fm, "Tax");
+                startTaxDialog();
+            }
+        });
+        mTextViewTax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTaxDialog();
             }
         });
         mSpinnerTaxPercent.setAdapter(adapter);
@@ -126,15 +132,15 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
                 switch (position) {
                     case 0:
                         modifier.updateTaxPercent(contentResolver, mCheckId, false);
+                        modifier.updateTax(contentResolver, mCheckId, 0);
                         mModifier.setTaxPercent(false);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Dollars", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         modifier.updateTaxPercent(contentResolver, mCheckId, true);
+                        modifier.updateTax(contentResolver, mCheckId, 0);
                         mModifier.setTaxPercent(true);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Percent", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -150,18 +156,22 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
 
     private void setUpTipView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getTipPercent();
-        mTextViewTip.setText(String.valueOf(mModifier.getTip()));
-        mImageViewTip.setColorFilter(R.color.colorBlack);
+        if (isPercent) {
+            String tip = String.valueOf(mModifier.getTip());
+            mTextViewTip.setText(percentAsString(tip));
+        } else {
+            mTextViewTip.setText(mModifier.getTipString());
+        }
         mImageViewTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Change the amount, open dialog?
-                Toast.makeText(getContext(), "Changing tip", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                        "Tip", mCheckId, 1, mModifier.getTip(), mModifier.getTipPercent());
-                changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-                changeModifierFragment.show(fm, "Tax");
+                startTipDialog();
+            }
+        });
+        mTextViewTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTipDialog();
             }
         });
         mSpinnerTipPercent.setAdapter(adapter);
@@ -172,15 +182,15 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
                 switch (position) {
                     case 0:
                         modifier.updateTipPercent(contentResolver, mCheckId, false);
+                        modifier.updateTip(contentResolver, mCheckId, 0);
                         mModifier.setTipPercent(false);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Dollars", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         modifier.updateTipPercent(contentResolver, mCheckId, true);
+                        modifier.updateTip(contentResolver, mCheckId, 0);
                         mModifier.setTipPercent(true);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Percent", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -196,18 +206,22 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
 
     private void setUpGratuityView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getGratuityPercent();
-        mTextViewGratuity.setText(String.valueOf(mModifier.getGratuity()));
-        mImageViewGratuity.setColorFilter(R.color.colorBlack);
+        if (isPercent) {
+            String gratuity = String.valueOf(mModifier.getGratuity());
+            mTextViewGratuity.setText(percentAsString(gratuity));
+        } else {
+            mTextViewGratuity.setText(mModifier.getGratuityString());
+        }
         mImageViewGratuity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Change the amount, open dialog?
-                Toast.makeText(getContext(), "Changing gratuity", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                        "Gratuity", mCheckId, 2, mModifier.getGratuity(), mModifier.getGratuityPercent());
-                changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-                changeModifierFragment.show(fm, "Gratuity");
+                startGratuityDialog();
+            }
+        });
+        mTextViewGratuity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGratuityDialog();
             }
         });
         mSpinnerGratuityPercent.setAdapter(adapter);
@@ -218,15 +232,15 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
                 switch (position) {
                     case 0:
                         modifier.updateGratuityPercent(contentResolver, mCheckId, false);
+                        modifier.updateGratuity(contentResolver, mCheckId, 0);
                         mModifier.setGratuityPercent(false);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Dollars", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         modifier.updateGratuityPercent(contentResolver, mCheckId, true);
+                        modifier.updateGratuity(contentResolver, mCheckId, 0);
                         mModifier.setGratuityPercent(true);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Percent", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -243,21 +257,21 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
     private void setUpFeesView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getFeesPercent();
         if (isPercent) {
-            mTextViewFees.setText(String.valueOf(mModifier.getFees()));
+            String fees = String.valueOf(mModifier.getFees());
+            mTextViewFees.setText(percentAsString(fees));
         } else {
             mTextViewFees.setText(mModifier.getFeesString());
         }
-        mImageViewFees.setColorFilter(R.color.colorBlack);
         mImageViewFees.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Change the amount, open dialog?
-                Toast.makeText(getContext(), "Changing fees", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                        "Fees", mCheckId, 3, mModifier.getFees(), mModifier.getFeesPercent());
-                changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-                changeModifierFragment.show(fm, "Fees");
+                startFeesDialog();
+            }
+        });
+        mTextViewFees.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startFeesDialog();
             }
         });
         mSpinnerFeesPercent.setAdapter(adapter);
@@ -268,15 +282,15 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
                 switch (position) {
                     case 0:
                         modifier.updateFeesPercent(contentResolver, mCheckId, false);
+                        modifier.updateFees(contentResolver, mCheckId, 0);
                         mModifier.setFeesPercent(false);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Dollars", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         modifier.updateFeesPercent(contentResolver, mCheckId, true);
+                        modifier.updateFees(contentResolver, mCheckId, 0);
                         mModifier.setFeesPercent(true);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Percent", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -292,18 +306,28 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
 
     private void setUpDiscountView(final Modifier modifier, final ContentResolver contentResolver, ArrayAdapter<CharSequence> adapter) {
         boolean isPercent = mModifier.getDiscountPercent();
-        mTextViewDiscount.setText(String.valueOf(mModifier.getDiscount()));
-        mImageViewDiscount.setColorFilter(R.color.colorBlack);
+        if (isPercent) {
+            String discount = String.valueOf(mModifier.getDiscount());
+            mTextViewDiscount.setText(percentAsString(discount));
+        } else {
+            mTextViewDiscount.setText(mModifier.getDiscountString());
+        }
         mImageViewDiscount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Change the amount, open dialog?
-                Toast.makeText(getContext(), "Changing discount", Toast.LENGTH_SHORT).show();
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                        "Discount", mCheckId, 4, mModifier.getDiscount(), mModifier.getDiscountPercent());
-                changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-                changeModifierFragment.show(fm, "Discount");
+                startDiscountDialog();
+            }
+        });
+        mTextViewDiscount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDiscountDialog();
+            }
+        });
+        mTextViewDiscount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDiscountDialog();
             }
         });
         mSpinnerDiscountPercent.setAdapter(adapter);
@@ -314,15 +338,15 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
                 switch (position) {
                     case 0:
                         modifier.updateDiscountPercent(contentResolver, mCheckId, false);
+                        modifier.updateDiscount(contentResolver, mCheckId, 0);
                         mModifier.setDiscountPercent(false);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Dollars", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         modifier.updateDiscountPercent(contentResolver, mCheckId, true);
+                        modifier.updateDiscount(contentResolver, mCheckId, 0);
                         mModifier.setDiscountPercent(true);
                         listener.onChangeModifier();
-                        Toast.makeText(getContext(), "Percent", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -337,29 +361,116 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
     }
 
     @Override
-    public void onFinishChangeModifierDialog(int amount, int modifierType) {
+    public void onFinishChangeModifierDialog(int amount, int modifierType, boolean isPercent) {
         // Callback From Dialog, Updates text when changing amount
-        switch (modifierType) {
-            case 0:
-                mTextViewTax.setText(String.valueOf(amount));
-                break;
-            case 1:
-                mTextViewTip.setText(String.valueOf(amount));
-                break;
-            case 2:
-                mTextViewGratuity.setText(String.valueOf(amount));
-                break;
-            case 3:
-                mTextViewFees.setText(String.valueOf(amount));
-                break;
-            case 4:
-                mTextViewDiscount.setText(String.valueOf(amount));
-                break;
-            default:
-                break;
+        if (isPercent) {
+            switch (modifierType) {
+                case 0:
+                    mTextViewTax.setText(String.valueOf(amount));
+                    break;
+                case 1:
+                    mTextViewTip.setText(String.valueOf(amount));
+                    break;
+                case 2:
+                    mTextViewGratuity.setText(String.valueOf(amount));
+                    break;
+                case 3:
+                    mTextViewFees.setText(String.valueOf(amount));
+                    break;
+                case 4:
+                    mTextViewDiscount.setText(String.valueOf(amount));
+                    break;
+                default:
+                    break;
+            }
+            listener.onChangeModifier();
+        } else {
+            BigDecimal newAmount = new BigDecimal(amount).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
+            switch (modifierType) {
+                case 0:
+                    mTextViewTax.setText(NumberFormat.getCurrencyInstance().format(newAmount));
+                    break;
+                case 1:
+                    mTextViewTip.setText(NumberFormat.getCurrencyInstance().format(newAmount));
+                    break;
+                case 2:
+                    mTextViewGratuity.setText(NumberFormat.getCurrencyInstance().format(newAmount));
+                    break;
+                case 3:
+                    mTextViewFees.setText(NumberFormat.getCurrencyInstance().format(newAmount));
+                    break;
+                case 4:
+                    mTextViewDiscount.setText(NumberFormat.getCurrencyInstance().format(newAmount));
+                    break;
+                default:
+                    break;
+            }
+            listener.onChangeModifier();
         }
-        listener.onChangeModifier();
-        // TODO Modifier: Fix dialog, showing old data
     }
 
+    private String percentAsString(String percent) {
+        if (percent.length() == 0) {
+            return "0";
+        } else if (percent.length() == 1) {
+            if (percent.contains("0")) {
+                return "0";
+            } else {
+                return ".0" + percent;
+            }
+        } else if (percent.length() == 2) {
+            return "." + percent;
+        } else if (percent.length() > 2) {
+            String beforeDecimal = percent.substring(0, percent.length()-2);
+            String afterDecimal = percent.substring(percent.length()-2, percent.length());
+            if (afterDecimal.endsWith("00")) {
+                return beforeDecimal;
+            } else if (afterDecimal.endsWith("0")) {
+                return beforeDecimal + "." + afterDecimal.charAt(0);
+            } else {
+                return beforeDecimal + "." + afterDecimal;
+            }
+        }
+        return "";
+    }
+
+    private void startTaxDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
+                "Tax", mCheckId, 0, mModifier.getTax(), mModifier.getTaxPercent());
+        changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
+        changeModifierFragment.show(fm, "Tax");
+    }
+
+    private void startTipDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
+                "Tip", mCheckId, 1, mModifier.getTip(), mModifier.getTipPercent());
+        changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
+        changeModifierFragment.show(fm, "Tax");
+    }
+
+    private void startGratuityDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
+                "Gratuity", mCheckId, 2, mModifier.getGratuity(), mModifier.getGratuityPercent());
+        changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
+        changeModifierFragment.show(fm, "Gratuity");
+    }
+
+    private void startFeesDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
+                "Fees", mCheckId, 3, mModifier.getFees(), mModifier.getFeesPercent());
+        changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
+        changeModifierFragment.show(fm, "Fees");
+    }
+
+    private void startDiscountDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
+                "Discount", mCheckId, 4, mModifier.getDiscount(), mModifier.getDiscountPercent());
+        changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
+        changeModifierFragment.show(fm, "Discount");
+    }
 }

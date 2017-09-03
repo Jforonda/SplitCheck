@@ -15,7 +15,8 @@
             android:id="@+id/check_list_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         </android.support.v7.widget.Toolbar>
 
@@ -35,16 +36,11 @@
 
         android:contentDescription="@string/action_new_check"/>
 
-    <android.support.v4.widget.NestedScrollView
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_check_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_check_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </android.support.v4.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

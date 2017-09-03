@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#09C"
+    android:padding="@dimen/widget_margin">
+
+    <FrameLayout
+        android:id="@+id/appwidget_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:background="#09C"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/linear_layout_padding">
+
+            <TextView
+                android:id="@+id/widget_title_check_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_check_item_name"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/widget_date_time_check_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_check_item_date_time"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/widget_total_check_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end|right"
+            android:textSize="16sp"
+            android:padding="@dimen/text_padding"
+            android:text="@string/default_check_item_total"/>
+
+        </FrameLayout>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.android.splitcheck;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
@@ -26,6 +27,7 @@ public class CreateParticipantFragment extends DialogFragment {
 
     private TextInputLayout mTextInputLayoutFirstName;
     private TextInputLayout mTextInputLayoutLastName;
+    CreateParticipantDialogListener listener;
 
     private Context mContext;
 
@@ -43,6 +45,16 @@ public class CreateParticipantFragment extends DialogFragment {
 
     public interface CreateParticipantDialogListener {
         void onFinishCreateParticipantDialog(String firstName, String lastName);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getTargetFragment() != null) {
+            listener = (CreateParticipantDialogListener) getTargetFragment();
+        } else {
+            listener = (CreateParticipantDialogListener) context;
+        }
     }
 
     @Nullable
@@ -98,8 +110,6 @@ public class CreateParticipantFragment extends DialogFragment {
     }
 
     public void sendBackResultParticipantCreated(String firstName, String lastName, int participantId) {
-        // Add another?
-        CreateParticipantDialogListener listener = (CreateParticipantDialogListener) getTargetFragment();
         listener.onFinishCreateParticipantDialog(firstName, lastName);
         dismiss();
     }

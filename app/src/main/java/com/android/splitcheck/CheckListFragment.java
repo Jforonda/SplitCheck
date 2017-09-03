@@ -45,12 +45,10 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
         View rootView = inflater.inflate(R.layout.fragment_check_list, container, false);
 
         // Handle Add Check Fab
-        mFloatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_check_fab);
+        mFloatingActionButton = ButterKnife.findById(rootView, R.id.add_check_fab);
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start Dialog for new Check
-                //TODO Check: Move to its own method
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 CreateCheckFragment createCheckFragment = CreateCheckFragment
                         .newInstance("Check Information");
@@ -62,14 +60,13 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
         mToolbar = ButterKnife.findById(rootView, R.id.check_list_toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
         mRecyclerView = ButterKnife.findById(rootView, R.id.recycler_view_check_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         Check check = new Check();
         mChecks = check.getListOfChecks(getContext().getContentResolver());
         mCheckListAdapter = new CheckListAdapter(getActivity(), mChecks);
         mCheckListAdapter.setOnCheckItemEditClickedListener(new CheckListAdapter.OnCheckItemEditClickedListener() {
             @Override
             public void onCheckItemEditClickedListener(String checkName, int checkId) {
-                Toast.makeText(getContext(), ""+checkId, Toast.LENGTH_SHORT).show();
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 EditCheckFragment editCheckFragment = EditCheckFragment
                         .newInstance("Update Check Information", checkName, checkId);
@@ -87,6 +84,7 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
                 }
             }
         });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mCheckListAdapter);
 
         return rootView;
@@ -119,9 +117,6 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
 
     @Override
     public void onFinishCreateDialog(String checkName, int checkId) {
-        // Called after Dialog successfully creates check
-        Toast.makeText(getContext(), "Created " + checkName
-                + "\nID: " + checkId, Toast.LENGTH_SHORT).show();
         updateUI();
 
         Intent intentToStartEditCheckActivity = new Intent(getActivity(),

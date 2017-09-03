@@ -73,7 +73,6 @@ public class AddParticipantFragment extends DialogFragment {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
-        // TODO Participant: List by Most Frequent?
         CheckParticipant checkParticipant = new CheckParticipant();
         final ArrayList<Participant> participants;
         ArrayList<Integer> participantIds = new ArrayList<>();
@@ -94,9 +93,6 @@ public class AddParticipantFragment extends DialogFragment {
             participantIds.add(participantId);
         }
 
-        final CharSequence[] items = {"Test1", "Test2", "Test3", "Test4",
-            "Name 1", "Name 2", "Name 3", "Name 4"};
-
         final ArrayList<Integer> addedParticipants = new ArrayList<>();
         alertDialogBuilder.setMultiChoiceItems(charSequenceParticipants, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
@@ -112,15 +108,13 @@ public class AddParticipantFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!addedParticipants.isEmpty()) {
-                    // TODO Participant: Add Participants to CheckParticipant DB
                     for (int i = 0; i < addedParticipants.size(); i++) {
                         createCheckParticipant(mCheckId, addedParticipants.get(i));
                         createItemParticipant(mCheckId, addedParticipants.get(i), charSequenceParticipants[i].toString());
                     }
                     sendBackResultParticipantAdded();
-                    Toast.makeText(mContext, "Selected: " + addedParticipants.size(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(mContext, "None Selected.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "No one added", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -159,11 +153,6 @@ public class AddParticipantFragment extends DialogFragment {
         Item item = new Item();
         ContentResolver contentResolver = getActivity().getContentResolver();
         ArrayList<Item> items = item.getListOfItemsFromDatabaseFromCheckId(contentResolver, mCheckId);
-        if (items.size() == 0) {
-            Toast.makeText(mContext, "No Items", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(mContext, "Adding Ips", Toast.LENGTH_SHORT).show();
-        }
         for (int i = 0; i < items.size(); i++) {
             Item currentItem = items.get(i);
             Uri uri = itemParticipant.addToDb(getActivity().getContentResolver(), checkId, currentItem.getId(), participantId, participantName);

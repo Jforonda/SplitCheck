@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -102,20 +103,51 @@ public class Participant implements Parcelable {
 
     // Database Handler
 
+    public String addSelf(ContentResolver contentResolver, String firstName, String lastName) {
+        Uri uri = ParticipantContract.ParticipantEntry.CONTENT_URI;
+        Cursor c = contentResolver.query(uri, null, ParticipantContract.ParticipantEntry._ID + " = 1", null, null);
+        ContentValues contentValues = new ContentValues();
+        if (c.getCount() == 1) {
+            contentValues.put(ParticipantContract.ParticipantEntry.FIRST_NAME,
+                    firstName);
+            contentValues.put(ParticipantContract.ParticipantEntry.LAST_NAME,
+                    lastName);
+            contentResolver.update(uri, contentValues, ParticipantContract.ParticipantEntry._ID + " = 1", null);
+            return "Updated";
+        } else if (c.getCount() == 0) {
+            contentValues.put(ParticipantContract.ParticipantEntry._ID, 1);
+            contentValues.put(ParticipantContract.ParticipantEntry.FIRST_NAME,
+                    firstName);
+            contentValues.put(ParticipantContract.ParticipantEntry.LAST_NAME,
+                    lastName);
+            contentResolver.insert(uri, contentValues);
+            return "Inserted";
+        }
+        return "Error";
+    }
+
+    public boolean selfHasBeenAdded(ContentResolver contentResolver) {
+        Uri uri = ParticipantContract.ParticipantEntry.CONTENT_URI;
+        Cursor c = contentResolver.query(uri, null, ParticipantContract.ParticipantEntry._ID + " = 1", null, null);
+        if (c.getCount() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public Uri addToDatabase(ContentResolver contentResolver, String firstName, String lastName) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ParticipantContract.ParticipantEntry.FIRST_NAME,
                 firstName);
         contentValues.put(ParticipantContract.ParticipantEntry.LAST_NAME,
                 lastName);
-        Uri uri = contentResolver.insert(ParticipantContract.ParticipantEntry.CONTENT_URI,
+        return contentResolver.insert(ParticipantContract.ParticipantEntry.CONTENT_URI,
                 contentValues);
-        return uri;
     }
 
     public ArrayList<Participant> getListOfParticipantsFromDatabase(ContentResolver
                                                                                contentResolver) {
-        // Get full list of Database (Sort by number of uses?)
         Uri uri = ParticipantContract.ParticipantEntry.CONTENT_URI;
         Cursor c = contentResolver.query(uri, null, null, null, null);
         ArrayList<Participant> participants = new ArrayList<>();
@@ -134,5 +166,18 @@ public class Participant implements Parcelable {
             }
         }
         return participants;
+    }
+
+    public void deleteParticipant(ContentResolver contentResolver, int participantId) {
+        Uri participantUri = ParticipantContract.ParticipantEntry.CONTENT_URI;
+        contentResolver.delete(participantUri, ParticipantContract.ParticipantEntry._ID + " = " + String.valueOf(participantId), null);
+
+        Uri checkParticipantUri = CheckParticipantContract.CheckParticipantEntry.CONTENT_URI;
+        int cp = contentResolver.delete(checkParticipantUri, CheckParticipantContract.CheckParticipantEntry.PARTICIPANT_ID + " = " + String.valueOf(participantId), null);
+        Log.v("DELETED CP: ", ""+cp);
+
+        Uri itemParticipantUri = ItemParticipantContract.ItemParticipantEntry.CONTENT_URI;
+        int ip = contentResolver.delete(itemParticipantUri, ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_ID + " = " + String.valueOf(participantId), null);
+        Log.v("DELETED IP: ", ""+ip);
     }
 }

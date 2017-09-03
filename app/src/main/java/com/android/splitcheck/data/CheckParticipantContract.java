@@ -22,5 +22,6 @@ public class CheckParticipantContract {
         public static final String _ID = "_id";
         public static final String CHECK_ID = "check_id";
         public static final String PARTICIPANT_ID = "participant_id";
+        public static final String TOTAL = "total";
     }
 }

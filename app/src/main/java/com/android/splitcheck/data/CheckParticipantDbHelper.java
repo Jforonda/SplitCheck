@@ -21,7 +21,8 @@ public class CheckParticipantDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_CHECK_PARTICIPANT_TABLE = "CREATE TABLE " +
                 CheckParticipantEntry.TABLE_NAME + " (" +
                 CheckParticipantEntry.CHECK_ID + " INTEGER NOT NULL," +
-                CheckParticipantEntry.PARTICIPANT_ID + " INTEGER NOT NULL)";
+                CheckParticipantEntry.PARTICIPANT_ID + " INTEGER NOT NULL," +
+                CheckParticipantEntry.TOTAL + " INTEGER NOT NULL)";
 
         db.execSQL(SQL_CREATE_CHECK_PARTICIPANT_TABLE);
 

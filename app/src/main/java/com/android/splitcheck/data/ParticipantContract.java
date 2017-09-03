@@ -22,5 +22,17 @@ public class ParticipantContract {
         public static final String _ID = "_id";
         public static final String FIRST_NAME = "first_name";
         public static final String LAST_NAME = "last_name";
+
+        public static Uri buildParticipantUri(long _id) {
+            return BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARTICIPANTS).appendPath(Long.toString(_id)).build();
+        }
+
+        public static Uri buildParticipantNameUri(String name) {
+            return BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARTICIPANTS)
+                    .appendPath(ParticipantContract.ParticipantEntry.FIRST_NAME
+                            + " LIKE \'%" + name + "%\' OR "
+                            + ParticipantContract.ParticipantEntry.LAST_NAME
+                            + " LIKE \'%" + name + "%'").build();
+        }
     }
 }

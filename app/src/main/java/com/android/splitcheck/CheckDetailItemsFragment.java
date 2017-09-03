@@ -2,6 +2,7 @@ package com.android.splitcheck;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Item;
 import com.android.splitcheck.data.ItemParticipant;
@@ -124,6 +123,25 @@ public class CheckDetailItemsFragment extends Fragment implements
             }
         });
         mRecyclerView.setAdapter(mCheckItemAdapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        mBundleRecyclerViewState = new Bundle();
+        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        mBundleRecyclerViewState.putParcelable(CHECK_ITEM_RECYCLER_STATE, listState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mBundleRecyclerViewState != null) {
+            Parcelable listState = mBundleRecyclerViewState.getParcelable(CHECK_ITEM_RECYCLER_STATE);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+        }
     }
 
     @Override

@@ -20,7 +20,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="@dimen/modifier_item_height">
 
                 <!--Tax-->
                 <TextView
@@ -33,23 +33,21 @@
 
                 <TextView
                     android:id="@+id/text_view_tax"
-                    android:layout_width="75dp"
+                    android:layout_width="@dimen/modifier_text_width"
                     android:layout_height="wrap_content"
-                    android:paddingRight="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_tax"
                     android:layout_toLeftOf="@+id/image_view_tax"
 
-                    android:text="@string/default_modifier_amount"/>
+                    android:text="@string/default_modifier_amount"
+
+                    style="@style/ModifierItem"/>
 
                 <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="@dimen/modifier_value_width"
+                    android:layout_height="@dimen/modifier_value_height"
+                    android:layout_marginTop="@dimen/modifier_value_margin_top"
                     android:layout_below="@+id/text_view_tax"
                     android:layout_toStartOf="@+id/image_view_tax"
                     android:layout_toLeftOf="@+id/image_view_tax"
@@ -59,16 +57,14 @@
                     android:id="@+id/image_view_tax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_tax"
                     android:layout_toLeftOf="@+id/spinner_tax"
                     android:src="@drawable/ic_more_vert_black_24dp"
 
-                    android:contentDescription="@string/modifier_tax"/>
+                    android:contentDescription="@string/modifier_tax"
+
+                    style="@style/ModifierOptionsItem"/>
 
                 <Spinner
                     android:id="@+id/spinner_tax"
@@ -88,7 +84,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="@dimen/modifier_item_height">
 
                 <!--Tip-->
                 <TextView
@@ -100,23 +96,21 @@
 
                 <TextView
                     android:id="@+id/text_view_tip"
-                    android:layout_width="75dp"
+                    android:layout_width="@dimen/modifier_text_width"
                     android:layout_height="wrap_content"
-                    android:paddingRight="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_tip"
                     android:layout_toLeftOf="@+id/image_view_tip"
 
-                    android:text="@string/default_modifier_amount"/>
+                    android:text="@string/default_modifier_amount"
+
+                    style="@style/ModifierItem"/>
 
                 <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="@dimen/modifier_value_width"
+                    android:layout_height="@dimen/modifier_value_height"
+                    android:layout_marginTop="@dimen/modifier_value_margin_top"
                     android:layout_below="@+id/text_view_tip"
                     android:layout_toStartOf="@+id/image_view_tip"
                     android:layout_toLeftOf="@+id/image_view_tip"
@@ -126,16 +120,14 @@
                     android:id="@+id/image_view_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_tip"
                     android:layout_toLeftOf="@+id/spinner_tip"
                     android:src="@drawable/ic_more_vert_black_24dp"
 
-                    android:contentDescription="@string/modifier_tip"/>
+                    android:contentDescription="@string/modifier_tip"
+
+                    style="@style/ModifierOptionsItem"/>
 
                 <Spinner
                     android:id="@+id/spinner_tip"
@@ -155,7 +147,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="@dimen/modifier_item_height">
 
                 <!--Gratuity-->
                 <TextView
@@ -167,23 +159,21 @@
 
                 <TextView
                     android:id="@+id/text_view_gratuity"
-                    android:layout_width="75dp"
+                    android:layout_width="@dimen/modifier_text_width"
                     android:layout_height="wrap_content"
-                    android:paddingRight="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_gratuity"
                     android:layout_toLeftOf="@+id/image_view_gratuity"
 
-                    android:text="@string/default_modifier_amount"/>
+                    android:text="@string/default_modifier_amount"
+
+                    style="@style/ModifierItem"/>
 
                 <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="@dimen/modifier_value_width"
+                    android:layout_height="@dimen/modifier_value_height"
+                    android:layout_marginTop="@dimen/modifier_value_margin_top"
                     android:layout_below="@+id/text_view_gratuity"
                     android:layout_toStartOf="@+id/image_view_gratuity"
                     android:layout_toLeftOf="@+id/image_view_gratuity"
@@ -193,16 +183,14 @@
                     android:id="@+id/image_view_gratuity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_gratuity"
                     android:layout_toLeftOf="@+id/spinner_gratuity"
                     android:src="@drawable/ic_more_vert_black_24dp"
 
-                    android:contentDescription="@string/modifier_gratuity"/>
+                    android:contentDescription="@string/modifier_gratuity"
+
+                    style="@style/ModifierOptionsItem"/>
 
                 <Spinner
                     android:id="@+id/spinner_gratuity"
@@ -222,7 +210,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="@dimen/modifier_item_height">
 
                 <!--Fees-->
                 <TextView
@@ -234,23 +222,21 @@
 
                 <TextView
                     android:id="@+id/text_view_fees"
-                    android:layout_width="75dp"
+                    android:layout_width="@dimen/modifier_text_width"
                     android:layout_height="wrap_content"
-                    android:paddingRight="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_fees"
                     android:layout_toLeftOf="@+id/image_view_fees"
 
-                    android:text="@string/default_modifier_amount"/>
+                    android:text="@string/default_modifier_amount"
+
+                    style="@style/ModifierItem"/>
 
                 <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="@dimen/modifier_value_width"
+                    android:layout_height="@dimen/modifier_value_height"
+                    android:layout_marginTop="@dimen/modifier_value_margin_top"
                     android:layout_below="@+id/text_view_fees"
                     android:layout_toStartOf="@+id/image_view_fees"
                     android:layout_toLeftOf="@+id/image_view_fees"
@@ -260,16 +246,14 @@
                     android:id="@+id/image_view_fees"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_fees"
                     android:layout_toLeftOf="@+id/spinner_fees"
                     android:src="@drawable/ic_more_vert_black_24dp"
 
-                    android:contentDescription="@string/modifier_fees"/>
+                    android:contentDescription="@string/modifier_fees"
+
+                    style="@style/ModifierOptionsItem"/>
 
                 <Spinner
                     android:id="@+id/spinner_fees"
@@ -289,7 +273,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp">
+                android:layout_height="@dimen/modifier_item_height">
 
                 <!--Discount-->
                 <TextView
@@ -301,23 +285,21 @@
 
                 <TextView
                     android:id="@+id/text_view_discount"
-                    android:layout_width="75dp"
+                    android:layout_width="@dimen/modifier_text_width"
                     android:layout_height="wrap_content"
-                    android:paddingRight="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:gravity="end"
                     android:layout_toStartOf="@+id/image_view_discount"
                     android:layout_toLeftOf="@+id/image_view_discount"
 
-                    android:text="@string/default_modifier_amount"/>
+                    android:text="@string/default_modifier_amount"
+
+                    style="@style/ModifierItem"/>
 
                 <View
-                    android:layout_width="50dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_width="@dimen/modifier_value_width"
+                    android:layout_height="@dimen/modifier_value_height"
+                    android:layout_marginTop="@dimen/modifier_value_margin_top"
                     android:layout_below="@+id/text_view_discount"
                     android:layout_toStartOf="@+id/image_view_discount"
                     android:layout_toLeftOf="@+id/image_view_discount"
@@ -327,16 +309,14 @@
                     android:id="@+id/image_view_discount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingLeft="0dp"
-                    android:paddingStart="0dp"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/spinner_discount"
                     android:layout_toLeftOf="@+id/spinner_discount"
                     android:src="@drawable/ic_more_vert_black_24dp"
 
-                    android:contentDescription="@string/modifier_discount"/>
+                    android:contentDescription="@string/modifier_discount"
+
+                    style="@style/ModifierOptionsItem"/>
 
                 <Spinner
                     android:id="@+id/spinner_discount"

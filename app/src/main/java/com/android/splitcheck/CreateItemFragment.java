@@ -99,14 +99,12 @@ public class CreateItemFragment extends DialogFragment {
         alertDialogBuilder.setView(promptView);
 
 
-        // TODO Item: If possible, gray out Positive Button when fields are empty
         alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Create Check and add to database if EditText is not empty
                 if (!editTextName.getText().toString().isEmpty()
                         && !editTextCost.getText().toString().isEmpty()) {
-                    //TODO Item: Handle Empty EditText. Snackbar warning?
                     String newItemName = editTextName.getText().toString();
                     String itemCost = editTextCost.getText().toString();
                     String parsedCost = itemCost.replaceAll("[$,.]","");

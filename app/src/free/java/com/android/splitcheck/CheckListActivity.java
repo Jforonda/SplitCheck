@@ -1,17 +1,19 @@
 package com.android.splitcheck;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.android.splitcheck.data.CheckContract;
+import com.android.splitcheck.data.Participant;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import butterknife.ButterKnife;
 
 public class CheckListActivity extends AppCompatActivity {
 
@@ -22,33 +24,28 @@ public class CheckListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
-
-        // Set up Fragment for Check List
-        /**mFragmentManager = getSupportFragmentManager();
-        mCheckListFragment = new CheckListFragment();
-        mFragmentManager.beginTransaction()
-                .add(R.id.fragment_check_list_container, mCheckListFragment)
-                .commit();**/
-
         if (savedInstanceState == null) {
             updateUI();
         }
-
-
-        Uri uri = CheckContract.CheckEntry.CONTENT_URI;
-        uri = uri.buildUpon().build();
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
-        if (c == null) {
-
-        } else {
-            Toast.makeText(this, "Checks: " + c.getCount(), Toast.LENGTH_SHORT).show();
+        Participant participant = new Participant();
+        if (!participant.selfHasBeenAdded(getContentResolver())) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(getBaseContext(), R.animator.anim_enter_left, R.animator.anim_exit_right);
+            startActivity(intent, options.toBundle());
         }
+
+        AdView mAdView = ButterKnife.findById(this, R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_check_list, menu);
+
         return true;
     }
 
@@ -56,13 +53,10 @@ public class CheckListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.settings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
             case R.id.log_in:
                 intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                ActivityOptions options = ActivityOptions.makeCustomAnimation(getBaseContext(), R.animator.anim_enter_left, R.animator.anim_exit_right);
+                startActivity(intent, options.toBundle());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -75,11 +69,5 @@ public class CheckListActivity extends AppCompatActivity {
         mFragmentManager.beginTransaction()
                 .add(R.id.fragment_check_list_container, mCheckListFragment)
                 .commit();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //updateUI();
     }
 }
