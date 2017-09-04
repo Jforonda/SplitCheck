@@ -11,9 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.CheckParticipant;
 import com.android.splitcheck.data.Participant;
@@ -68,9 +66,9 @@ public class CheckDetailParticipantsFragment extends Fragment implements
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
-                        "Add To Group:", mCheckId);
+                        getString(R.string.participant_add_to_group), mCheckId);
                 addParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
-                addParticipantFragment.show(fm, "Add To Group:");
+                addParticipantFragment.show(fm, getString(R.string.participant_add_to_group));
             }
         });
         updateUI();
@@ -80,13 +78,9 @@ public class CheckDetailParticipantsFragment extends Fragment implements
 
     private void updateUI() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        Participant participant = new Participant();
-//        mParticipants = participant.getListOfParticipantsFromDatabase(getContext()
-//                .getContentResolver());
         CheckParticipant checkParticipant = new CheckParticipant();
         mParticipants = checkParticipant.getListOfParticipantsFromDatabaseFromCheckId(getContext()
                 .getContentResolver(), mCheckId);
-        Log.v("CP",""+mParticipants.size());
         mCheckParticipantAdapter = new CheckParticipantAdapter(getContext(), mParticipants, mCheckId);
         mCheckParticipantAdapter.setOnParticipantRemovedListener(new CheckParticipantAdapter.OnCheckParticipantRemovedListener() {
             @Override
@@ -113,9 +107,9 @@ public class CheckDetailParticipantsFragment extends Fragment implements
         // fragment to start CreateParticipantFragment (Dialog)
         FragmentManager fm = getActivity().getSupportFragmentManager();
         CreateParticipantFragment createParticipantFragment = CreateParticipantFragment.newInstance(
-                "Create New Participant");
+                getString(R.string.participant_create_new));
         createParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
-        createParticipantFragment.show(fm, "Create New Participant");
+        createParticipantFragment.show(fm, getString(R.string.participant_create_new));
 
     }
 
@@ -123,8 +117,8 @@ public class CheckDetailParticipantsFragment extends Fragment implements
     public void onFinishCreateParticipantDialog(String firstName, String lastName) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         AddParticipantFragment addParticipantFragment = AddParticipantFragment.newInstance(
-                "Add To Group:", mCheckId);
+                getString(R.string.participant_add_to_group), mCheckId);
         addParticipantFragment.setTargetFragment(CheckDetailParticipantsFragment.this, 500);
-        addParticipantFragment.show(fm, "Add To Group:");
+        addParticipantFragment.show(fm, getString(R.string.participant_add_to_group));
     }
 }

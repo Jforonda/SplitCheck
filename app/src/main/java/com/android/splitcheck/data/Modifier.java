@@ -190,9 +190,8 @@ public class Modifier {
                 1);
         contentValues.put(ModifierContract.ModifierEntry.CHECK_ID,
                 checkId);
-        Uri uri = contentResolver.insert(ModifierContract.ModifierEntry.CONTENT_URI,
+        return contentResolver.insert(ModifierContract.ModifierEntry.CONTENT_URI,
                 contentValues);
-        return uri;
     }
 
     public int updateTax(ContentResolver contentResolver, int checkId, int tax) {

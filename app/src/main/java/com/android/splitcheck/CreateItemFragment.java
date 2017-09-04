@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.splitcheck.data.CheckParticipant;
@@ -64,20 +63,6 @@ public class CreateItemFragment extends DialogFragment {
         void onFinishCreateDialog(String itemName, int itemCost);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_item_dialog, container);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -93,16 +78,17 @@ public class CreateItemFragment extends DialogFragment {
         final EditText editTextCost = ButterKnife.findById(promptView, R.id.edit_text_item_cost);
         editTextCost.setKeyListener(DigitsKeyListener.getInstance());
         editTextCost.addTextChangedListener(new MoneyTextWatcher(editTextCost));
+        editTextName.setSelectAllOnFocus(true);
+        editTextCost.setSelectAllOnFocus(true);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
 
 
-        alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.item_create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Create Check and add to database if EditText is not empty
                 if (!editTextName.getText().toString().isEmpty()
                         && !editTextCost.getText().toString().isEmpty()) {
                     String newItemName = editTextName.getText().toString();
@@ -114,19 +100,23 @@ public class CreateItemFragment extends DialogFragment {
                     sendBackResult(newItemName, newItemCost);
                 } else if (editTextName.getText().toString().isEmpty()
                         && editTextCost.getText().toString().isEmpty()){
-                    Toast.makeText(mContext, "Error with input. No item added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.item_input_error, Toast.LENGTH_SHORT).show();
 
                 } else if (editTextName.getText().toString().isEmpty()
                         && !editTextCost.getText().toString().isEmpty()){
-                    Toast.makeText(mContext, "Error with input. No item added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.item_input_error, Toast.LENGTH_SHORT).show();
 
                 } else if (!editTextName.getText().toString().isEmpty()
                         && editTextCost.getText().toString().isEmpty()){
-                    Toast.makeText(mContext, "Error with input. No item added.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.item_input_error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        return alertDialogBuilder.create();
+
+        Dialog dialog = alertDialogBuilder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return dialog;
     }
 
     /**
@@ -156,7 +146,7 @@ public class CreateItemFragment extends DialogFragment {
             if (editText == null) return;
             String s = editable.toString();
             editText.removeTextChangedListener(this);
-            String cleanString = s.toString().replaceAll("[$,.]","");
+            String cleanString = s.replaceAll("[$,.]","");
             BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
             String formatted = NumberFormat.getCurrencyInstance().format(parsed);
             editText.setText(formatted);

@@ -1,6 +1,5 @@
 package com.android.splitcheck;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
@@ -57,19 +56,6 @@ public class CreateParticipantFragment extends DialogFragment {
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_participant_dialog, container);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -88,11 +74,13 @@ public class CreateParticipantFragment extends DialogFragment {
         final EditText editTextLastName = ButterKnife.findById(promptView,
                 R.id.edit_text_participant_last_name);
 
+        editTextFirstName.setSelectAllOnFocus(true);
+        editTextLastName.setSelectAllOnFocus(true);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
 
-        alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.participant_create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!editTextFirstName.getText().toString().isEmpty()
@@ -102,11 +90,15 @@ public class CreateParticipantFragment extends DialogFragment {
                     int newId = createParticipant(newFirstName, newLastName);
                     sendBackResultParticipantCreated(newFirstName, newLastName, newId);
                 } else {
-                    Toast.makeText(mContext, "Error with input. No participant added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.participant_input_error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        return alertDialogBuilder.create();
+
+        Dialog dialog = alertDialogBuilder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return dialog;
     }
 
     public void sendBackResultParticipantCreated(String firstName, String lastName, int participantId) {

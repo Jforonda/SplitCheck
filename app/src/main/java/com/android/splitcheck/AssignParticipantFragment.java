@@ -46,17 +46,6 @@ public class AssignParticipantFragment extends DialogFragment {
         void onFinishAssignParticipantDialog();
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_participant_dialog, container);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -86,7 +75,7 @@ public class AssignParticipantFragment extends DialogFragment {
                 }
             }
         });
-        alertDialogBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.participant_assign, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 for (int i = 0; i < mSelectedArray.length; i++) {

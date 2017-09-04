@@ -6,12 +6,9 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +16,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Item;
 import com.android.splitcheck.data.ItemParticipant;
@@ -36,7 +31,7 @@ import static android.view.View.GONE;
 public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.ViewHolder> {
     static ArrayList<Item> mItems;
     static ArrayList<ItemParticipant> mItemParticipants;
-    static Context mContext;
+    Context mContext;
     private OnCheckItemClickedListener listener;
 
     public interface OnCheckItemClickedListener {
@@ -76,15 +71,15 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
                                     return true;
                                 case R.id.item_item_delete:
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                                    alertDialogBuilder.setTitle("Are you sure?");
-                                    alertDialogBuilder.setMessage("Delete " + currentItemName);
-                                    alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                    alertDialogBuilder.setTitle(R.string.item_delete_confirmation_title);
+                                    alertDialogBuilder.setMessage(mContext.getString(R.string.item_delete_name, currentItemName));
+                                    alertDialogBuilder.setPositiveButton(R.string.item_delete, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             removeItemById(currentItemId);
                                             removeAt(getAdapterPosition());
 
-                                            Snackbar snackbar = Snackbar.make(v, currentItemName + " Deleted", Snackbar.LENGTH_LONG);
+                                            Snackbar snackbar = Snackbar.make(v, mContext.getString(R.string.item_deleted_name, currentItemName), Snackbar.LENGTH_LONG);
                                             View sbView = snackbar.getView();
                                             sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                                             TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -92,7 +87,7 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
                                             snackbar.show();
                                         }
                                     });
-                                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    alertDialogBuilder.setNegativeButton(R.string.item_delete_cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
@@ -131,8 +126,7 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
     public CheckItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.check_item_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
@@ -155,7 +149,7 @@ public class CheckItemAdapter extends RecyclerView.Adapter<CheckItemAdapter.View
         if (checkedParticipants.size() == 1) {
             holder.mSplitTextView.setText(checkedParticipants.get(0).getParticipantName());
         } else if (checkedParticipants.size() > 1) {
-            String split = "Split X " +  String.valueOf(checkedParticipants.size());
+            String split = mContext.getString(R.string.item_split_amount, String.valueOf(checkedParticipants.size()));
             holder.mSplitTextView.setText(split);
         } else {
             holder.mSplitTextView.setVisibility(GONE);

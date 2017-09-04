@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.CheckParticipant;
 import com.android.splitcheck.data.ItemParticipant;
@@ -66,15 +65,15 @@ public class CheckParticipantAdapter extends
                             switch (item.getItemId()) {
                                 case R.id.participant_item_delete:
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                                    alertDialogBuilder.setTitle("Are you sure?");
-                                    alertDialogBuilder.setMessage("Remove " + currentParticipantName);
-                                    alertDialogBuilder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                                    alertDialogBuilder.setTitle(R.string.participant_remove_confirmation_title);
+                                    alertDialogBuilder.setMessage(mContext.getString(R.string.participant_remove_name, currentParticipantName));
+                                    alertDialogBuilder.setPositiveButton(R.string.participant_remove, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             removeParticipantById(currentParticipantId);
                                             removeAt(getAdapterPosition());
 
-                                            Snackbar snackbar = Snackbar.make(v, currentParticipantName + " Removed", Snackbar.LENGTH_LONG);
+                                            Snackbar snackbar = Snackbar.make(v, mContext.getString(R.string.participant_removed_name, currentParticipantName), Snackbar.LENGTH_LONG);
                                             View sbView = snackbar.getView();
                                             sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                                             TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -84,7 +83,7 @@ public class CheckParticipantAdapter extends
                                             listener.onCheckParticipantRemoved();
                                         }
                                     });
-                                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    alertDialogBuilder.setNegativeButton(R.string.participant_remove_cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
@@ -118,8 +117,7 @@ public class CheckParticipantAdapter extends
     public CheckParticipantAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.check_participant_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override

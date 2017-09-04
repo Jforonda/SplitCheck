@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
@@ -14,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Participant;
 
@@ -62,7 +59,7 @@ public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapte
                             switch (item.getItemId()) {
                                 case R.id.search_participant_delete:
                                     if (currentParticipantId == 1) {
-                                        Snackbar snackbar = Snackbar.make(v, "Can not delete yourself!", Snackbar.LENGTH_LONG);
+                                        Snackbar snackbar = Snackbar.make(v, R.string.participant_delete_self, Snackbar.LENGTH_LONG);
                                         View sbView = snackbar.getView();
                                         sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                                         TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -70,15 +67,15 @@ public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapte
                                         snackbar.show();
                                     } else {
                                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                                        alertDialogBuilder.setTitle("Are you sure?");
-                                        alertDialogBuilder.setMessage("Deleting " + currentParticipantName + " will remove them from all checks.");
-                                        alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                        alertDialogBuilder.setTitle(R.string.participant_delete_confirmation_title);
+                                        alertDialogBuilder.setMessage(mContext.getString(R.string.participant_delete_name, currentParticipantName));
+                                        alertDialogBuilder.setPositiveButton(R.string.participant_delete, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 deleteParticipantById(currentParticipantId);
                                                 removeAt(getAdapterPosition());
 
-                                                Snackbar snackbar = Snackbar.make(v, currentParticipantName + " Deleted", Snackbar.LENGTH_LONG);
+                                                Snackbar snackbar = Snackbar.make(v, mContext.getString(R.string.participant_deleted_name, currentParticipantName), Snackbar.LENGTH_LONG);
                                                 View sbView = snackbar.getView();
                                                 sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                                                 TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -88,7 +85,7 @@ public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapte
                                                 listener.onParticipantDeleted();
                                             }
                                         });
-                                        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        alertDialogBuilder.setNegativeButton(R.string.participant_delete_cancel, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
@@ -119,8 +116,7 @@ public class ParticipantsAdapter extends RecyclerView.Adapter<ParticipantsAdapte
     public ParticipantsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.participant_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override

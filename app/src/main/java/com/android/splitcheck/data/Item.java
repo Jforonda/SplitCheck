@@ -107,9 +107,8 @@ public class Item implements Parcelable {
                 cost);
         contentValues.put(ItemContract.ItemEntry.CHECK_ID,
                 checkId);
-        Uri uri = contentResolver.insert(ItemContract.ItemEntry.CONTENT_URI,
+        return contentResolver.insert(ItemContract.ItemEntry.CONTENT_URI,
                 contentValues);
-        return uri;
 
     }
 
@@ -271,9 +270,8 @@ public class Item implements Parcelable {
         }
         BigDecimal bigDecimalPercentage = new BigDecimal(subTotal * totalPercentage).divide(new BigDecimal(10000), BigDecimal.ROUND_HALF_UP);
         BigDecimal bigDecimalAmount = new BigDecimal(totalAmount).add(bigDecimalPercentage);
-        BigDecimal bigDecimalTotal = new BigDecimal(subTotal).add(bigDecimalAmount).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
 
-        return bigDecimalTotal;
+        return new BigDecimal(subTotal).add(bigDecimalAmount).setScale(2, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(100), BigDecimal.ROUND_HALF_UP);
     }
 
     public int getSubtotalAmount(ContentResolver contentResolver, int checkId) {

@@ -63,19 +63,6 @@ public class EditItemFragment extends DialogFragment {
         void onFinishEditDialog(String itemName, int itemCost);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_item_dialog, container);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -97,12 +84,14 @@ public class EditItemFragment extends DialogFragment {
         editTextName.setText(mItemName);
         editTextName.selectAll();
         editTextCost.setText(String.valueOf(mItemCost));
+        editTextName.setSelectAllOnFocus(true);
+        editTextCost.setSelectAllOnFocus(true);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
 
-        alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.item_update, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!editTextName.getText().toString().isEmpty()
@@ -115,19 +104,23 @@ public class EditItemFragment extends DialogFragment {
                     sendBackResult(newItemName, newItemCost);
                 } else if (editTextName.getText().toString().isEmpty()
                         && editTextCost.getText().toString().isEmpty()){
-                    Toast.makeText(mContext, "Error with input. Item not edited.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.item_edit_error, Toast.LENGTH_SHORT).show();
 
                 } else if (editTextName.getText().toString().isEmpty()
                         && !editTextCost.getText().toString().isEmpty()){
-                    Toast.makeText(mContext, "Error with input. Item not edited.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.item_edit_error, Toast.LENGTH_SHORT).show();
 
                 } else if (!editTextName.getText().toString().isEmpty()
                         && editTextCost.getText().toString().isEmpty()){
-                    Toast.makeText(mContext, "Error with input. Item not edited.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.item_edit_error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        return alertDialogBuilder.create();
+
+        Dialog dialog = alertDialogBuilder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return dialog;
     }
 
     /**
@@ -157,7 +150,7 @@ public class EditItemFragment extends DialogFragment {
             if (editText == null) return;
             String s = editable.toString();
             editText.removeTextChangedListener(this);
-            String cleanString = s.toString().replaceAll("[$,.]","");
+            String cleanString = s.replaceAll("[$,.]","");
             BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
             String formatted = NumberFormat.getCurrencyInstance().format(parsed);
             editText.setText(formatted);

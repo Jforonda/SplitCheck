@@ -29,7 +29,6 @@
         app:pressedTranslationZ="@dimen/fab_pres_translation_z"
 
         android:contentDescription="@string/action_add_participant"/>
-    <!--android:layout_marginBottom="@dimen/fab_margin_plus_frame_height"-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_edit_check_participants"

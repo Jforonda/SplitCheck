@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import com.android.splitcheck.data.Check;
 
@@ -51,9 +51,9 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
             public void onClick(View v) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 CreateCheckFragment createCheckFragment = CreateCheckFragment
-                        .newInstance("Check Information");
+                        .newInstance(getString(R.string.check_information_title));
                 createCheckFragment.setTargetFragment(CheckListFragment.this, 300);
-                createCheckFragment.show(fm, "Check Information");
+                createCheckFragment.show(fm, getString(R.string.check_information_title));
             }
         });
 
@@ -69,9 +69,9 @@ public class CheckListFragment extends Fragment implements CreateCheckFragment
             public void onCheckItemEditClickedListener(String checkName, int checkId) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 EditCheckFragment editCheckFragment = EditCheckFragment
-                        .newInstance("Update Check Information", checkName, checkId);
+                        .newInstance(getString(R.string.check_update_information_title), checkName, checkId);
                 editCheckFragment.setTargetFragment(CheckListFragment.this, 300);
-                editCheckFragment.show(fm, "Update Check Information");
+                editCheckFragment.show(fm, getString(R.string.check_update_information_title));
             }
         });
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

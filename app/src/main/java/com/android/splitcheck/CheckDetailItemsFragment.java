@@ -72,10 +72,10 @@ public class CheckDetailItemsFragment extends Fragment implements
             public void onClick(View v) {
                 //AddItem
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                CreateItemFragment createItemFragment = CreateItemFragment.newInstance("New Item Info",
+                CreateItemFragment createItemFragment = CreateItemFragment.newInstance(getString(R.string.item_new_item_title),
                         mCheckId);
                 createItemFragment.setTargetFragment(CheckDetailItemsFragment.this, 400);
-                createItemFragment.show(fm, "New Item Info");
+                createItemFragment.show(fm, getString(R.string.item_new_item_title));
             }
         });
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -106,7 +106,7 @@ public class CheckDetailItemsFragment extends Fragment implements
         mCheckItemAdapter.setOnCheckItemClickedListener(new CheckItemAdapter.OnCheckItemClickedListener() {
             @Override
             public void onCheckItemClickedListener(int itemId, String itemName) {
-                String title = "Who had " + itemName + "?";
+                String title = getString(R.string.item_assign_title, itemName);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 AssignParticipantFragment assignParticipantFragment = AssignParticipantFragment.newInstance(title, mCheckId, itemId);
                 assignParticipantFragment.setTargetFragment(CheckDetailItemsFragment.this, 400);
@@ -115,7 +115,7 @@ public class CheckDetailItemsFragment extends Fragment implements
 
             @Override
             public void onCheckItemEditListener(int itemId, String itemName, int itemCost) {
-                String title = "Edit Item Info";
+                String title = getString(R.string.item_edit_title);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 EditItemFragment editItemFragment = EditItemFragment.newInstance(title, mCheckId, itemId, itemName, itemCost);
                 editItemFragment.setTargetFragment(CheckDetailItemsFragment.this, 400);

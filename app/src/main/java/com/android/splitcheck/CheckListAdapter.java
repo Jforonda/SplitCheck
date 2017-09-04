@@ -68,14 +68,14 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                                     return true;
                                 case R.id.check_item_delete:
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                                    alertDialogBuilder.setTitle("Are you sure?");
-                                    alertDialogBuilder.setMessage("Delete " + currentCheckName + " ?");
-                                    alertDialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                    alertDialogBuilder.setTitle(R.string.check_delete_confirmation_title);
+                                    alertDialogBuilder.setMessage(mContext.getString(R.string.check_delete_name, currentCheckName));
+                                    alertDialogBuilder.setPositiveButton(R.string.check_delete, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             deleteCheckById(currentCheckId);
                                             removeAt(getAdapterPosition());
-                                            Snackbar snackbar = Snackbar.make(v, currentCheckName + " Deleted", Snackbar.LENGTH_LONG);
+                                            Snackbar snackbar = Snackbar.make(v, mContext.getString(R.string.check_deleted_name, currentCheckName), Snackbar.LENGTH_LONG);
                                             View sbView = snackbar.getView();
                                             sbView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                                             TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
@@ -83,7 +83,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                                             snackbar.show();
                                         }
                                     });
-                                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    alertDialogBuilder.setNegativeButton(R.string.check_delete_cancel, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
@@ -125,8 +125,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
     public CheckListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.check_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override

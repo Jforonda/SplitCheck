@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -50,18 +49,6 @@ public class AddParticipantFragment extends DialogFragment {
     public interface AddParticipantDialogListener {
         void onFinishAddParticipantDialog();
         void startCreateParticipant();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_participant_dialog, container);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @NonNull
@@ -100,11 +87,11 @@ public class AddParticipantFragment extends DialogFragment {
                 if (isChecked) {
                     addedParticipants.add(participants.get(indexSelected).getId());
                 } else if (addedParticipants.contains(indexSelected)) {
-                    //addedParticipants.remove(Integer.valueOf(indexSelected));
+
                 }
             }
         });
-        alertDialogBuilder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.participant_add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!addedParticipants.isEmpty()) {
@@ -114,11 +101,11 @@ public class AddParticipantFragment extends DialogFragment {
                     }
                     sendBackResultParticipantAdded();
                 } else {
-                    Toast.makeText(mContext, "No one added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.participant_no_one_added, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        alertDialogBuilder.setNegativeButton("Add New", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.participant_add_new, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 sendBackResultStartCreateParticipant();

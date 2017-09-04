@@ -2,8 +2,6 @@ package com.android.splitcheck;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,19 +10,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Check;
 import com.android.splitcheck.data.CheckParticipant;
 import com.android.splitcheck.data.Item;
-import com.android.splitcheck.data.ItemContract;
 import com.android.splitcheck.data.ItemParticipant;
 
 import butterknife.ButterKnife;
@@ -103,9 +97,9 @@ public class CheckDetailActivity extends AppCompatActivity implements
         checkParticipant.updateCheckParticipantTotals(getContentResolver(), checkId);
         String yourTotal = checkParticipant.getParticipantTotalWithModifier(getContentResolver(), checkId, 1);
         if (yourTotal == null) {
-            yourTotal = "Your Total: $0.00";
+            yourTotal = getString(R.string.check_your_total_default);
         } else {
-            yourTotal = "Your Total: " + yourTotal;
+            yourTotal = getString(R.string.check_your_total, yourTotal);
         }
         // Update CheckParticipant Totals
         String subtotal = item.getSubtotal(getContentResolver(), checkId);

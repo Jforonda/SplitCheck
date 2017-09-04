@@ -40,10 +40,64 @@
 
 
     <!--Strings for SplitCheck Java files-->
-    <!--Strings for CheckDetailActivity.java-->
+    <!--Strings for Check Fragment/Activities-->
     <string name="tab_items">Items</string>
     <string name="tab_group">Group</string>
     <string name="tab_modifiers">Modifiers</string>
+    <string name="check_your_total_default">Your Total: $0.00</string>
+    <string name="check_your_total">Your Total: %1$s</string>
+    <string name="check_create">Create</string>
+    <string name="check_delete_confirmation_title">Are you sure?</string>
+    <string name="check_delete_name">Delete %1$s</string>
+    <string name="check_delete">Delete</string>
+    <string name="check_delete_cancel">Cancel</string>
+    <string name="check_deleted_name">%1$s Deleted</string>
+    <string name="check_information_title">Check Information</string>
+    <string name="check_update_information_title">Update Check Information</string>
+    <string name="check_update">Update</string>
+
+
+    <!--Strings for Participant Fragment/Activities-->
+    <string name="participant_add">Add</string>
+    <string name="participant_add_new">Add New</string>
+    <string name="participant_no_one_added">No One Added</string>
+    <string name="participant_create">Create</string>
+    <string name="participant_input_error">Error with input. No participant added.</string>
+    <string name="participant_assign">Assign</string>
+    <string name="participant_add_to_group">Add To Group</string>
+    <string name="participant_create_new">Create New Participant</string>
+    <string name="participant_remove_confirmation_title">Are you sure?</string>
+    <string name="participant_remove_name">Remove %1$s</string>
+    <string name="participant_remove">Remove</string>
+    <string name="participant_remove_cancel">Cancel</string>
+    <string name="participant_removed_name">%1$s Removed</string>
+    <string name="participant_your_name_title">Your Name</string>
+    <string name="participant_delete_confirmation_title">Are you sure?</string>
+    <string name="participant_delete_self">Can not delete yourself!</string>
+    <string name="participant_delete_name">Deleting %1$s will remove him/her from all checks.</string>
+    <string name="participant_delete">Delete</string>
+    <string name="participant_delete_cancel">Cancel</string>
+    <string name="participant_deleted_name">%1$s Deleted</string>
+
+    <!--Strings for Item Fragment/Activities-->
+    <string name="item_create">Create</string>
+    <string name="item_input_error">Error with input. No item added.</string>
+    <string name="item_update">Update</string>
+    <string name="item_edit_error">Error with input. Item not edited.</string>
+    <string name="item_assign_title">Who had %1$s?</string>
+    <string name="item_edit_title">Edit Item Info</string>
+    <string name="item_new_item_title">New Item Info</string>
+    <string name="item_split_amount">Split X %1$s</string>
+    <string name="item_delete_confirmation_title">Are you sure?</string>
+    <string name="item_delete_name">Delete %1$s</string>
+    <string name="item_delete">Delete</string>
+    <string name="item_delete_cancel">Cancel</string>
+    <string name="item_deleted_name">%1$s Deleted</string>
+
+    <!--Strings for Modifier Fragment/Activities-->
+    <string name="modifier_percent">Percent</string>
+    <string name="modifier_set_percent">Set Percent</string>
+    <string name="modifier_set_amount">Set Amount</string>
 
 
     <!--Strings For XML Below-->
@@ -66,6 +120,9 @@
     <string name="default_check_item_item_split">Name</string>
     <string name="edit_item_item">Edit</string>
     <string name="delete_item_item">Delete</string>
+
+    <!--String for menu_participants.xml-->
+    <string name="search_participants">Search Participants</string>
 
     <!--String for participant_item.xml-->
     <string name="delete_participant_item">Delete</string>

@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.android.splitcheck.data.Check;
 import com.android.splitcheck.data.Modifier;
@@ -43,22 +42,6 @@ public class CreateCheckFragment extends DialogFragment {
         void onFinishCreateDialog(String checkName, int checkId);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_check_dialog, container);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mTextInputLayoutName = (TextInputLayout) view
-                .findViewById(R.id.text_input_layout_check_name);
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -72,7 +55,7 @@ public class CreateCheckFragment extends DialogFragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.check_create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Create Check and add to database if EditText is not empty
@@ -83,7 +66,11 @@ public class CreateCheckFragment extends DialogFragment {
                 }
             }
         });
-        return alertDialogBuilder.create();
+
+        Dialog dialog = alertDialogBuilder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return dialog;
     }
 
     public int createCheck(String checkName) {

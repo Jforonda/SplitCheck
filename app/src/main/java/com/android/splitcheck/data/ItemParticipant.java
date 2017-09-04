@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class ItemParticipant implements Parcelable {
@@ -132,10 +130,9 @@ public class ItemParticipant implements Parcelable {
         contentValues.put(ItemParticipantContract.ItemParticipantEntry.PARTICIPANT_NAME,
                 participantName);
         contentValues.put(ItemParticipantContract.ItemParticipantEntry.IS_CHECKED, 0);
-        Uri uri = contentResolver.insert(ItemParticipantContract.ItemParticipantEntry.CONTENT_URI,
-                contentValues);
 
-        return uri;
+        return contentResolver.insert(ItemParticipantContract.ItemParticipantEntry.CONTENT_URI,
+                contentValues);
     }
 
     // Query

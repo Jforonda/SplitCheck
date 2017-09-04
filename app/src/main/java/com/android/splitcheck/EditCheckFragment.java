@@ -42,21 +42,6 @@ public class EditCheckFragment extends DialogFragment {
         void onFinishEditDialog(String checkName, int checkId);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_check_dialog, container);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mTextInputLayoutName = (TextInputLayout) view
-                .findViewById(R.id.text_input_layout_check_name);
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString("title");
@@ -73,21 +58,22 @@ public class EditCheckFragment extends DialogFragment {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
-        alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.check_update, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Create Check and add to database if EditText is not empty
                 if (!editTextName.getText().toString().isEmpty()) {
                     String newCheckName = editTextName.getText().toString();
                     int newCheckId = updateCheck(newCheckName, mCheckId);
                     sendBackResult(newCheckName, newCheckId);
-                    // Open edit check Activity
-                    // Use last created Check
-
                 }
             }
         });
-        return alertDialogBuilder.create();
+
+        Dialog dialog = alertDialogBuilder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        return dialog;
     }
 
     public int updateCheck(String checkName, int checkId) {

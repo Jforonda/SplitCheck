@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -61,10 +60,9 @@ public class CheckParticipant {
                 participantId);
         contentValues.put(CheckParticipantContract.CheckParticipantEntry.TOTAL,
                 0);
-        Uri uri = contentResolver.insert(CheckParticipantContract.CheckParticipantEntry.CONTENT_URI,
-                contentValues);
 
-        return uri;
+        return contentResolver.insert(CheckParticipantContract.CheckParticipantEntry.CONTENT_URI,
+                contentValues);
     }
 
     public ArrayList<Participant> getListOfParticipantsFromDatabaseFromCheckId(ContentResolver contentResolver,
@@ -296,7 +294,7 @@ public class CheckParticipant {
             BigDecimal bigDecimalPercentage = new BigDecimal(total * totalPercentage).divide(new BigDecimal(10000), BigDecimal.ROUND_HALF_UP);
             BigDecimal bigDecimalAmount;
             if (nonZeroTotalParticipants(contentResolver, checkId) > 1) {
-                bigDecimalAmount = new BigDecimal(totalAmount).divide(new BigDecimal(nonZeroTotalParticipants(contentResolver, checkId))).add(bigDecimalPercentage);
+                bigDecimalAmount = new BigDecimal(totalAmount).divide(new BigDecimal(nonZeroTotalParticipants(contentResolver, checkId)), BigDecimal.ROUND_HALF_UP).add(bigDecimalPercentage);
             } else {
                 bigDecimalAmount = new BigDecimal(totalAmount).add(bigDecimalPercentage);
             }

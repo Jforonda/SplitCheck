@@ -3,7 +3,6 @@ package com.android.splitcheck;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -14,14 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Modifier;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -437,40 +433,40 @@ public class CheckDetailModifiersFragment extends Fragment implements ChangeModi
     private void startTaxDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                "Tax", mCheckId, 0, mModifier.getTax(), mModifier.getTaxPercent());
+                getString(R.string.modifier_tax), mCheckId, 0, mModifier.getTax(), mModifier.getTaxPercent());
         changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-        changeModifierFragment.show(fm, "Tax");
+        changeModifierFragment.show(fm, getString(R.string.modifier_tax));
     }
 
     private void startTipDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                "Tip", mCheckId, 1, mModifier.getTip(), mModifier.getTipPercent());
+                getString(R.string.modifier_tip), mCheckId, 1, mModifier.getTip(), mModifier.getTipPercent());
         changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-        changeModifierFragment.show(fm, "Tax");
+        changeModifierFragment.show(fm, getString(R.string.modifier_tip));
     }
 
     private void startGratuityDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                "Gratuity", mCheckId, 2, mModifier.getGratuity(), mModifier.getGratuityPercent());
+                getString(R.string.modifier_gratuity), mCheckId, 2, mModifier.getGratuity(), mModifier.getGratuityPercent());
         changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-        changeModifierFragment.show(fm, "Gratuity");
+        changeModifierFragment.show(fm, getString(R.string.modifier_gratuity));
     }
 
     private void startFeesDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                "Fees", mCheckId, 3, mModifier.getFees(), mModifier.getFeesPercent());
+                getString(R.string.modifier_fees), mCheckId, 3, mModifier.getFees(), mModifier.getFeesPercent());
         changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-        changeModifierFragment.show(fm, "Fees");
+        changeModifierFragment.show(fm, getString(R.string.modifier_fees));
     }
 
     private void startDiscountDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         ChangeModifierFragment changeModifierFragment = ChangeModifierFragment.newInstance(
-                "Discount", mCheckId, 4, mModifier.getDiscount(), mModifier.getDiscountPercent());
+                getString(R.string.modifier_discount), mCheckId, 4, mModifier.getDiscount(), mModifier.getDiscountPercent());
         changeModifierFragment.setTargetFragment(CheckDetailModifiersFragment.this, 100);
-        changeModifierFragment.show(fm, "Discount");
+        changeModifierFragment.show(fm, getString(R.string.modifier_discount));
     }
 }

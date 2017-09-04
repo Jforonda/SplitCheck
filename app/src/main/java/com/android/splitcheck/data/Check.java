@@ -1,11 +1,9 @@
 package com.android.splitcheck.data;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,8 +17,6 @@ public class Check {
     private String total;
     private long timeCreated;
 
-//    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
-// outputFormat: 8/11/2017 12:11 AM
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d");
     private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
     private SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
@@ -61,8 +57,7 @@ public class Check {
     }
 
     private Date getCurrentDateTime() {
-        Date currentDateTime = new Date(timeCreated);
-        return currentDateTime;
+        return new Date(timeCreated);
     }
 
     public String getFormattedDate() {
@@ -118,9 +113,8 @@ public class Check {
                 "0");
         contentValues.put(CheckContract.CheckEntry.TIME_CREATED,
                 System.currentTimeMillis());
-        Uri uri = contentResolver.insert(CheckContract.CheckEntry.CONTENT_URI,
+        return contentResolver.insert(CheckContract.CheckEntry.CONTENT_URI,
                 contentValues);
-        return uri;
     }
 
     public Uri deleteFromDatabase(ContentResolver contentResolver, int checkId) {

@@ -11,11 +11,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +88,7 @@ public class ChangeModifierFragment extends DialogFragment {
         mTextInputLayoutAmount = ButterKnife.findById(promptView, R.id.text_input_layout_modifier);
         final EditText editTextAmount = ButterKnife.findById(promptView, R.id.edit_text_modifier);
 
-        if (mIsPercent) mTextInputLayoutAmount.setHint("Percent");
+        if (mIsPercent) mTextInputLayoutAmount.setHint(getString(R.string.modifier_percent));
 
         // If amount, allow up to two decimal points, show dollar sign
         if (mIsPercent) {
@@ -113,7 +110,9 @@ public class ChangeModifierFragment extends DialogFragment {
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setView(promptView);
 
-        String positiveButtonText = mIsPercent ? "Set Percent" : "Set Amount";
+        String positiveButtonText = mIsPercent ?
+                getString(R.string.modifier_set_percent) :
+                getString(R.string.modifier_set_amount);
         alertDialogBuilder.setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -184,7 +183,7 @@ public class ChangeModifierFragment extends DialogFragment {
             if (editText == null) return;
             String s = editable.toString();
             editText.removeTextChangedListener(this);
-            String cleanString = s.toString().replaceAll("[$,.]","");
+            String cleanString = s.replaceAll("[$,.]","");
             BigDecimal parsed = new BigDecimal(cleanString).setScale(2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR);
             String formatted = NumberFormat.getCurrencyInstance().format(parsed);
             editText.setText(formatted);

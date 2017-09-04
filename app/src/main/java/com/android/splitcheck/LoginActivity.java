@@ -3,25 +3,16 @@ package com.android.splitcheck;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.transition.Fade;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.splitcheck.data.Participant;
 import com.google.android.gms.auth.api.Auth;
@@ -34,12 +25,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.ButterKnife;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -75,8 +61,8 @@ public class LoginActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 FragmentManager fm = getSupportFragmentManager();
                 CreateParticipantFragment createParticipantFragment = CreateParticipantFragment.newInstance(
-                        "Your Name:");
-                createParticipantFragment.show(fm, "Your Name:");
+                        getString(R.string.participant_your_name_title));
+                createParticipantFragment.show(fm, getString(R.string.participant_your_name_title));
             }
         });
 
@@ -168,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements
             participant.addSelf(getContentResolver(), acct.getGivenName(), acct.getFamilyName());
             updateUI(true);
 
-            onSupportNavigateUp();
+            //onSupportNavigateUp();
         } else {
             updateUI(false);
         }
